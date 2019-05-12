@@ -245,3 +245,7 @@ node dist/benchmark.js
 ```
 
 Now you can also open `benchmark.html` to run the benchmarks in the browser.
+
+### License
+
+[The MIT License](./LICENSE) © Kevin Jahns
