@@ -27,7 +27,7 @@ export default [{
   plugins: [
     nodeResolve({
       sourcemap: true,
-      module: true
+      mainFields: ['module', 'main']
     }),
     commonjs()
   ]
@@ -35,13 +35,13 @@ export default [{
   input: './benchmarks/bundleYjs.js',
   output: {
     file: './dist/bundleYjs.js',
-    format: 'esm',
+    format: 'es',
     sourcemap: true
   },
   plugins: [
     nodeResolve({
       sourcemap: true,
-      module: true
+      mainFields: ['module', 'main']
     }),
     commonjs(),
     terserPlugin
@@ -50,13 +50,13 @@ export default [{
   input: './benchmarks/bundleAutomerge.js',
   output: {
     file: './dist/bundleAutomerge.js',
-    format: 'esm',
+    format: 'es',
     sourcemap: true
   },
   plugins: [
     nodeResolve({
       sourcemap: true,
-      module: true
+      mainFields: ['module', 'main']
     }),
     commonjs(),
     terserPlugin

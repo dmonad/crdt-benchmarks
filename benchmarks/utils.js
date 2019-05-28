@@ -1,6 +1,9 @@
 
 import * as prng from 'lib0/prng.js'
 
+export const N = 1500
+export const disableAutomergeBenchmarks = false
+
 export const benchmarkResults = {}
 
 export const setBenchmarkResult = (libname, benchmarkid, result) => {
@@ -18,7 +21,5 @@ export const benchmarkTime = (libname, id, f) => {
 }
 
 export const gen = prng.create(42)
-
-export const N = 1500
 
 export const cpy = o => JSON.parse(JSON.stringify(o))

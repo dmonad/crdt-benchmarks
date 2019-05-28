@@ -5,8 +5,9 @@
   "description": "CRDT benchmarks",
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "npm run clean; rollup -c; gzip --keep dist/* ; node dist/benchmark.js",
-    "watch": "npm run clean; rollup -c; gzip --keep dist/*; rollup -wc"
+    "dist": "npm run clean; rollup -c; gzip --keep dist/*",
+    "start": "npm run dist && node dist/benchmark.js",
+    "watch": "npm run dist && rollup -wc"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,11 @@
   },
   "homepage": "https://github.com/y-js/benchmarks#readme",
   "dependencies": {
-    "yjs": "13.0.0-82",
+    "yjs": "13.0.0-87",
     "lib0": "0.0.4",
     "automerge": "^0.10.0",
     "rollup": "^1.10.1",
-    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-commonjs": "^8.3.4",
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-terser": "^4.0.4"
   }

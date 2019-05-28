@@ -1,6 +1,6 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
@@ -31,7 +31,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
 }
 
 const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
-  if (N > 2000) {
+  if (N > 2000 || disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
   }
