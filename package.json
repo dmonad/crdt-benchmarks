@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/y-js/benchmarks#readme",
   "dependencies": {
-    "yjs": "13.0.0-87",
-    "lib0": "0.0.4",
-    "automerge": "^0.10.0",
+    "yjs": "13.0.0-94",
+    "lib0": "0.0.5",
+    "automerge": "^0.10.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^8.3.4",
     "rollup-plugin-node-resolve": "^4.2.3",
