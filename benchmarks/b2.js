@@ -11,7 +11,13 @@ const initText = prng.word(gen, 100, 100)
 const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
   const doc1 = new Y.Doc()
   const doc2 = new Y.Doc()
+  /**
+   * @type {any}
+   */
   let update1To2
+  /**
+   * @type {any}
+   */
   let update2To1
   doc1.on('update', (update, origin) => {
     if (origin !== doc2) { // ignore if this message was received from doc2
@@ -47,7 +53,7 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
 }
 
 const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
-  if (N > 2000 || disableAutomergeBenchmarks) {
+  if (N > 10000 || disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
   }
@@ -102,7 +108,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B2.1] Cuncurrently insert N characters at random positions'
+  const benchmarkName = '[B2.2] Cuncurrently insert N characters at random positions'
   const genInput = () => {
     let str = initText
     const input = []
@@ -147,7 +153,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B2.1] Cuncurrently insert N words at random positions'
+  const benchmarkName = '[B2.3] Cuncurrently insert N words at random positions'
   const genInput = () => {
     let str = initText
     const input = []
@@ -190,7 +196,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B2.1] Cuncurrently insert & delete'
+  const benchmarkName = '[B2.4] Cuncurrently insert & delete'
   const genInput = () => {
     let str = initText
     const input = []

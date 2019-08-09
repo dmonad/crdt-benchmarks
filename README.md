@@ -18,225 +18,100 @@ Simulate two clients. Both start with a synced text object containing 100 charac
 
 #### B3: Many conflicts
 
-Simulate `N` concurrent actions. We measure the time to perform the task and sync all clients (`time`), the size of the update messages (`updateSize`), the size of the encoded document after the task is performed (`docSize`), and the time to parse the encoded document (`parseTime`).
+Simulate `√N` concurrent actions. We measure the time to perform the task
+and sync all clients (`time`), the size of the update messages (`updateSize`),
+the size of the encoded document after the task is performed (`docSize`), and
+the time to parse the encoded document (`parseTime`). The logarithm of `N` was
+chosen because `√N` concurrent actions may result in up to `√N^2 - 1`
+conflicts (apply action 1: 0 conlict; apply action2: 1 conflict, apply action 2: 2 conflicts, ..).
 
 ### Results
 
-Generated results with `Node.js v11.7.0` and `Intel® Core™ i5-8400 CPU @ 2.80GHz × 6`
+Generated results with `Node.js v12.4.0` and a Thinkpad X1 Carbon with `Intel® Core™ i5-8250U CPU @ 1.60GHz × 8`.
 
-| N = 150 | Yjs | automerge |
+| N = 6000 | Yjs | automerge |
 | :- | -: | -: |
-|Bundle size                                                               |     41101 bytes |    250627 bytes |
-|Bundle size (gzipped)                                                     |     11953 bytes |     59677 bytes |
-|[B1.1] Append N characters (time)                                         |           12 ms |          157 ms |
-|[B1.1] Append N characters (avgUpdateSize)                                |        18 bytes |       320 bytes |
-|[B1.1] Append N characters (docSize)                                      |       168 bytes |     53397 bytes |
-|[B1.1] Append N characters (parseTime)                                    |            0 ms |           47 ms |
-|[B1.2] Insert string of length N (time)                                   |            0 ms |           52 ms |
-|[B1.2] Insert string of length N (avgUpdateSize)                          |       168 bytes |     36467 bytes |
-|[B1.2] Insert string of length N (docSize)                                |       168 bytes |     38899 bytes |
-|[B1.2] Insert string of length N (parseTime)                              |            0 ms |           22 ms |
-|[B1.3] Prepend N characters] (time)                                       |            9 ms |          106 ms |
-|[B1.3] Prepend N characters] (avgUpdateSize)                              |        16 bytes |       286 bytes |
-|[B1.3] Prepend N characters] (docSize)                                    |      1231 bytes |     48290 bytes |
-|[B1.3] Prepend N characters] (parseTime)                                  |            1 ms |           51 ms |
-|[B1.4] Insert N characters at random positions (time)                     |            9 ms |           70 ms |
-|[B1.4] Insert N characters at random positions (avgUpdateSize)            |        24 bytes |       318 bytes |
-|[B1.4] Insert N characters at random positions (docSize)                  |      2164 bytes |     53132 bytes |
-|[B1.4] Insert N characters at random positions (parseTime)                |            1 ms |           25 ms |
-|[B1.5] Insert N words at random positions (time)                          |           13 ms |          244 ms |
-|[B1.5] Insert N words at random positions (avgUpdateSize)                 |        31 bytes |      1585 bytes |
-|[B1.5] Insert N words at random positions (docSize)                       |      4775 bytes |    254084 bytes |
-|[B1.5] Insert N words at random positions (parseTime)                     |            1 ms |           85 ms |
-|[B1.6] Insert string, then delete it (time)                               |            1 ms |            9 ms |
-|[B1.6] Insert string, then delete it (avgUpdateSize)                      |       179 bytes |     34667 bytes |
-|[B1.6] Insert string, then delete it (docSize)                            |        27 bytes |     37099 bytes |
-|[B1.6] Insert string, then delete it (parseTime)                          |            0 ms |            6 ms |
-|[B1.7] Insert/Delete at random positions (time)                           |           10 ms |          156 ms |
-|[B1.7] Insert/Delete at random positions (avgUpdateSize)                  |        23 bytes |      1051 bytes |
-|[B1.7] Insert/Delete at random positions (docSize)                        |      2457 bytes |    169470 bytes |
-|[B1.7] Insert/Delete at random positions (parseTime)                      |            1 ms |           55 ms |
-|[B2.1] Cuncurrently insert N characters at index 0 (time)                 |            0 ms |           68 ms |
-|[B2.1] Cuncurrently insert N characters at index 0 (updateSize)           |       336 bytes |     73622 bytes |
-|[B2.1] Cuncurrently insert N characters at index 0 (docSize)              |       442 bytes |    103715 bytes |
-|[B2.1] Cuncurrently insert N characters at index 0 (parseTime)            |            0 ms |           29 ms |
-|[B2.1] Cuncurrently insert N characters at random positions (time)        |           11 ms |           72 ms |
-|[B2.1] Cuncurrently insert N characters at random positions (updateSize)  |      4562 bytes |     68310 bytes |
-|[B2.1] Cuncurrently insert N characters at random positions (docSize)     |      5324 bytes |     98403 bytes |
-|[B2.1] Cuncurrently insert N characters at random positions (parseTime)   |            2 ms |           66 ms |
-|[B2.1] Cuncurrently insert N words at random positions (time)             |            7 ms |          385 ms |
-|[B2.1] Cuncurrently insert N words at random positions (updateSize)       |      8823 bytes |    433728 bytes |
-|[B2.1] Cuncurrently insert N words at random positions (docSize)          |      9305 bytes |    484695 bytes |
-|[B2.1] Cuncurrently insert N words at random positions (parseTime)        |            2 ms |          181 ms |
-|[B2.1] Cuncurrently insert & delete (time)                                |           10 ms |          539 ms |
-|[B2.1] Cuncurrently insert & delete (updateSize)                          |     13727 bytes |    649109 bytes |
-|[B2.1] Cuncurrently insert & delete (docSize)                             |     14242 bytes |    712494 bytes |
-|[B2.1] Cuncurrently insert & delete (parseTime)                           |            6 ms |          202 ms |
-|[B3.1] N clients concurrently set number in Map (time)                    |           13 ms |           57 ms |
-|[B3.1] N clients concurrently set number in Map (updateSize)              |      3178 bytes |     23890 bytes |
-|[B3.1] N clients concurrently set number in Map (docSize)                 |      3575 bytes |     27952 bytes |
-|[B3.1] N clients concurrently set number in Map (parseTime)               |            5 ms |           36 ms |
-|[B3.2] N clients concurrently set Object in Map (time)                    |           17 ms |           86 ms |
-|[B3.2] N clients concurrently set Object in Map (updateSize)              |      9154 bytes |     66490 bytes |
-|[B3.2] N clients concurrently set Object in Map (docSize)                 |      3913 bytes |     73702 bytes |
-|[B3.2] N clients concurrently set Object in Map (parseTime)               |            5 ms |           48 ms |
-|[B3.3] N clients concurrently set String in Map (time)                    |           12 ms |           53 ms |
-|[B3.3] N clients concurrently set String in Map (updateSize)              |     54290 bytes |     74850 bytes |
-|[B3.3] N clients concurrently set String in Map (docSize)                 |      3880 bytes |     78912 bytes |
-|[B3.3] N clients concurrently set String in Map (parseTime)               |            2 ms |           33 ms |
-|[B3.4] N clients concurrently insert text in Array (time)                 |            7 ms |           85 ms |
-|[B3.4] N clients concurrently insert text in Array (updateSize)           |      3477 bytes |     48450 bytes |
-|[B3.4] N clients concurrently insert text in Array (docSize)              |      3180 bytes |     53863 bytes |
-|[B3.4] N clients concurrently insert text in Array (parseTime)            |            1 ms |          113 ms |
-
-
-| N = 1500 | Yjs | automerge |
-| :- | -: | -: |
-|Bundle size                                                               |     41101 bytes |    250627 bytes |
-|Bundle size (gzipped)                                                     |     11953 bytes |     59677 bytes |
-|[B1.1] Append N characters (time)                                         |           66 ms |          788 ms |
-|[B1.1] Append N characters (avgUpdateSize)                                |        20 bytes |       324 bytes |
-|[B1.1] Append N characters (docSize)                                      |      1518 bytes |    537351 bytes |
-|[B1.1] Append N characters (parseTime)                                    |            0 ms |          193 ms |
-|[B1.2] Insert string of length N (time)                                   |            0 ms |          339 ms |
-|[B1.2] Insert string of length N (avgUpdateSize)                          |      1518 bytes |    368719 bytes |
-|[B1.2] Insert string of length N (docSize)                                |      1518 bytes |    390051 bytes |
-|[B1.2] Insert string of length N (parseTime)                              |            0 ms |          117 ms |
-|[B1.3] Prepend N characters] (time)                                       |           34 ms |         3178 ms |
-|[B1.3] Prepend N characters] (avgUpdateSize)                              |        20 bytes |       289 bytes |
-|[B1.3] Prepend N characters] (docSize)                                    |     14881 bytes |    484494 bytes |
-|[B1.3] Prepend N characters] (parseTime)                                  |            6 ms |         2837 ms |
-|[B1.4] Insert N characters at random positions (time)                     |           46 ms |          583 ms |
-|[B1.4] Insert N characters at random positions (avgUpdateSize)            |        26 bytes |       323 bytes |
-|[B1.4] Insert N characters at random positions (docSize)                  |     24466 bytes |    536478 bytes |
-|[B1.4] Insert N characters at random positions (parseTime)                |            4 ms |          173 ms |
-|[B1.5] Insert N words at random positions (time)                          |           40 ms |         2126 ms |
-|[B1.5] Insert N words at random positions (avgUpdateSize)                 |        32 bytes |      1562 bytes |
-|[B1.5] Insert N words at random positions (docSize)                       |     49901 bytes |   2498772 bytes |
-|[B1.5] Insert N words at random positions (parseTime)                     |            2 ms |          966 ms |
-|[B1.6] Insert string, then delete it (time)                               |            2 ms |          188 ms |
-|[B1.6] Insert string, then delete it (avgUpdateSize)                      |      1529 bytes |    350719 bytes |
-|[B1.6] Insert string, then delete it (docSize)                            |        27 bytes |    372051 bytes |
-|[B1.6] Insert string, then delete it (parseTime)                          |            0 ms |           54 ms |
-|[B1.7] Insert/Delete at random positions (time)                           |           70 ms |         1448 ms |
-|[B1.7] Insert/Delete at random positions (avgUpdateSize)                  |        23 bytes |      1088 bytes |
-|[B1.7] Insert/Delete at random positions (docSize)                        |     24237 bytes |   1750000 bytes |
-|[B1.7] Insert/Delete at random positions (parseTime)                      |            4 ms |          606 ms |
-|[B2.1] Cuncurrently insert N characters at index 0 (time)                 |            0 ms |          660 ms |
-|[B2.1] Cuncurrently insert N characters at index 0 (updateSize)           |      3036 bytes |    738726 bytes |
-|[B2.1] Cuncurrently insert N characters at index 0 (docSize)              |      3142 bytes |    806619 bytes |
-|[B2.1] Cuncurrently insert N characters at index 0 (parseTime)            |            0 ms |          253 ms |
-|[B2.1] Cuncurrently insert N characters at random positions (time)        |           41 ms |         2975 ms |
-|[B2.1] Cuncurrently insert N characters at random positions (updateSize)  |     49020 bytes |    684901 bytes |
-|[B2.1] Cuncurrently insert N characters at random positions (docSize)     |     49918 bytes |    752794 bytes |
-|[B2.1] Cuncurrently insert N characters at random positions (parseTime)   |            3 ms |         3077 ms |
-|[B2.1] Cuncurrently insert N words at random positions (time)             |           40 ms |        14354 ms |
-|[B2.1] Cuncurrently insert N words at random positions (updateSize)       |     98035 bytes |   4402276 bytes |
-|[B2.1] Cuncurrently insert N words at random positions (docSize)          |     98733 bytes |   4680043 bytes |
-|[B2.1] Cuncurrently insert N words at random positions (parseTime)        |            8 ms |         5269 ms |
-|[B2.1] Cuncurrently insert & delete (time)                                |          126 ms |        24093 ms |
-|[B2.1] Cuncurrently insert & delete (updateSize)                          |    147245 bytes |   6655963 bytes |
-|[B2.1] Cuncurrently insert & delete (docSize)                             |    147858 bytes |   7061858 bytes |
-|[B2.1] Cuncurrently insert & delete (parseTime)                           |           14 ms |         2492 ms |
-|[B3.1] N clients concurrently set number in Map (time)                    |          507 ms |         4912 ms |
-|[B3.1] N clients concurrently set number in Map (updateSize)              |     33287 bytes |    240390 bytes |
-|[B3.1] N clients concurrently set number in Map (docSize)                 |     35794 bytes |    280902 bytes |
-|[B3.1] N clients concurrently set number in Map (parseTime)               |          136 ms |         3636 ms |
-|[B3.2] N clients concurrently set Object in Map (time)                    |          555 ms |         7387 ms |
-|[B3.2] N clients concurrently set Object in Map (updateSize)              |     93066 bytes |    666390 bytes |
-|[B3.2] N clients concurrently set Object in Map (docSize)                 |     38823 bytes |    738402 bytes |
-|[B3.2] N clients concurrently set Object in Map (parseTime)               |          141 ms |         4031 ms |
-|[B3.3] N clients concurrently set String in Map (time)                    |          658 ms |         5014 ms |
-|[B3.3] N clients concurrently set String in Map (updateSize)              |   7367901 bytes |   7573500 bytes |
-|[B3.3] N clients concurrently set String in Map (docSize)                 |     40302 bytes |   7614012 bytes |
-|[B3.3] N clients concurrently set String in Map (parseTime)               |          130 ms |         3696 ms |
-|[B3.4] N clients concurrently insert text in Array (time)                 |          588 ms |         7793 ms |
-|[B3.4] N clients concurrently insert text in Array (updateSize)           |     36286 bytes |    486350 bytes |
-|[B3.4] N clients concurrently insert text in Array (docSize)              |     33289 bytes |    537663 bytes |
-|[B3.4] N clients concurrently insert text in Array (parseTime)            |          118 ms |        13602 ms |
-
-| N = 10000 | Yjs | automerge |
-| :- | -: | -: |
-|Bundle size                                                               |     41101 bytes |    250627 bytes |
-|Bundle size (gzipped)                                                     |     11953 bytes |     59677 bytes |
-|[B1.1] Append N characters (time)                                         |          194 ms |                 |
-|[B1.1] Append N characters (avgUpdateSize)                                |        20 bytes |                 |
-|[B1.1] Append N characters (docSize)                                      |     10018 bytes |                 |
-|[B1.1] Append N characters (parseTime)                                    |            0 ms |                 |
-|[B1.1] Append N characters                                                |                 |        skipping |
-|[B1.2] Insert string of length N (time)                                   |           10 ms |                 |
-|[B1.2] Insert string of length N (avgUpdateSize)                          |     10018 bytes |                 |
-|[B1.2] Insert string of length N (docSize)                                |     10018 bytes |                 |
-|[B1.2] Insert string of length N (parseTime)                              |            0 ms |                 |
-|[B1.2] Insert string of length N                                          |                 |        skipping |
-|[B1.3] Prepend N characters] (time)                                       |           92 ms |                 |
-|[B1.3] Prepend N characters] (avgUpdateSize)                              |        20 bytes |                 |
-|[B1.3] Prepend N characters] (docSize)                                    |     99881 bytes |                 |
-|[B1.3] Prepend N characters] (parseTime)                                  |           11 ms |                 |
-|[B1.3] Prepend N characters]                                              |                 |        skipping |
-|[B1.4] Insert N characters at random positions (time)                     |          444 ms |                 |
-|[B1.4] Insert N characters at random positions (avgUpdateSize)            |        27 bytes |                 |
-|[B1.4] Insert N characters at random positions (docSize)                  |    168558 bytes |                 |
-|[B1.4] Insert N characters at random positions (parseTime)                |           17 ms |                 |
-|[B1.4] Insert N characters at random positions                            |                 |        skipping |
-|[B1.5] Insert N words at random positions (time)                          |          789 ms |                 |
-|[B1.5] Insert N words at random positions (avgUpdateSize)                 |        33 bytes |                 |
-|[B1.5] Insert N words at random positions (docSize)                       |    344691 bytes |                 |
-|[B1.5] Insert N words at random positions (parseTime)                     |           22 ms |                 |
-|[B1.5] Insert N words at random positions                                 |                 |        skipping |
-|[B1.6] Insert string, then delete it (time)                               |            1 ms |                 |
-|[B1.6] Insert string, then delete it (avgUpdateSize)                      |     10029 bytes |                 |
-|[B1.6] Insert string, then delete it (docSize)                            |        27 bytes |                 |
-|[B1.6] Insert string, then delete it (parseTime)                          |            0 ms |                 |
-|[B1.6] Insert string, then delete it                                      |                 |        skipping |
-|[B1.7] Insert/Delete at random positions (time)                           |          569 ms |                 |
-|[B1.7] Insert/Delete at random positions (avgUpdateSize)                  |        25 bytes |                 |
-|[B1.7] Insert/Delete at random positions (docSize)                        |    169382 bytes |                 |
-|[B1.7] Insert/Delete at random positions (parseTime)                      |           22 ms |                 |
-|[B1.7] Insert/Delete at random positions                                  |                 |        skipping |
-|[B2.1] Cuncurrently insert N characters at index 0 (time)                 |            1 ms |                 |
-|[B2.1] Cuncurrently insert N characters at index 0 (updateSize)           |     20036 bytes |                 |
-|[B2.1] Cuncurrently insert N characters at index 0 (docSize)              |     20142 bytes |                 |
-|[B2.1] Cuncurrently insert N characters at index 0 (parseTime)            |            0 ms |                 |
-|[B2.1] Cuncurrently insert N characters at index 0                        |                 |        skipping |
-|[B2.1] Cuncurrently insert N characters at random positions (time)        |          869 ms |                 |
-|[B2.1] Cuncurrently insert N characters at random positions (updateSize)  |    336661 bytes |                 |
-|[B2.1] Cuncurrently insert N characters at random positions (docSize)     |    337559 bytes |                 |
-|[B2.1] Cuncurrently insert N characters at random positions (parseTime)   |           43 ms |                 |
-|[B2.1] Cuncurrently insert N characters at random positions               |                 |        skipping |
-|[B2.1] Cuncurrently insert N words at random positions (time)             |         1545 ms |                 |
-|[B2.1] Cuncurrently insert N words at random positions (updateSize)       |    688052 bytes |                 |
-|[B2.1] Cuncurrently insert N words at random positions (docSize)          |    688886 bytes |                 |
-|[B2.1] Cuncurrently insert N words at random positions (parseTime)        |           76 ms |                 |
-|[B2.1] Cuncurrently insert N words at random positions                    |                 |        skipping |
-|[B2.1] Cuncurrently insert & delete (time)                                |         4249 ms |                 |
-|[B2.1] Cuncurrently insert & delete (updateSize)                          |   1060135 bytes |                 |
-|[B2.1] Cuncurrently insert & delete (docSize)                             |   1060788 bytes |                 |
-|[B2.1] Cuncurrently insert & delete (parseTime)                           |          134 ms |                 |
-|[B2.1] Cuncurrently insert & delete                                       |                 |        skipping |
-|[B3.1] N clients concurrently set number in Map (time)                    |        25245 ms |                 |
-|[B3.1] N clients concurrently set number in Map (updateSize)              |    228267 bytes |                 |
-|[B3.1] N clients concurrently set number in Map (docSize)                 |    238755 bytes |                 |
-|[B3.1] N clients concurrently set number in Map (parseTime)               |         6247 ms |                 |
-|[B3.1] N clients concurrently set number in Map                           |                 |        skipping |
-|[B3.2] N clients concurrently set Object in Map (time)                    |        28031 ms |                 |
-|[B3.2] N clients concurrently set Object in Map (updateSize)              |    627054 bytes |                 |
-|[B3.2] N clients concurrently set Object in Map (docSize)                 |    258815 bytes |                 |
-|[B3.2] N clients concurrently set Object in Map (parseTime)               |         6303 ms |                 |
-|[B3.2] N clients concurrently set Object in Map                           |                 |        skipping |
-|[B3.3] N clients concurrently set String in Map (time)                    |        48211 ms |                 |
-|[B3.3] N clients concurrently set String in Map (updateSize)              | 389129353 bytes |                 |
-|[B3.3] N clients concurrently set String in Map (docSize)                 |    278727 bytes |                 |
-|[B3.3] N clients concurrently set String in Map (parseTime)               |         6894 ms |                 |
-|[B3.3] N clients concurrently set String in Map                           |                 |        skipping |
-|[B3.4] N clients concurrently insert text in Array (time)                 |        35094 ms |                 |
-|[B3.4] N clients concurrently insert text in Array (updateSize)           |    248288 bytes |                 |
-|[B3.4] N clients concurrently insert text in Array (docSize)              |    228291 bytes |                 |
-|[B3.4] N clients concurrently insert text in Array (parseTime)            |         5732 ms |                 |
-|[B3.4] N clients concurrently insert text in Array                        |                 |        skipping |
-
+|Bundle size                                                               |     45007 bytes |    251368 bytes |
+|Bundle size (gzipped)                                                     |     13589 bytes |     59856 bytes |
+|[B1.1] Append N characters (time)                                         |          155 ms |         3241 ms |
+|[B1.1] Append N characters (avgUpdateSize)                                |        20 bytes |       326 bytes |
+|[B1.1] Append N characters (docSize)                                      |      6018 bytes |   2161851 bytes |
+|[B1.1] Append N characters (parseTime)                                    |            0 ms |          950 ms |
+|[B1.2] Insert string of length N (time)                                   |            4 ms |         3374 ms |
+|[B1.2] Insert string of length N (avgUpdateSize)                          |      6018 bytes |   1484719 bytes |
+|[B1.2] Insert string of length N (docSize)                                |      6018 bytes |   1569051 bytes |
+|[B1.2] Insert string of length N (parseTime)                              |            0 ms |          732 ms |
+|[B1.3] Prepend N characters (time)                                        |          135 ms |        98837 ms |
+|[B1.3] Prepend N characters (avgUpdateSize)                               |        20 bytes |       290 bytes |
+|[B1.3] Prepend N characters (docSize)                                     |     59881 bytes |   1946994 bytes |
+|[B1.3] Prepend N characters (parseTime)                                   |           11 ms |        96560 ms |
+|[B1.4] Insert N characters at random positions (time)                     |          269 ms |         3974 ms |
+|[B1.4] Insert N characters at random positions (avgUpdateSize)            |        27 bytes |       326 bytes |
+|[B1.4] Insert N characters at random positions (docSize)                  |    100602 bytes |   2159192 bytes |
+|[B1.4] Insert N characters at random positions (parseTime)                |            8 ms |         1291 ms |
+|[B1.5] Insert N words at random positions (time)                          |          433 ms |        18079 ms |
+|[B1.5] Insert N words at random positions (avgUpdateSize)                 |        33 bytes |      1587 bytes |
+|[B1.5] Insert N words at random positions (docSize)                       |    204120 bytes |  10148335 bytes |
+|[B1.5] Insert N words at random positions (parseTime)                     |           23 ms |         6894 ms |
+|[B1.6] Insert string, then delete it (time)                               |            2 ms |         3071 ms |
+|[B1.6] Insert string, then delete it (avgUpdateSize)                      |      6029 bytes |   1412719 bytes |
+|[B1.6] Insert string, then delete it (docSize)                            |        27 bytes |   1497051 bytes |
+|[B1.6] Insert string, then delete it (parseTime)                          |            0 ms |          369 ms |
+|[B1.7] Insert/Delete strings at random positions (time)                   |          380 ms |        10523 ms |
+|[B1.7] Insert/Delete strings at random positions (avgUpdateSize)          |        24 bytes |      1102 bytes |
+|[B1.7] Insert/Delete strings at random positions (docSize)                |     91617 bytes |   7085598 bytes |
+|[B1.7] Insert/Delete strings at random positions (parseTime)              |           15 ms |         4554 ms |
+|[B1.8] Append N numbers (time)                                            |          273 ms |        25717 ms |
+|[B1.8] Append N numbers (avgUpdateSize)                                   |        25 bytes |       333 bytes |
+|[B1.8] Append N numbers (docSize)                                         |     35623 bytes |   2200659 bytes |
+|[B1.8] Append N numbers (parseTime)                                       |            0 ms |          900 ms |
+|[B1.9] Insert Array of N numbers (time)                                   |            2 ms |         3516 ms |
+|[B1.9] Insert Array of N numbers (avgUpdateSize)                          |     35650 bytes |   1523693 bytes |
+|[B1.9] Insert Array of N numbers (docSize)                                |     35650 bytes |   1608026 bytes |
+|[B1.9] Insert Array of N numbers (parseTime)                              |            0 ms |          693 ms |
+|[B1.10] Prepend N numbers (time)                                          |          105 ms |       115338 ms |
+|[B1.10] Prepend N numbers (avgUpdateSize)                                 |        25 bytes |       297 bytes |
+|[B1.10] Prepend N numbers (docSize)                                       |     89511 bytes |   1985894 bytes |
+|[B1.10] Prepend N numbers (parseTime)                                     |            8 ms |        87201 ms |
+|[B1.11] Insert N numbers at random positions (time)                       |          265 ms |        23861 ms |
+|[B1.11] Insert N numbers at random positions (avgUpdateSize)              |        32 bytes |       332 bytes |
+|[B1.11] Insert N numbers at random positions (docSize)                    |    130248 bytes |   2198120 bytes |
+|[B1.11] Insert N numbers at random positions (parseTime)                  |           20 ms |         1351 ms |
+|[B2.1] Cuncurrently insert string of length N at index 0 (time)           |            1 ms |         7442 ms |
+|[B2.1] Cuncurrently insert string of length N at index 0 (updateSize)     |     12036 bytes |   2970726 bytes |
+|[B2.1] Cuncurrently insert string of length N at index 0 (docSize)        |     12142 bytes |   3164619 bytes |
+|[B2.1] Cuncurrently insert string of length N at index 0 (parseTime)      |            0 ms |         1759 ms |
+|[B2.2] Cuncurrently insert N characters at random positions (time)        |          462 ms |        76536 ms |
+|[B2.2] Cuncurrently insert N characters at random positions (updateSize)  |    189800 bytes |   2753229 bytes |
+|[B2.2] Cuncurrently insert N characters at random positions (docSize)     |    190698 bytes |   2947122 bytes |
+|[B2.2] Cuncurrently insert N characters at random positions (parseTime)   |           38 ms |        89256 ms |
+|[B2.3] Cuncurrently insert N words at random positions (time)             |          883 ms |       381471 ms |
+|[B2.3] Cuncurrently insert N words at random positions (updateSize)       |    405775 bytes |  17696052 bytes |
+|[B2.3] Cuncurrently insert N words at random positions (docSize)          |    406553 bytes |  18725017 bytes |
+|[B2.3] Cuncurrently insert N words at random positions (parseTime)        |           64 ms |       174570 ms |
+|[B2.4] Cuncurrently insert & delete (time)                                |         2721 ms |       613474 ms |
+|[B2.4] Cuncurrently insert & delete (updateSize)                          |    620776 bytes |  26580311 bytes |
+|[B2.4] Cuncurrently insert & delete (docSize)                             |    621449 bytes |  28112800 bytes |
+|[B2.4] Cuncurrently insert & delete (parseTime)                           |          117 ms |        21369 ms |
+|[B3.1] √N clients concurrently set number in Map (time)                   |           20 ms |           48 ms |
+|[B3.1] √N clients concurrently set number in Map (updateSize)             |      1548 bytes |     12233 bytes |
+|[B3.1] √N clients concurrently set number in Map (docSize)                |      1834 bytes |     14324 bytes |
+|[B3.1] √N clients concurrently set number in Map (parseTime)              |            3 ms |           42 ms |
+|[B3.2] √N clients concurrently set Object in Map (time)                   |           13 ms |           73 ms |
+|[B3.2] √N clients concurrently set Object in Map (updateSize)             |      4518 bytes |     34101 bytes |
+|[B3.2] √N clients concurrently set Object in Map (docSize)                |      2025 bytes |     37809 bytes |
+|[B3.2] √N clients concurrently set Object in Map (parseTime)              |            2 ms |           42 ms |
+|[B3.3] √N clients concurrently set String in Map (time)                   |            4 ms |           43 ms |
+|[B3.3] √N clients concurrently set String in Map (updateSize)             |     12688 bytes |     23331 bytes |
+|[B3.3] √N clients concurrently set String in Map (docSize)                |      1985 bytes |     25422 bytes |
+|[B3.3] √N clients concurrently set String in Map (parseTime)              |            1 ms |           28 ms |
+|[B3.4] √N clients concurrently insert text in Array (time)                |            9 ms |           40 ms |
+|[B3.4] √N clients concurrently insert text in Array (updateSize)          |      1681 bytes |     24821 bytes |
+|[B3.4] √N clients concurrently insert text in Array (docSize)             |      1529 bytes |     27752 bytes |
+|[B3.4] √N clients concurrently insert text in Array (parseTime)           |            2 ms |           89 ms |
 
 ### Development
+
 Modify the `N` variable in `benchmarks/utils.js` to increase the difficulty.
 
 ```sh

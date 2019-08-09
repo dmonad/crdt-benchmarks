@@ -4,10 +4,12 @@ import { setBenchmarkResult, benchmarkTime, N, disableAutomergeBenchmarks } from
 import * as t from 'lib0/testing.js'
 import Automerge from 'automerge'
 
+const sqrtN = Math.floor(Math.sqrt(N))
+
 const benchmarkYjs = (id, changeDoc, check) => {
   const docs = []
   const updates = []
-  for (let i = 0; i < N; i++) {
+  for (let i = 0; i < sqrtN; i++) {
     const doc = new Y.Doc()
     doc.on('update', (update, origin) => {
       if (origin !== 'remote') {
@@ -28,7 +30,7 @@ const benchmarkYjs = (id, changeDoc, check) => {
       Y.applyUpdate(docs[1], updates[i], 'remote')
     }
   })
-  t.assert(updates.length === N)
+  t.assert(updates.length === sqrtN)
   check(docs.slice(0, 2))
   setBenchmarkResult('yjs', `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.byteLength, 0)} bytes`)
   const encodedState = Y.encodeStateAsUpdate(docs[0])
@@ -41,12 +43,12 @@ const benchmarkYjs = (id, changeDoc, check) => {
 }
 
 const benchmarkAutomerge = (id, init, changeDoc, check) => {
-  if (N > 2000 || disableAutomergeBenchmarks) {
+  if (N > 10000 || disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
   }
   const docs = []
-  for (let i = 0; i < N; i++) {
+  for (let i = 0; i < sqrtN; i++) {
     docs.push(Automerge.init())
   }
   const initDoc = Automerge.change(docs[0], init)
@@ -81,7 +83,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 }
 
 ;(() => {
-  const benchmarkName = '[B3.1] N clients concurrently set number in Map'
+  const benchmarkName = '[B3.1] √N clients concurrently set number in Map'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => doc.getMap('map').set('v', i),
@@ -106,7 +108,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B3.2] N clients concurrently set Object in Map'
+  const benchmarkName = '[B3.2] √N clients concurrently set Object in Map'
   // each client sets a user data object { name: id, address: 'here' }
   benchmarkYjs(
     benchmarkName,
@@ -137,11 +139,11 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B3.3] N clients concurrently set String in Map'
+  const benchmarkName = '[B3.3] √N clients concurrently set String in Map'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => {
-      doc.getMap('map').set('v', i.toString().repeat(N))
+      doc.getMap('map').set('v', i.toString().repeat(sqrtN))
     },
     docs => {
       const v = docs[0].getMap('map').get('v')
@@ -153,7 +155,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
   benchmarkAutomerge(
     benchmarkName,
     doc => {},
-    (doc, i) => { doc.v = i.toString().repeat(N) },
+    (doc, i) => { doc.v = i.toString().repeat(sqrtN) },
     docs => {
       const v = docs[0].v
       docs.forEach(doc => {
@@ -164,7 +166,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B3.4] N clients concurrently insert text in Array'
+  const benchmarkName = '[B3.4] √N clients concurrently insert text in Array'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => {

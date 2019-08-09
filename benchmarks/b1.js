@@ -31,7 +31,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
 }
 
 const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
-  if (N > 2000 || disableAutomergeBenchmarks) {
+  if (N > 10000 || disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
   }
@@ -110,7 +110,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B1.3] Prepend N characters]'
+  const benchmarkName = '[B1.3] Prepend N characters'
   const string = prng.word(gen, N, N)
   const reversedString = string.split('').reverse().join('')
   benchmarkYjs(
@@ -232,7 +232,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
 })()
 
 ;(() => {
-  const benchmarkName = '[B1.7] Insert/Delete at random positions'
+  const benchmarkName = '[B1.7] Insert/Delete strings at random positions'
   // calculate random input
   let string = ''
   const input = []
@@ -277,6 +277,115 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.assert(doc1.text.join('') === doc2.text.join(''))
       t.assert(doc1.text.join('') === string)
+    }
+  )
+})()
+
+// benchmarks with numbers begin here
+
+;(() => {
+  const benchmarkName = '[B1.8] Append N numbers'
+  const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
+  benchmarkYjs(
+    benchmarkName,
+    numbers,
+    (doc, s, i) => { doc.getArray('numbers').insert(i, [s]) },
+    (doc1, doc2) => {
+      t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
+      t.compare(doc1.getArray('numbers').toArray(), numbers)
+    }
+  )
+  benchmarkAutomerge(
+    benchmarkName,
+    doc => { doc.array = [] },
+    numbers,
+    (doc, s, i) => { doc.array.insertAt(i, s) },
+    (doc1, doc2) => {
+      t.compare(Array.from(doc1.array), Array.from(doc2.array))
+      t.compare(Array.from(doc1.array), numbers)
+    }
+  )
+})()
+
+;(() => {
+  const benchmarkName = '[B1.9] Insert Array of N numbers'
+  const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
+  benchmarkYjs(
+    benchmarkName,
+    [numbers],
+    (doc, s, i) => { doc.getArray('numbers').insert(i, s) },
+    (doc1, doc2) => {
+      t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
+      t.compare(doc1.getArray('numbers').toArray(), numbers)
+    }
+  )
+  benchmarkAutomerge(
+    benchmarkName,
+    doc => { doc.array = [] },
+    [numbers],
+    (doc, s, i) => { doc.array.insertAt(i, ...s) },
+    (doc1, doc2) => {
+      t.compare(Array.from(doc1.array), Array.from(doc2.array))
+      t.compare(Array.from(doc1.array), numbers)
+    }
+  )
+})()
+
+;(() => {
+  const benchmarkName = '[B1.10] Prepend N numbers'
+  const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
+  const numbersReversed = numbers.slice().reverse()
+
+  benchmarkYjs(
+    benchmarkName,
+    numbers,
+    (doc, s, i) => { doc.getArray('numbers').insert(0, [s]) },
+    (doc1, doc2) => {
+      t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
+      t.compare(doc1.getArray('numbers').toArray(), numbersReversed)
+    }
+  )
+  benchmarkAutomerge(
+    benchmarkName,
+    doc => { doc.array = [] },
+    numbers,
+    (doc, s, i) => { doc.array.insertAt(0, s) },
+    (doc1, doc2) => {
+      t.compare(Array.from(doc1.array), Array.from(doc2.array))
+      t.compare(Array.from(doc1.array), numbersReversed)
+    }
+  )
+})()
+
+;(() => {
+  const benchmarkName = '[B1.11] Insert N numbers at random positions'
+  // calculate random input
+  const numbers = []
+  const input = []
+  for (let i = 0; i < N; i++) {
+    const index = prng.int31(gen, 0, numbers.length)
+    const insert = prng.uint32(gen, 0, 0x7fffffff)
+    numbers.splice(index, 0, insert)
+    input.push({ index, insert })
+  }
+
+  benchmarkYjs(
+    benchmarkName,
+    input,
+    (doc, op, i) => { doc.getArray('numbers').insert(op.index, [op.insert]) },
+    (doc1, doc2) => {
+      t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
+      t.compare(doc1.getArray('numbers').toArray(), numbers)
+    }
+  )
+  benchmarkAutomerge(
+    benchmarkName,
+    doc => { doc.array = [] },
+    input,
+    (doc, op, i) => { doc.array.insertAt(op.index, op.insert) },
+    (doc1, doc2) => {
+      t.compare(Array.from(doc1.array), Array.from(doc2.array))
+      t.compare(Array.from(doc1.array), numbers)
     }
   )
 })()

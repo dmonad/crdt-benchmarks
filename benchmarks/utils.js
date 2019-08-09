@@ -1,7 +1,7 @@
 
 import * as prng from 'lib0/prng.js'
 
-export const N = 1500
+export const N = 6000
 export const disableAutomergeBenchmarks = false
 
 export const benchmarkResults = {}
@@ -17,6 +17,7 @@ export const benchmarkTime = (libname, id, f) => {
   const start = perf.now()
   f()
   const time = perf.now() - start
+  console.log(libname, id, `${time.toFixed(2)} ms`)
   setBenchmarkResult(libname, id, `${time.toFixed(0)} ms`)
 }
 
