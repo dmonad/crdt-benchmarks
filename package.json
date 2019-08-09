@@ -8,7 +8,7 @@
     "dist": "npm run clean; rollup -c; gzip --keep dist/*",
     "start": "npm run dist && node dist/benchmark.js",
     "watch": "npm run dist && rollup -wc",
-    "lint": "standard"
+    "lint": "standard && tsc"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "rollup-plugin-terser": "^4.0.4"
   },
   "devDependencies": {
-    "standard": "^13.1.0"
+    "standard": "^13.1.0",
+    "typescript": "^3.5.3"
   }
 }
