@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/y-js/benchmarks.git"
+    "url": "git+https://github.com/dmonad/crdt-benchmarks.git"
   },
   "keywords": [
     "CRDT",
@@ -21,12 +21,12 @@
   "author": "Kevin Jahns",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/y-js/benchmarks/issues"
+    "url": "https://github.com/dmonad/crdt-benchmarks/issues"
   },
-  "homepage": "https://github.com/y-js/benchmarks#readme",
+  "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
-    "yjs": "13.0.0-95",
-    "lib0": "0.0.6",
+    "yjs": "13.0.0-97",
+    "lib0": "^0.1.0",
     "automerge": "^0.10.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^8.3.4",
