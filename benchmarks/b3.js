@@ -2,9 +2,10 @@
 import * as Y from 'yjs'
 import { setBenchmarkResult, benchmarkTime, N, disableAutomergeBenchmarks } from './utils.js'
 import * as t from 'lib0/testing.js'
+import * as math from 'lib0/math.js'
 import Automerge from 'automerge'
 
-const sqrtN = Math.floor(Math.sqrt(N))
+const sqrtN = math.floor(Math.sqrt(N))
 
 const benchmarkYjs = (id, changeDoc, check) => {
   const docs = []

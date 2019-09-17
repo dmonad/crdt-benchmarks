@@ -42,7 +42,7 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
     Y.applyUpdate(doc2, update1To2, doc1)
   })
   check(doc1, doc2)
-  setBenchmarkResult('yjs', `${id} (updateSize)`, `${Math.round(update1To2.byteLength + update2To1.byteLength)} bytes`)
+  setBenchmarkResult('yjs', `${id} (updateSize)`, `${math.round(update1To2.byteLength + update2To1.byteLength)} bytes`)
   const encodedState = Y.encodeStateAsUpdate(doc1)
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
@@ -74,7 +74,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
     doc1 = Automerge.applyChanges(updatedDoc1, JSON.parse(update1))
   })
   check(doc1, doc2)
-  setBenchmarkResult('automerge', `${id} (updateSize)`, `${Math.round(updateSize)} bytes`)
+  setBenchmarkResult('automerge', `${id} (updateSize)`, `${math.round(updateSize)} bytes`)
   const encodedState = Automerge.save(doc1)
   const documentSize = encodedState.length
   setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)

@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
-    "yjs": "13.0.0-97",
-    "lib0": "^0.1.0",
+    "yjs": "13.0.0-98",
+    "lib0": "^0.1.1",
     "automerge": "^0.10.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^8.3.4",
