@@ -83,7 +83,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
   })
 }
 
-;(() => {
+{
   const benchmarkName = '[B3.1] √N clients concurrently set number in Map'
   benchmarkYjs(
     benchmarkName,
@@ -106,9 +106,9 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
       })
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B3.2] √N clients concurrently set Object in Map'
   // each client sets a user data object { name: id, address: 'here' }
   benchmarkYjs(
@@ -137,9 +137,9 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
       })
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B3.3] √N clients concurrently set String in Map'
   benchmarkYjs(
     benchmarkName,
@@ -164,9 +164,9 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
       })
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B3.4] √N clients concurrently insert text in Array'
   benchmarkYjs(
     benchmarkName,
@@ -191,4 +191,4 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
       })
     }
   )
-})()
+}

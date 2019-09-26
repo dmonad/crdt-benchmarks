@@ -60,7 +60,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   })
 }
 
-;(() => {
+{
   const benchmarkName = '[B1.1] Append N characters'
   const string = prng.word(gen, N, N)
   benchmarkYjs(
@@ -82,9 +82,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.2] Insert string of length N'
   const string = prng.word(gen, N, N)
   // B1.1: Insert text from left to right
@@ -107,9 +107,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.3] Prepend N characters'
   const string = prng.word(gen, N, N)
   const reversedString = string.split('').reverse().join('')
@@ -132,9 +132,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.4] Insert N characters at random positions'
   // calculate random input
   let string = ''
@@ -164,9 +164,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
-;(() => {
+{
   // This test simulates a real-word editing scenario.
   // Users often write a word, and then switch to a different next position.
   const benchmarkName = '[B1.5] Insert N words at random positions'
@@ -198,9 +198,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.6] Insert string, then delete it'
   const string = prng.word(gen, N, N)
   // B1.1: Insert text from left to right
@@ -229,9 +229,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === '')
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.7] Insert/Delete strings at random positions'
   // calculate random input
   let string = ''
@@ -279,11 +279,11 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === string)
     }
   )
-})()
+}
 
 // benchmarks with numbers begin here
 
-;(() => {
+{
   const benchmarkName = '[B1.8] Append N numbers'
   const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
   benchmarkYjs(
@@ -305,9 +305,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.compare(Array.from(doc1.array), numbers)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.9] Insert Array of N numbers'
   const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
   benchmarkYjs(
@@ -329,9 +329,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.compare(Array.from(doc1.array), numbers)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.10] Prepend N numbers'
   const numbers = Array.from({ length: N }).map(() => prng.uint32(gen, 0, 0x7fffffff))
   const numbersReversed = numbers.slice().reverse()
@@ -355,9 +355,9 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.compare(Array.from(doc1.array), numbersReversed)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B1.11] Insert N numbers at random positions'
   // calculate random input
   const numbers = []
@@ -388,4 +388,4 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.compare(Array.from(doc1.array), numbers)
     }
   )
-})()
+}

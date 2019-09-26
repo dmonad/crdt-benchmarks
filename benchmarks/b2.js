@@ -83,7 +83,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
   })
 }
 
-;(() => {
+{
   const benchmarkName = '[B2.1] Cuncurrently insert string of length N at index 0'
   const string1 = prng.word(gen, N, N)
   const string2 = prng.word(gen, N, N)
@@ -105,9 +105,9 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
       t.assert(doc1.text.join('').length === N * 2 + 100)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B2.2] Cuncurrently insert N characters at random positions'
   const genInput = () => {
     let str = initText
@@ -150,9 +150,9 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
       t.assert(doc1.text.join('').length === N * 2 + 100)
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B2.3] Cuncurrently insert N words at random positions'
   const genInput = () => {
     let str = initText
@@ -193,9 +193,9 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
       t.assert(doc1.text.join('') === doc2.text.join(''))
     }
   )
-})()
+}
 
-;(() => {
+{
   const benchmarkName = '[B2.4] Cuncurrently insert & delete'
   const genInput = () => {
     let str = initText
@@ -269,4 +269,4 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
       t.assert(doc1.text.join('') === doc2.text.join(''))
     }
   )
-})()
+}
