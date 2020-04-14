@@ -30,6 +30,8 @@ conflicts (apply action 1: 0 conlict; apply action2: 1 conflict, apply action 2:
 
 Generated results with `Node.js v12.4.0` and a Thinkpad X1 Carbon with `Intel® Core™ i5-8250U CPU @ 1.60GHz × 8`.
 
+** Preliminary benchmark results for [a RON-based CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
+
 | N = 6000 | Yjs | automerge |
 | :- | -: | -: |
 |Bundle size                                                               |     45007 bytes |    251368 bytes |
@@ -111,7 +113,7 @@ Generated results with `Node.js v12.4.0` and a Thinkpad X1 Carbon with `Intel® 
 |[B3.4] √N clients concurrently insert text in Array (docSize)             |      1529 bytes |     27752 bytes |
 |[B3.4] √N clients concurrently insert text in Array (parseTime)           |            2 ms |           89 ms |
 
-### Development
+## Development
 
 Modify the `N` variable in `benchmarks/utils.js` to increase the difficulty.
 
@@ -122,6 +124,6 @@ node dist/benchmark.js
 
 Now you can also open `benchmark.html` to run the benchmarks in the browser.
 
-### License
+## License
 
 [The MIT License](./LICENSE) © Kevin Jahns
