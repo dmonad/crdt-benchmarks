@@ -25,16 +25,16 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
-    "yjs": "13.0.0-102",
-    "lib0": "^0.1.6",
     "automerge": "^0.10.1",
-    "rollup": "^1.10.1",
+    "lib0": "^0.2.26",
+    "rollup": "^1.32.1",
     "rollup-plugin-commonjs": "^8.3.4",
-    "rollup-plugin-node-resolve": "^4.2.3",
-    "rollup-plugin-terser": "^4.0.4"
+    "rollup-plugin-node-resolve": "^4.2.4",
+    "rollup-plugin-terser": "^5.3.0",
+    "yjs": "^13.0.8"
   },
   "devDependencies": {
     "standard": "^13.1.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.3"
   }
 }

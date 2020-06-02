@@ -27,7 +27,7 @@ export default [{
   plugins: [
     nodeResolve({
       sourcemap: true,
-      mainFields: ['module', 'main']
+      mainFields: ['module', 'browser', 'main']
     }),
     commonjs()
   ]
