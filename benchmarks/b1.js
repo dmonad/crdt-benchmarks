@@ -21,7 +21,13 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
   })
   check(doc1, doc2)
   setBenchmarkResult('yjs', `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
-  const encodedState = Y.encodeStateAsUpdate(doc1)
+  /**
+   * @type {any}
+   */
+  let encodedState
+  benchmarkTime('yjs', `${id} (encodeTime)`, () => {
+    encodedState = Y.encodeStateAsUpdate(doc1)
+  })
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
@@ -52,7 +58,13 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   })
   check(doc1, doc2)
   setBenchmarkResult('automerge', `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
-  const encodedState = Automerge.save(doc1)
+  /**
+   * @type {any}
+   */
+  let encodedState
+  benchmarkTime('automerge', `${id} (encodeTime)`, () => {
+    encodedState = Automerge.save(doc1)
+  })
   const documentSize = encodedState.byteLength
   setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('automerge', `${id} (parseTime)`, () => {
