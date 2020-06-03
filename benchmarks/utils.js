@@ -1,7 +1,7 @@
 
 import * as prng from 'lib0/prng.js'
 
-export const N = 6000
+export const N = 3000
 export const disableAutomergeBenchmarks = false
 
 export const benchmarkResults = {}

@@ -252,7 +252,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
         if (insert !== undefined) {
           doc1.text.insertAt(index, ...insert)
         } else {
-          doc1.text.splice(index, deleteCount)
+          doc1.text.deleteAt(index, deleteCount)
         }
       })
     },
@@ -261,7 +261,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
         if (insert !== undefined) {
           doc2.text.insertAt(index, ...insert)
         } else {
-          doc2.text.splice(index, deleteCount)
+          doc2.text.deleteAt(index, deleteCount)
         }
       })
     },
