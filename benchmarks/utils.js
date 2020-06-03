@@ -23,4 +23,4 @@ export const benchmarkTime = (libname, id, f) => {
 
 export const gen = prng.create(42)
 
-export const cpy = o => JSON.parse(JSON.stringify(o))
+export const computeAutomergeUpdateSize = updates => updates.reduce((len, update) => update.byteLength, 0)
