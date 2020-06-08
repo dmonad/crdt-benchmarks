@@ -1,6 +1,6 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime, cpy, disableAutomergeBenchmarks } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, cpy, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
@@ -9,6 +9,7 @@ import Automerge from 'automerge'
 const initText = prng.word(gen, 100, 100)
 
 const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
+  const startHeapUsed = getMemUsed()
   const doc1 = new Y.Doc()
   const doc2 = new Y.Doc()
   /**
@@ -50,9 +51,11 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
     const doc = new Y.Doc()
     Y.applyUpdate(doc, encodedState)
   })
+  logMemoryUsed('yjs', id, startHeapUsed)
 }
 
 const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
+  const startHeapUsed = getMemUsed()
   if (N > 10000 || disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
@@ -81,6 +84,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
   benchmarkTime('automerge', `${id} (parseTime)`, () => {
     Automerge.load(encodedState)
   })
+  logMemoryUsed('automerge', id, startHeapUsed)
 }
 
 {
