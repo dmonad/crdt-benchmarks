@@ -20,18 +20,18 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
    * @type {any}
    */
   let update2To1
-  doc1.on('update', (update, origin) => {
+  doc1.on('updateV2', (update, origin) => {
     if (origin !== doc2) { // ignore if this message was received from doc2
       update1To2 = update
     }
   })
-  doc2.on('update', (update, origin) => {
+  doc2.on('updateV2', (update, origin) => {
     if (origin !== doc1) {
       update2To1 = update
     }
   })
   doc1.getText('text').insert(0, initText)
-  Y.applyUpdate(doc2, update1To2)
+  Y.applyUpdateV2(doc2, update1To2)
   benchmarkTime('yjs', `${id} (time)`, () => {
     doc1.transact(() => {
       changeDoc1(doc1)
@@ -39,17 +39,17 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
     doc2.transact(() => {
       changeDoc2(doc2)
     })
-    Y.applyUpdate(doc1, update2To1, doc2)
-    Y.applyUpdate(doc2, update1To2, doc1)
+    Y.applyUpdateV2(doc1, update2To1, doc2)
+    Y.applyUpdateV2(doc2, update1To2, doc1)
   })
   check(doc1, doc2)
   setBenchmarkResult('yjs', `${id} (updateSize)`, `${math.round(update1To2.byteLength + update2To1.byteLength)} bytes`)
-  const encodedState = Y.encodeStateAsUpdate(doc1)
+  const encodedState = Y.encodeStateAsUpdateV2(doc1)
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
     const doc = new Y.Doc()
-    Y.applyUpdate(doc, encodedState)
+    Y.applyUpdateV2(doc, encodedState)
   })
   logMemoryUsed('yjs', id, startHeapUsed)
 }
@@ -117,7 +117,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
     let str = initText
     const input = []
     for (let i = 0; i < N; i++) {
-      const index = prng.int31(gen, 0, str.length)
+      const index = prng.uint32(gen, 0, str.length)
       const insert = prng.word(gen, 1, 1)
       str = str.slice(0, index) + insert + str.slice(index)
       input.push({ index, insert })
@@ -162,7 +162,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
     let str = initText
     const input = []
     for (let i = 0; i < N; i++) {
-      const index = prng.int31(gen, 0, str.length)
+      const index = prng.uint32(gen, 0, str.length)
       const insert = prng.word(gen, 3, 9)
       str = str.slice(0, index) + insert + str.slice(index)
       input.push({ index, insert })
@@ -205,7 +205,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
     let str = initText
     const input = []
     for (let i = 0; i < N; i++) {
-      const index = prng.int31(gen, 0, str.length)
+      const index = prng.uint32(gen, 0, str.length)
       const insert = prng.word(gen, 3, 9)
       str = str.slice(0, index) + insert + str.slice(index)
       input.push({ index, insert })
@@ -214,7 +214,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
         str = str.slice(0, index) + insert + str.slice(index)
         input.push({ index, insert })
       } else {
-        const deleteCount = prng.int31(gen, 1, math.min(9, str.length - index))
+        const deleteCount = prng.uint32(gen, 1, math.min(9, str.length - index))
         str = str.slice(0, index) + str.slice(index + deleteCount)
         input.push({ index, deleteCount })
       }

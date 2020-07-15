@@ -30,15 +30,15 @@
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
     "automerge": "^0.14.1",
-    "lib0": "^0.2.28",
+    "lib0": "^0.2.32",
     "rollup": "^1.32.1",
     "rollup-plugin-commonjs": "^8.3.4",
     "rollup-plugin-node-resolve": "^4.2.4",
     "rollup-plugin-terser": "^5.3.0",
-    "yjs": "^13.2.0"
+    "yjs": "^13.3.0"
   },
   "devDependencies": {
     "standard": "^13.1.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.6"
   }
 }

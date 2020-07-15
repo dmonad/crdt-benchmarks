@@ -12,7 +12,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
     // We scope the creation of doc1 so we can gc it before we parse it again.
     const doc1 = new Y.Doc()
     let updateSize = 0
-    doc1.on('update', update => {
+    doc1.on('updateV2', update => {
       updateSize += update.byteLength
     })
     benchmarkTime('yjs', `${id} (time)`, () => {
@@ -26,7 +26,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
      * @type {any}
      */
     benchmarkTime('yjs', `${id} (encodeTime)`, () => {
-      encodedState = Y.encodeStateAsUpdate(doc1)
+      encodedState = Y.encodeStateAsUpdateV2(doc1)
     })
   })()
   const documentSize = encodedState.byteLength
@@ -38,7 +38,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
     let doc = null // eslint-disable-line
     benchmarkTime('yjs', `${id} (parseTime)`, () => {
       doc = new Y.Doc()
-      Y.applyUpdate(doc, encodedState)
+      Y.applyUpdateV2(doc, encodedState)
     })
     logMemoryUsed('yjs', id, startHeapUsed)
   })()
@@ -121,4 +121,54 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.text.join('') === finalText)
     }
   )
+}
+
+{
+  const benchmarkName = '[B4 x 100] Apply real-world editing dataset 100 times'
+  const multiplicator = 100
+  let encodedState = /** @type {any} */ (null)
+
+  ;(() => {
+    const doc = new Y.Doc()
+    const ytext = doc.getText('text')
+    benchmarkTime('yjs', `${benchmarkName} (time)`, () => {
+      for (let iterations = 0; iterations < multiplicator; iterations++) {
+        if (iterations > 0 && iterations % 5 === 0) {
+          console.log(`Finished ${iterations}%`)
+        }
+        for (let i = 0; i < edits.length; i++) {
+          const edit = edits[i]
+          if (edit[1] > 0) {
+            ytext.delete(edit[0], edit[1])
+          }
+          if (edit[2]) {
+            ytext.insert(edit[0], edit[2])
+          }
+        }
+      }
+    })
+    /**
+     * @type {any}
+     */
+    benchmarkTime('yjs', `${benchmarkName} (encodeTime)`, () => {
+      encodedState = Y.encodeStateAsUpdateV2(doc)
+    })
+  })()
+
+  ;(() => {
+    const documentSize = encodedState.byteLength
+    setBenchmarkResult('yjs', `${benchmarkName} (docSize)`, `${documentSize} bytes`)
+    tryGc()
+  })()
+
+  ;(() => {
+    const startHeapUsed = getMemUsed()
+    // @ts-ignore we only store doc so it is not garbage collected
+    let doc = null // eslint-disable-line
+    benchmarkTime('yjs', `${benchmarkName} (parseTime)`, () => {
+      doc = new Y.Doc()
+      Y.applyUpdateV2(doc, encodedState)
+    })
+    logMemoryUsed('yjs', benchmarkName, startHeapUsed)
+  })()
 }

@@ -11,9 +11,9 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
   const doc1 = new Y.Doc()
   const doc2 = new Y.Doc()
   let updateSize = 0
-  doc1.on('update', update => {
+  doc1.on('updateV2', update => {
     updateSize += update.byteLength
-    Y.applyUpdate(doc2, update, benchmarkYjs)
+    Y.applyUpdateV2(doc2, update, benchmarkYjs)
   })
   benchmarkTime('yjs', `${id} (time)`, () => {
     for (let i = 0; i < inputData.length; i++) {
@@ -22,12 +22,12 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
   })
   check(doc1, doc2)
   setBenchmarkResult('yjs', `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
-  const encodedState = Y.encodeStateAsUpdate(doc1)
+  const encodedState = Y.encodeStateAsUpdateV2(doc1)
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
     const doc = new Y.Doc()
-    Y.applyUpdate(doc, encodedState)
+    Y.applyUpdateV2(doc, encodedState)
   })
   logMemoryUsed('yjs', id, startHeapUsed)
 }
@@ -144,7 +144,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   let string = ''
   const input = []
   for (let i = 0; i < N; i++) {
-    const index = prng.int31(gen, 0, string.length)
+    const index = prng.int32(gen, 0, string.length)
     const insert = prng.word(gen, 1, 1)
     string = string.slice(0, index) + insert + string.slice(index)
     input.push({ index, insert })
@@ -178,7 +178,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   let string = ''
   const input = []
   for (let i = 0; i < N; i++) {
-    const index = prng.int31(gen, 0, string.length)
+    const index = prng.int32(gen, 0, string.length)
     const insert = prng.word(gen, 2, 10)
     string = string.slice(0, index) + insert + string.slice(index)
     input.push({ index, insert })
@@ -241,13 +241,13 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   let string = ''
   const input = []
   for (let i = 0; i < N; i++) {
-    const index = prng.int31(gen, 0, string.length)
+    const index = prng.uint32(gen, 0, string.length)
     if (string.length === index || prng.bool(gen)) {
       const insert = prng.word(gen, 2, 10)
       string = string.slice(0, index) + insert + string.slice(index)
       input.push({ index, insert })
     } else {
-      const deleteCount = prng.int31(gen, 1, math.min(9, string.length - index))
+      const deleteCount = prng.uint32(gen, 1, math.min(9, string.length - index))
       string = string.slice(0, index) + string.slice(index + deleteCount)
       input.push({ index, deleteCount })
     }
@@ -367,7 +367,7 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const numbers = []
   const input = []
   for (let i = 0; i < N; i++) {
-    const index = prng.int31(gen, 0, numbers.length)
+    const index = prng.uint32(gen, 0, numbers.length)
     const insert = prng.uint32(gen, 0, 0x7fffffff)
     numbers.splice(index, 0, insert)
     input.push({ index, insert })

@@ -13,7 +13,7 @@ const benchmarkYjs = (id, changeDoc, check) => {
   const updates = []
   for (let i = 0; i < sqrtN; i++) {
     const doc = new Y.Doc()
-    doc.on('update', (update, origin) => {
+    doc.on('updateV2', (update, origin) => {
       if (origin !== 'remote') {
         updates.push(update)
       }
@@ -25,22 +25,22 @@ const benchmarkYjs = (id, changeDoc, check) => {
   }
   // sync client 0 for reference
   for (let i = 0; i < updates.length; i++) {
-    Y.applyUpdate(docs[0], updates[i], 'remote')
+    Y.applyUpdateV2(docs[0], updates[i], 'remote')
   }
   benchmarkTime('yjs', `${id} (time)`, () => {
     for (let i = 0; i < updates.length; i++) {
-      Y.applyUpdate(docs[1], updates[i], 'remote')
+      Y.applyUpdateV2(docs[1], updates[i], 'remote')
     }
   })
   t.assert(updates.length === sqrtN)
   check(docs.slice(0, 2))
   setBenchmarkResult('yjs', `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.byteLength, 0)} bytes`)
-  const encodedState = Y.encodeStateAsUpdate(docs[0])
+  const encodedState = Y.encodeStateAsUpdateV2(docs[0])
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
     const doc = new Y.Doc()
-    Y.applyUpdate(doc, encodedState)
+    Y.applyUpdateV2(doc, encodedState)
   })
   logMemoryUsed('yjs', id, startHeapUsed)
 }

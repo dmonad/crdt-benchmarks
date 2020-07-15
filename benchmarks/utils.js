@@ -3,7 +3,7 @@ import * as prng from 'lib0/prng.js'
 import * as metric from 'lib0/metric.js'
 import * as math from 'lib0/math.js'
 
-export const N = 30
+export const N = 3000
 export const disableAutomergeBenchmarks = false
 
 export const benchmarkResults = {}
@@ -23,21 +23,28 @@ export const benchmarkTime = (libname, id, f) => {
   setBenchmarkResult(libname, id, `${time.toFixed(0)} ms`)
 }
 
+/**
+ * A Pseudo Random Number Generator with a constant seed, so that repeating the runs will use the same random values.
+ */
 export const gen = prng.create(42)
 
 export const cpy = o => JSON.parse(JSON.stringify(o))
 
 export const getMemUsed = () => {
-  if (typeof global !== 'undefined' && typeof process !== 'undefined' && global.gc) {
-    global.gc()
+  if (typeof global !== 'undefined' && typeof process !== 'undefined') {
+    if (global.gc) {
+      global.gc()
+    }
     return process.memoryUsage().heapUsed
   }
   return 0
 }
 
 export const logMemoryUsed = (libname, id, startHeapUsed) => {
-  if (typeof global !== 'undefined' && typeof process !== 'undefined' && global.gc) {
-    global.gc()
+  if (typeof global !== 'undefined' && typeof process !== 'undefined') {
+    if (global.gc) {
+      global.gc()
+    }
     const diff = process.memoryUsage().heapUsed - startHeapUsed
     const p = metric.prefix(diff)
     setBenchmarkResult(libname, `${id} (memUsed)`, `${math.round(math.max(p.n * 10, 0)) / 10} ${p.prefix}B`)
