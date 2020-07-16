@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "CRDT benchmarks",
+  "funding": {
+    "type": "GitHub Sponsors ❤",
+    "url": "https://github.com/sponsors/dmonad"
+  },
   "scripts": {
     "clean": "rm -rf dist",
     "dist": "npm run clean; rollup -c; gzip --keep dist/*",
-    "start": "npm run dist && node dist/benchmark.js",
+    "start": "npm run dist && node --expose-gc dist/benchmark.js",
     "watch": "npm run dist && rollup -wc",
     "lint": "standard && tsc"
   },
@@ -25,16 +29,16 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
-    "automerge": "github:automerge/automerge#performance",
-    "lib0": "^0.2.27",
+    "automerge": "github:automerge/automerge#edc859c0970a57adcebb7dc6009adb1e03a3ab00",
+    "lib0": "^0.2.32",
     "rollup": "^1.32.1",
     "rollup-plugin-commonjs": "^8.3.4",
     "rollup-plugin-node-resolve": "^4.2.4",
     "rollup-plugin-terser": "^5.3.0",
-    "yjs": "^13.1.0"
+    "yjs": "^13.3.0"
   },
   "devDependencies": {
     "standard": "^13.1.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.6"
   }
 }
