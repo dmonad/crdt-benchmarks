@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
-    "automerge": "^0.14.1",
+    "automerge": "github:automerge/automerge#edc859c0970a57adcebb7dc6009adb1e03a3ab00",
     "lib0": "^0.2.32",
     "rollup": "^1.32.1",
     "rollup-plugin-commonjs": "^8.3.4",

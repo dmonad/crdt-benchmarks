@@ -2,6 +2,8 @@ import * as Y from 'yjs'
 import { setBenchmarkResult, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, tryGc } from './utils.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
+import * as time from 'lib0/time.js'
+// @ts-ignore
 import Automerge from 'automerge'
 // @ts-ignore
 import { edits, finalText } from './b4-editing-trace.js'
@@ -21,7 +23,7 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
       }
     })
     check(doc1)
-    setBenchmarkResult('yjs', `${id} (updateSize)`, `${math.round(updateSize)} bytes`)
+    setBenchmarkResult('yjs', `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
     /**
      * @type {any}
      */
@@ -59,24 +61,33 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     // containing all the edits from b4.
     const emptyDoc = Automerge.init()
     let doc1 = Automerge.change(emptyDoc, init)
-    let updateSize = 0
+    let lastUpdate = time.getUnixTime()
     benchmarkTime('automerge', `${id} (time)`, () => {
+      const percentageSteps = math.floor(inputData.length / 20)
       for (let i = 0; i < inputData.length; i++) {
-        const updatedDoc = Automerge.change(doc1, doc => {
+        if (i % percentageSteps === 0) {
+          const nextTime = time.getUnixTime()
+          console.log(`progress: ${math.round(100 * i / inputData.length)}%  - last update ${nextTime - lastUpdate} ms ago`)
+          lastUpdate = nextTime
+        }
+        doc1 = Automerge.change(doc1, doc => {
           changeFunction(doc, inputData[i], i)
         })
-        const update = JSON.stringify(Automerge.getChanges(doc1, updatedDoc))
-        updateSize += update.length
-        doc1 = updatedDoc
+        // const update = Automerge.getChanges(doc1, updatedDoc)
+        // updateSize += computeAutomergeUpdateSize(update)
+        // doc1 = updatedDoc
       }
+      console.log('Almost done.. computing the updated automerge document could take a while..')
     })
     check(doc1)
-    setBenchmarkResult('automerge', `${id} (updateSize)`, `${math.round(updateSize)} bytes`)
+    // We perform all changes in a single Automerge transaction because
+    // currently the time to compute updates grows exponentially with each change.
+    // setBenchmarkResult('automerge', `${id} (avgUpdateSize)`, `${math.ceil(updateSize / inputData.length)} bytes`)
+    setBenchmarkResult('automerge', `${id} (avgUpdateSize)`, `-`)
     benchmarkTime('automerge', `${id} (encodeTime)`, () => {
       encodedState = Automerge.save(doc1)
     })
-    const documentSize = encodedState.length
-    setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)
+    setBenchmarkResult('automerge', `${id} (docSize)`, `${encodedState.byteLength} bytes`)
   })()
   ;(() => {
     const startHeapUsed = getMemUsed()

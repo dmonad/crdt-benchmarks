@@ -1,9 +1,10 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime, cpy, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, computeAutomergeUpdateSize } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
+// @ts-ignore
 import Automerge from 'automerge'
 
 const initText = prng.word(gen, 100, 100)
@@ -44,7 +45,13 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
   })
   check(doc1, doc2)
   setBenchmarkResult('yjs', `${id} (updateSize)`, `${math.round(update1To2.byteLength + update2To1.byteLength)} bytes`)
-  const encodedState = Y.encodeStateAsUpdateV2(doc1)
+  /**
+   * @type {any}
+   */
+  let encodedState
+  benchmarkTime('yjs', `${id} (encodeTime)`, () => {
+    encodedState = Y.encodeStateAsUpdateV2(doc1)
+  })
   const documentSize = encodedState.byteLength
   setBenchmarkResult('yjs', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
@@ -65,20 +72,26 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
     doc.text = new Automerge.Text()
     doc.text.insertAt(0, ...initText)
   })
-  let doc2 = Automerge.applyChanges(Automerge.init(), cpy(Automerge.getChanges(emptyDoc, doc1)))
+  let doc2 = Automerge.applyChanges(Automerge.init(), Automerge.getAllChanges(doc1))
   let updateSize = 0
   benchmarkTime('automerge', `${id} (time)`, () => {
     const updatedDoc1 = Automerge.change(doc1, changeDoc1)
     const updatedDoc2 = Automerge.change(doc2, changeDoc2)
-    const update2 = JSON.stringify(Automerge.getChanges(doc1, updatedDoc1))
-    const update1 = JSON.stringify(Automerge.getChanges(doc2, updatedDoc2))
-    updateSize += update1.length + update2.length
-    doc2 = Automerge.applyChanges(updatedDoc2, JSON.parse(update2))
-    doc1 = Automerge.applyChanges(updatedDoc1, JSON.parse(update1))
+    const update2 = Automerge.getChanges(doc1, updatedDoc1)
+    const update1 = Automerge.getChanges(doc2, updatedDoc2)
+    updateSize += computeAutomergeUpdateSize(update1) + computeAutomergeUpdateSize(update2)
+    doc2 = Automerge.applyChanges(updatedDoc2, update2)
+    doc1 = Automerge.applyChanges(updatedDoc1, update1)
   })
   check(doc1, doc2)
   setBenchmarkResult('automerge', `${id} (updateSize)`, `${math.round(updateSize)} bytes`)
-  const encodedState = Automerge.save(doc1)
+  /**
+   * @type {any}
+   */
+  let encodedState
+  benchmarkTime('automerge', `${id} (encodeTime)`, () => {
+    encodedState = Automerge.save(doc1)
+  })
   const documentSize = encodedState.length
   setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('automerge', `${id} (parseTime)`, () => {
