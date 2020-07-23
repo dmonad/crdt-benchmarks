@@ -8,7 +8,7 @@
 npm i && npm start
 ```
 
-You can find the benchmark results of Automerge's current [`performance`](https://github.com/automerge/automerge/pull/253) branch [here](https://github.com/automerge/automerge/pull/253).
+You can find the benchmark results of Automerge's current [`performance`](https://github.com/automerge/automerge/pull/253) branch [here](https://github.com/dmonad/crdt-benchmarks/pull/4).
 
 ## Benchmarks
 
