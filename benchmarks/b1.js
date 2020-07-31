@@ -1,11 +1,23 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, deltaDeleteHelper, deltaInsertHelper } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
 import Automerge from 'automerge'
+import DeltaCRDT from 'delta-crdts'
+import deltaCodec from 'delta-crdts-msgpack-codec'
+const DeltaRGA = DeltaCRDT('rga')
 
+/**
+ * Helper function to run a B1 benchmark in Yjs.
+ *
+ * @template T
+ * @param {string} id name of the benchmark e.g. "[B1.1] Description"
+ * @param {Array<T>} inputData
+ * @param {function(Y.Doc, T, number):void} changeFunction Is called on every element in inputData
+ * @param {function(Y.Doc, Y.Doc):void} check Check if the benchmark result is correct (all clients end up with the expected result)
+ */
 const benchmarkYjs = (id, inputData, changeFunction, check) => {
   const startHeapUsed = getMemUsed()
   const doc1 = new Y.Doc()
@@ -28,10 +40,55 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
     const doc = new Y.Doc()
     Y.applyUpdateV2(doc, encodedState)
+    logMemoryUsed('yjs', id, startHeapUsed)
   })
-  logMemoryUsed('yjs', id, startHeapUsed)
 }
 
+/**
+ * Helper function to run a B1 benchmark in delta-crdts.
+ *
+ * @template T
+ * @param {string} id name of the benchmark e.g. "[B1.1] Description"
+ * @param {Array<T>} inputData
+ * @param {function(any, T, number):Array<ArrayBuffer>} changeFunction Is called on every element in inputData and returns the generated delta
+ * @param {function(any, any):void} check Check if the benchmark result is correct (all clients end up with the expected result)
+ */
+const benchmarkDeltaCrdts = (id, inputData, changeFunction, check) => {
+  const startHeapUsed = getMemUsed()
+  const doc1 = DeltaRGA('1')
+  const doc2 = DeltaRGA('2')
+
+  let updateSize = 0
+  benchmarkTime('delta-crdts', `${id} (time)`, () => {
+    for (let i = 0; i < inputData.length; i++) {
+      const deltas = changeFunction(doc1, inputData[i], i).map(deltaCodec.encode)
+      updateSize += deltas.reduce((size, update) => size + update.byteLength, 0)
+      deltas.forEach(delta => {
+        doc2.apply(deltaCodec.decode(delta))
+      })
+    }
+  })
+  check(doc1, doc2)
+  setBenchmarkResult('delta-crdts', `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
+  const encodedState = deltaCodec.encode(doc1.state())
+  const documentSize = encodedState.byteLength
+  setBenchmarkResult('delta-crdts', `${id} (docSize)`, `${documentSize} bytes`)
+  benchmarkTime('delta-crdts', `${id} (parseTime)`, () => {
+    const doc3 = DeltaRGA('3')
+    doc3.apply(deltaCodec.decode(encodedState))
+    logMemoryUsed('delta-crdts', id, startHeapUsed)
+  })
+}
+
+/**
+ * Helper function to run a B1 benchmark in Automerge.
+ *
+ * @template T
+ * @param {string} id name of the benchmark e.g. "[B1.1] Description"
+ * @param {Array<T>} inputData
+ * @param {function(any, T, number):void} changeFunction Is called on every element in inputData
+ * @param {function(any, any):void} check Check if the benchmark result is correct (all clients end up with the expected result)
+ */
 const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const startHeapUsed = getMemUsed()
   if (N > 10000 || disableAutomergeBenchmarks) {
@@ -60,8 +117,8 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('automerge', `${id} (parseTime)`, () => {
     Automerge.load(encodedState)
+    logMemoryUsed('automerge', id, startHeapUsed)
   })
-  logMemoryUsed('automerge', id, startHeapUsed)
 }
 
 {
@@ -69,17 +126,26 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const string = prng.word(gen, N, N)
   benchmarkYjs(
     benchmarkName,
-    string,
+    string.split(''),
     (doc, s, i) => { doc.getText('text').insert(i, s) },
     (doc1, doc2) => {
       t.assert(doc1.getText('text').toString() === doc2.getText('text').toString())
       t.assert(doc1.getText('text').toString() === string)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    string.split(''),
+    (doc, s, i) => deltaInsertHelper(doc, i, s),
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.text = new Automerge.Text() },
-    string,
+    string.split(''),
     (doc, s, i) => { doc.text.insertAt(i, s) },
     (doc1, doc2) => {
       t.assert(doc1.text.join('') === doc2.text.join(''))
@@ -101,6 +167,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.getText('text').toString() === string)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    [string],
+    (doc, s, i) => deltaInsertHelper(doc, i, s),
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.text = new Automerge.Text() },
@@ -119,17 +194,26 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const reversedString = string.split('').reverse().join('')
   benchmarkYjs(
     benchmarkName,
-    reversedString,
+    reversedString.split(''),
     (doc, s, i) => { doc.getText('text').insert(0, s) },
     (doc1, doc2) => {
       t.assert(doc1.getText('text').toString() === doc2.getText('text').toString())
       t.assert(doc1.getText('text').toString() === string)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    reversedString.split(''),
+    (doc, s, i) => deltaInsertHelper(doc, 0, s),
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.text = new Automerge.Text() },
-    reversedString,
+    reversedString.split(''),
     (doc, s, i) => { doc.text.insertAt(0, s) },
     (doc1, doc2) => {
       t.assert(doc1.text.join('') === doc2.text.join(''))
@@ -156,6 +240,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.assert(doc1.getText('text').toString() === doc2.getText('text').toString())
       t.assert(doc1.getText('text').toString() === string)
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    input,
+    (doc, op, i) => deltaInsertHelper(doc, op.index, op.insert),
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
     }
   )
   benchmarkAutomerge(
@@ -192,6 +285,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.getText('text').toString() === string)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    input,
+    (doc, op, i) => deltaInsertHelper(doc, op.index, op.insert),
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.text = new Automerge.Text() },
@@ -218,6 +320,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.assert(doc1.getText('text').toString() === doc2.getText('text').toString())
       t.assert(doc1.getText('text').toString() === '')
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    [string],
+    (doc, s, i) => [...deltaInsertHelper(doc, i, s), ...deltaDeleteHelper(doc, i, s.length)],
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === '')
     }
   )
   benchmarkAutomerge(
@@ -267,6 +378,21 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.getText('text').toString() === string)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    input,
+    (doc, op, i) => {
+      if (op.insert !== undefined) {
+        return deltaInsertHelper(doc, op.index, op.insert)
+      } else {
+        return deltaDeleteHelper(doc, op.index, op.deleteCount)
+      }
+    },
+    (doc1, doc2) => {
+      t.assert(doc1.value().join('') === doc2.value().join(''))
+      t.assert(doc1.value().join('') === string)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.text = new Automerge.Text() },
@@ -299,6 +425,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.compare(doc1.getArray('numbers').toArray(), numbers)
     }
   )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    numbers,
+    (doc, s, i) => deltaInsertHelper(doc, i, [s]),
+    (doc1, doc2) => {
+      t.compare(doc1.value(), doc2.value())
+      t.compare(doc1.value(), numbers)
+    }
+  )
   benchmarkAutomerge(
     benchmarkName,
     doc => { doc.array = [] },
@@ -321,6 +456,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
       t.compare(doc1.getArray('numbers').toArray(), numbers)
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    numbers,
+    (doc, s, i) => deltaInsertHelper(doc, i, [s]),
+    (doc1, doc2) => {
+      t.compare(doc1.value().join(''), doc2.value().join(''))
+      t.compare(doc1.value(), numbers)
     }
   )
   benchmarkAutomerge(
@@ -347,6 +491,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
       t.compare(doc1.getArray('numbers').toArray(), numbersReversed)
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    numbers,
+    (doc, s, i) => deltaInsertHelper(doc, 0, [s]),
+    (doc1, doc2) => {
+      t.compare(doc1.value(), doc2.value())
+      t.compare(doc1.value(), numbersReversed)
     }
   )
   benchmarkAutomerge(
@@ -380,6 +533,15 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     (doc1, doc2) => {
       t.compare(doc1.getArray('numbers').toArray(), doc2.getArray('numbers').toArray())
       t.compare(doc1.getArray('numbers').toArray(), numbers)
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    input,
+    (doc, op, i) => deltaInsertHelper(doc, op.index, [op.insert]),
+    (doc1, doc2) => {
+      t.compare(doc1.value(), doc2.value())
+      t.compare(doc1.value(), numbers)
     }
   )
   benchmarkAutomerge(

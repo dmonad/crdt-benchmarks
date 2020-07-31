@@ -4,8 +4,12 @@ import { setBenchmarkResult, benchmarkTime, N, disableAutomergeBenchmarks, logMe
 import * as t from 'lib0/testing.js'
 import * as math from 'lib0/math.js'
 import Automerge from 'automerge'
+import DeltaCRDT from 'delta-crdts'
+import deltaCodec from 'delta-crdts-msgpack-codec'
+const DeltaRGA = DeltaCRDT('rga')
 
-const sqrtN = math.floor(Math.sqrt(N))
+const sqrtN = math.floor(Math.sqrt(N)) * 20
+console.log('sqrtN =', sqrtN)
 
 const benchmarkYjs = (id, changeDoc, check) => {
   const startHeapUsed = getMemUsed()
@@ -41,8 +45,44 @@ const benchmarkYjs = (id, changeDoc, check) => {
   benchmarkTime('yjs', `${id} (parseTime)`, () => {
     const doc = new Y.Doc()
     Y.applyUpdateV2(doc, encodedState)
+    logMemoryUsed('yjs', id, startHeapUsed)
   })
-  logMemoryUsed('yjs', id, startHeapUsed)
+}
+
+const benchmarkDeltaCrdts = (id, changeDoc, check) => {
+  const startHeapUsed = getMemUsed()
+  const docs = []
+  const updates = []
+  for (let i = 0; i < sqrtN; i++) {
+    docs.push(DeltaRGA(i + ''))
+  }
+
+  for (let i = 0; i < docs.length; i++) {
+    updates.push(...changeDoc(docs[i], i).map(deltaCodec.encode))
+  }
+  // sync client 0 for reference
+  updates.forEach(update => {
+    docs[0].apply(deltaCodec.decode(update))
+  })
+  benchmarkTime('delta-crdts', `${id} (time)`, () => {
+    updates.forEach(update => {
+      docs[1].apply(deltaCodec.decode(update))
+    })
+  })
+
+  t.assert(updates.length >= sqrtN)
+  check(docs.slice(0, 2))
+  setBenchmarkResult('delta-crdts', `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.byteLength, 0)} bytes`)
+  const encodedState = deltaCodec.encode(docs[0].state())
+  const documentSize = encodedState.byteLength
+  setBenchmarkResult('delta-crdts', `${id} (docSize)`, `${documentSize} bytes`)
+  benchmarkTime('delta-crdts', `${id} (parseTime)`, () => {
+    const doc = DeltaRGA('fresh')
+    updates.forEach(update => {
+      doc.apply(deltaCodec.decode(update))
+    })
+    logMemoryUsed('delta-crdts', id, startHeapUsed)
+  })
 }
 
 const benchmarkAutomerge = (id, init, changeDoc, check) => {
@@ -82,13 +122,14 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
   const documentSize = encodedState.length
   setBenchmarkResult('automerge', `${id} (docSize)`, `${documentSize} bytes`)
   benchmarkTime('automerge', `${id} (parseTime)`, () => {
-    Automerge.load(encodedState)
+    // @ts-ignore
+    const doc = Automerge.load(encodedState) // eslint-disable-line
+    logMemoryUsed('automerge', id, startHeapUsed)
   })
-  logMemoryUsed('automerge', id, startHeapUsed)
 }
 
 {
-  const benchmarkName = '[B3.1] √N clients concurrently set number in Map'
+  const benchmarkName = '[B3.1] 20√N clients concurrently set number in Map'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => doc.getMap('map').set('v', i),
@@ -113,7 +154,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 }
 
 {
-  const benchmarkName = '[B3.2] √N clients concurrently set Object in Map'
+  const benchmarkName = '[B3.2] 20√N clients concurrently set Object in Map'
   // each client sets a user data object { name: id, address: 'here' }
   benchmarkYjs(
     benchmarkName,
@@ -144,7 +185,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 }
 
 {
-  const benchmarkName = '[B3.3] √N clients concurrently set String in Map'
+  const benchmarkName = '[B3.3] 20√N clients concurrently set String in Map'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => {
@@ -171,7 +212,7 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
 }
 
 {
-  const benchmarkName = '[B3.4] √N clients concurrently insert text in Array'
+  const benchmarkName = '[B3.4] 20√N clients concurrently insert text in Array'
   benchmarkYjs(
     benchmarkName,
     (doc, i) => {
@@ -182,6 +223,19 @@ const benchmarkAutomerge = (id, init, changeDoc, check) => {
       docs.forEach(doc => {
         t.assert(doc.getArray('array').length === len)
       })
+    }
+  )
+  benchmarkDeltaCrdts(
+    benchmarkName,
+    (doc, i) => {
+      return [doc.insertAt(0, i.toString())]
+    },
+    docs => {
+      const len = docs[0].value().length
+      docs.forEach(doc => {
+        t.assert(doc.value().length === len)
+      })
+      t.assert(len === sqrtN)
     }
   )
   benchmarkAutomerge(

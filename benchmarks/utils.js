@@ -3,7 +3,7 @@ import * as prng from 'lib0/prng.js'
 import * as metric from 'lib0/metric.js'
 import * as math from 'lib0/math.js'
 
-export const N = 3000
+export const N = 6000
 export const disableAutomergeBenchmarks = false
 
 export const benchmarkResults = {}
@@ -55,4 +55,36 @@ export const tryGc = () => {
   if (typeof global !== 'undefined' && typeof process !== 'undefined' && global.gc) {
     global.gc()
   }
+}
+
+/**
+ * Insert a string into a deltaRga crdt
+ *
+ * @param {any} doc
+ * @param {number} index
+ * @param {Array<any>|string} content
+ * @return {Array<ArrayBuffer>}
+ */
+export const deltaInsertHelper = (doc, index, content) => {
+  const deltas = []
+  for (let i = 0; i < content.length; i++) {
+    deltas.push(doc.insertAt(index + i, content[i]))
+  }
+  return deltas
+}
+
+/**
+ * Insert a string into a deltaRga crdt
+ *
+ * @param {any} doc
+ * @param {number} index
+ * @param {number} length
+ * @return {Array<ArrayBuffer>}
+ */
+export const deltaDeleteHelper = (doc, index, length) => {
+  const deltas = []
+  for (let i = 0; i < length; i++) {
+    deltas.push(doc.removeAt(index))
+  }
+  return deltas
 }

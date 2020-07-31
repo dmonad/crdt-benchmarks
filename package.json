@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dist": "npm run clean; rollup -c; gzip --keep dist/*",
-    "start": "npm run dist && node --expose-gc dist/benchmark.js",
+    "start": "npm run dist && node --expose-gc dist/benchmark.cjs",
     "watch": "npm run dist && rollup -wc",
     "lint": "standard && tsc"
   },
@@ -30,6 +30,8 @@
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
     "automerge": "^0.14.1",
+    "delta-crdts": "^0.10.3",
+    "delta-crdts-msgpack-codec": "^0.2.0",
     "lib0": "^0.2.32",
     "rollup": "^1.32.1",
     "rollup-plugin-commonjs": "^8.3.4",
@@ -38,6 +40,8 @@
     "yjs": "^13.3.0"
   },
   "devDependencies": {
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "standard": "^13.1.0",
     "typescript": "^3.9.6"
   }
