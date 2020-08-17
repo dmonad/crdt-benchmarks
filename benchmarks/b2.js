@@ -133,7 +133,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 }
 
 {
-  const benchmarkName = '[B2.1] Cuncurrently insert string of length N at index 0'
+  const benchmarkName = '[B2.1] Concurrently insert string of length N at index 0'
   const string1 = prng.word(gen, N, N)
   const string2 = prng.word(gen, N, N)
   benchmarkYjs(
@@ -166,7 +166,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 }
 
 {
-  const benchmarkName = '[B2.2] Cuncurrently insert N characters at random positions'
+  const benchmarkName = '[B2.2] Concurrently insert N characters at random positions'
   const genInput = () => {
     let str = initText
     const input = []
@@ -220,7 +220,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 }
 
 {
-  const benchmarkName = '[B2.3] Cuncurrently insert N words at random positions'
+  const benchmarkName = '[B2.3] Concurrently insert N words at random positions'
   const genInput = () => {
     let str = initText
     const input = []
@@ -271,7 +271,7 @@ const benchmarkAutomerge = (id, changeDoc1, changeDoc2, check) => {
 }
 
 {
-  const benchmarkName = '[B2.4] Cuncurrently insert & delete'
+  const benchmarkName = '[B2.4] Concurrently insert & delete'
   const genInput = () => {
     let str = initText
     const input = []
