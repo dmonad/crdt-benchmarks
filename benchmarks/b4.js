@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { setBenchmarkResult, N, benchmarkTime, disableAutomergeBenchmarks, disablePeersCrdtsBenchmarks, disableYjsBenchmarks, logMemoryUsed, getMemUsed, tryGc } from './utils.js'
+import { setBenchmarkResult, N, benchmarkTime, disableAutomergeBenchmarks, disableOTBenchmarks, disablePeersCrdtsBenchmarks, disableYjsBenchmarks, logMemoryUsed, getMemUsed, tryGc } from './utils.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
 // @ts-ignore
@@ -7,8 +7,88 @@ import { edits, finalText } from './b4-editing-trace.js'
 import Automerge from 'automerge'
 import DeltaCRDT from 'delta-crdts'
 import deltaCodec from 'delta-crdts-msgpack-codec'
+import OtText from 'ot-text-unicode'
+import Rope from 'jumprope'
+
+const { makeType, insert, remove } = OtText
 
 const DeltaRGA = DeltaCRDT('rga')
+
+const myRopeFns = {
+  create (str) { return new Rope(str) },
+  toString (rope) { return rope.toString() },
+  slice: (str, start, end) => str.slice(start, end),
+  builder (rope) {
+    // Used for applying operations
+    let pos = 0 // character position in unicode code points
+
+    return {
+      skip (n) { pos += n },
+
+      append (s) { // Insert s at the current position
+        rope.insert(pos, s)
+        pos += s.length // in ASCII, no need to find unicode position. TODO: where to get unicodeLength?
+      },
+
+      del (n) { // Delete n characters at the current position
+        rope.del(pos, n)
+      },
+
+      build () { // Finish!
+        return rope
+      }
+    }
+  }
+}
+
+const RopeType = makeType(myRopeFns)
+
+class OTDoc {
+  constructor (dir = 'left') {
+    this.type = RopeType.create()
+    this.dir = dir
+    /**
+     * applied operations to this document.
+     */
+    this.ops = []
+  }
+
+  insert (index, text) {
+    const op = insert(index, text)
+    RopeType.apply(this.type, op)
+    this.ops.push(op)
+  }
+
+  delete (index, length) {
+    const op = remove(index, length)
+    RopeType.apply(this.type, op)
+    this.ops.push(op)
+  }
+
+  transformOpsAndApply (ops) {
+    for (let i = 0; i < this.ops.length; i++) {
+      const myOp = this.ops[i]
+      for (let j = 0; j < ops.length; j++) {
+        const theirOp = ops[j]
+        RopeType.transform(theirOp, myOp, /** @type {any} */ (this.dir))
+        RopeType.apply(this.type, theirOp)
+      }
+    }
+    this.ops.push(...ops)
+  }
+
+  updatesLen () {
+    return JSON.stringify(this.ops).length
+  }
+
+  docSize () {
+    return JSON.stringify(insert(0, this.docContent())).length
+  }
+
+  docContent () {
+    return this.type.toString()
+  }
+}
 
 const benchmarkYjs = (id, inputData, changeFunction, check) => {
   if (disableYjsBenchmarks) {
@@ -49,6 +129,45 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
       doc = new Y.Doc()
       Y.applyUpdateV2(doc, encodedState)
       logMemoryUsed('yjs', id, startHeapUsed)
+    })
+  })()
+}
+
+const benchmarkOT = (id, inputData, changeFunction, check) => {
+  if (disableOTBenchmarks) {
+    setBenchmarkResult('OT', id, 'skipping')
+    return
+  }
+
+  let encodedState
+  ;(() => {
+    // We scope the creation of doc1 so we can gc it before we parse it again.
+    const doc1 = new OTDoc()
+    benchmarkTime('OT', `${id} (time)`, () => {
+      for (let i = 0; i < inputData.length; i++) {
+        changeFunction(doc1, inputData[i], i)
+      }
+    })
+    check(doc1)
+    setBenchmarkResult('OT', `${id} (avgUpdateSize)`, `${math.round(doc1.updatesLen() / inputData.length)} bytes`)
+    /**
+     * @type {any}
+     */
+    benchmarkTime('OT', `${id} (encodeTime)`, () => {
+      encodedState = insert(0, doc1.docContent())
+    })
+    const documentSize = doc1.docSize()
+    setBenchmarkResult('OT', `${id} (docSize)`, `${documentSize} bytes`)
+  })()
+  tryGc()
+  ;(() => {
+    const startHeapUsed = getMemUsed()
+    // @ts-ignore we only store doc so it is not garbage collected
+    let doc = null // eslint-disable-line
+    benchmarkTime('OT', `${id} (parseTime)`, () => {
+      doc = new OTDoc()
+      doc.transformOpsAndApply([encodedState])
+      logMemoryUsed('OT', id, startHeapUsed)
     })
   })()
 }
@@ -163,6 +282,20 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
       t.assert(doc1.getText('text').toString() === finalText)
     }
   )
+  benchmarkOT(
+    benchmarkName,
+    edits,
+    (doc, edit) => {
+      if (edit[1] > 0) {
+        doc.delete(edit[0], edit[1])
+      } else {
+        doc.insert(edit[0], edit[2])
+      }
+    },
+    doc1 => {
+      t.assert(doc1.docContent() === finalText)
+    }
+  )
   benchmarkDeltaCRDTs(
     benchmarkName,
     edits,
@@ -208,47 +341,51 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const multiplicator = 100
   let encodedState = /** @type {any} */ (null)
 
-  ;(() => {
-    const doc = new Y.Doc()
-    const ytext = doc.getText('text')
-    benchmarkTime('yjs', `${benchmarkName} (time)`, () => {
-      for (let iterations = 0; iterations < multiplicator; iterations++) {
-        if (iterations > 0 && iterations % 5 === 0) {
-          console.log(`Finished ${iterations}%`)
-        }
-        for (let i = 0; i < edits.length; i++) {
-          const edit = edits[i]
-          if (edit[1] > 0) {
-            ytext.delete(edit[0], edit[1])
+  if (disableYjsBenchmarks) {
+    setBenchmarkResult('yjs', benchmarkName, 'skipping')
+  } else {
+    ;(() => {
+      const doc = new Y.Doc()
+      const ytext = doc.getText('text')
+      benchmarkTime('yjs', `${benchmarkName} (time)`, () => {
+        for (let iterations = 0; iterations < multiplicator; iterations++) {
+          if (iterations > 0 && iterations % 5 === 0) {
+            console.log(`Finished ${iterations}%`)
           }
-          if (edit[2]) {
-            ytext.insert(edit[0], edit[2])
+          for (let i = 0; i < edits.length; i++) {
+            const edit = edits[i]
+            if (edit[1] > 0) {
+              ytext.delete(edit[0], edit[1])
+            }
+            if (edit[2]) {
+              ytext.insert(edit[0], edit[2])
+            }
           }
         }
-      }
-    })
-    /**
-     * @type {any}
-     */
-    benchmarkTime('yjs', `${benchmarkName} (encodeTime)`, () => {
-      encodedState = Y.encodeStateAsUpdateV2(doc)
-    })
-  })()
+      })
+      /**
+       * @type {any}
+       */
+      benchmarkTime('yjs', `${benchmarkName} (encodeTime)`, () => {
+        encodedState = Y.encodeStateAsUpdateV2(doc)
+      })
+    })()
 
-  ;(() => {
-    const documentSize = encodedState.byteLength
-    setBenchmarkResult('yjs', `${benchmarkName} (docSize)`, `${documentSize} bytes`)
-    tryGc()
-  })()
+    ;(() => {
+      const documentSize = encodedState.byteLength
+      setBenchmarkResult('yjs', `${benchmarkName} (docSize)`, `${documentSize} bytes`)
+      tryGc()
+    })()
 
-  ;(() => {
-    const startHeapUsed = getMemUsed()
-    // @ts-ignore we only store doc so it is not garbage collected
-    let doc = null // eslint-disable-line
-    benchmarkTime('yjs', `${benchmarkName} (parseTime)`, () => {
-      doc = new Y.Doc()
-      Y.applyUpdateV2(doc, encodedState)
-    })
-    logMemoryUsed('yjs', benchmarkName, startHeapUsed)
-  })()
+    ;(() => {
+      const startHeapUsed = getMemUsed()
+      // @ts-ignore we only store doc so it is not garbage collected
+      let doc = null // eslint-disable-line
+      benchmarkTime('yjs', `${benchmarkName} (parseTime)`, () => {
+        doc = new Y.Doc()
+        Y.applyUpdateV2(doc, encodedState)
+      })
+      logMemoryUsed('yjs', benchmarkName, startHeapUsed)
+    })()
+  }
 }
