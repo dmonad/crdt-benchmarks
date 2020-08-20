@@ -1,6 +1,6 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, benchmarkTime, N, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed } from './utils.js'
+import { setBenchmarkResult, benchmarkTime, N, disableAutomergeBenchmarks, disableYjsBenchmarks, disablePeersCrdtsBenchmarks, logMemoryUsed, getMemUsed } from './utils.js'
 import * as t from 'lib0/testing.js'
 import * as math from 'lib0/math.js'
 import Automerge from 'automerge'
@@ -13,6 +13,12 @@ console.log('sqrtN =', sqrtN)
 
 const benchmarkYjs = (id, changeDoc, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disableYjsBenchmarks) {
+    setBenchmarkResult('yjs', id, 'skipping')
+    return
+  }
+
   const docs = []
   const updates = []
   for (let i = 0; i < sqrtN; i++) {
@@ -51,6 +57,12 @@ const benchmarkYjs = (id, changeDoc, check) => {
 
 const benchmarkDeltaCrdts = (id, changeDoc, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disablePeersCrdtsBenchmarks) {
+    setBenchmarkResult('delta-crdts', id, 'skipping')
+    return
+  }
+
   const docs = []
   const updates = []
   for (let i = 0; i < sqrtN; i++) {

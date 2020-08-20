@@ -1,6 +1,6 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime, cpy, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, deltaInsertHelper, deltaDeleteHelper } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, cpy, disableAutomergeBenchmarks, disableYjsBenchmarks, disablePeersCrdtsBenchmarks, logMemoryUsed, getMemUsed, deltaInsertHelper, deltaDeleteHelper } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
@@ -13,6 +13,12 @@ const initText = prng.word(gen, 100, 100)
 
 const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disableYjsBenchmarks) {
+    setBenchmarkResult('yjs', id, 'skipping')
+    return
+  }
+
   const doc1 = new Y.Doc()
   const doc2 = new Y.Doc()
   /**
@@ -59,6 +65,12 @@ const benchmarkYjs = (id, changeDoc1, changeDoc2, check) => {
 
 const benchmarkDeltaCrdts = (id, changeDoc1, changeDoc2, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disablePeersCrdtsBenchmarks) {
+    setBenchmarkResult('delta-crdts', id, 'skipping')
+    return
+  }
+
   const doc1 = DeltaRGA('1')
   const doc2 = DeltaRGA('2')
   /**

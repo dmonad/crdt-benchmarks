@@ -1,6 +1,6 @@
 
 import * as Y from 'yjs'
-import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, deltaDeleteHelper, deltaInsertHelper } from './utils.js'
+import { setBenchmarkResult, gen, N, benchmarkTime, disableAutomergeBenchmarks, disablePeersCrdtsBenchmarks, disableYjsBenchmarks, logMemoryUsed, getMemUsed, deltaDeleteHelper, deltaInsertHelper } from './utils.js'
 import * as prng from 'lib0/prng.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
@@ -20,6 +20,12 @@ const DeltaRGA = DeltaCRDT('rga')
  */
 const benchmarkYjs = (id, inputData, changeFunction, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disableYjsBenchmarks) {
+    setBenchmarkResult('yjs', id, 'skipping')
+    return
+  }
+
   const doc1 = new Y.Doc()
   const doc2 = new Y.Doc()
   let updateSize = 0
@@ -55,6 +61,12 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
  */
 const benchmarkDeltaCrdts = (id, inputData, changeFunction, check) => {
   const startHeapUsed = getMemUsed()
+
+  if (disablePeersCrdtsBenchmarks) {
+    setBenchmarkResult('delta-crdts', id, 'skipping')
+    return
+  }
+
   const doc1 = DeltaRGA('1')
   const doc2 = DeltaRGA('2')
 
@@ -91,7 +103,7 @@ const benchmarkDeltaCrdts = (id, inputData, changeFunction, check) => {
  */
 const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
   const startHeapUsed = getMemUsed()
-  if (N > 10000 || disableAutomergeBenchmarks) {
+  if (disableAutomergeBenchmarks) {
     setBenchmarkResult('automerge', id, 'skipping')
     return
   }

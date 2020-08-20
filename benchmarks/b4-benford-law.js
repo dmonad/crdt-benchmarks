@@ -27,5 +27,3 @@ for (let i = 0; i < counts.length; i++) {
 }
 
 console.log('distribution', counts)
-
-

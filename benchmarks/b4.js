@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { setBenchmarkResult, N, benchmarkTime, disableAutomergeBenchmarks, logMemoryUsed, getMemUsed, tryGc } from './utils.js'
+import { setBenchmarkResult, N, benchmarkTime, disableAutomergeBenchmarks, disablePeersCrdtsBenchmarks, disableYjsBenchmarks, logMemoryUsed, getMemUsed, tryGc } from './utils.js'
 import * as math from 'lib0/math.js'
 import * as t from 'lib0/testing.js'
 // @ts-ignore
@@ -11,6 +11,11 @@ import deltaCodec from 'delta-crdts-msgpack-codec'
 const DeltaRGA = DeltaCRDT('rga')
 
 const benchmarkYjs = (id, inputData, changeFunction, check) => {
+  if (disableYjsBenchmarks) {
+    setBenchmarkResult('yjs', id, 'skipping')
+    return
+  }
+
   let encodedState = /** @type {any} */ (null)
   ;(() => {
     // We scope the creation of doc1 so we can gc it before we parse it again.
@@ -49,6 +54,10 @@ const benchmarkYjs = (id, inputData, changeFunction, check) => {
 }
 
 const benchmarkDeltaCRDTs = (id, inputData, changeFunction, check) => {
+  if (disablePeersCrdtsBenchmarks) {
+    setBenchmarkResult('delta-crdts', id, 'skipping')
+    return
+  }
   let encodedState = /** @type {any} */ (null)
   ;(() => {
     const doc1 = DeltaRGA('1')
