@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dist": "npm run clean; rollup -c; gzip --keep dist/*",
-    "start": "npm run dist && node --expose-gc dist/benchmark.cjs",
+    "start": "npm run dist && node --expose-gc --max-old-space-size=2286 dist/benchmark.cjs",
     "watch": "npm run dist && rollup -wc",
     "lint": "standard && tsc"
   },

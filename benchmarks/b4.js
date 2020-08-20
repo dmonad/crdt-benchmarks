@@ -311,3 +311,56 @@ const benchmarkAutomerge = (id, init, inputData, changeFunction, check) => {
     })()
   }
 }
+
+{
+  const benchmarkName = '[B4 x 100] Apply real-world editing dataset 100 times'
+  const multiplicator = 100
+  let encodedState = /** @type {any} */ (null)
+
+  if (disableOTBenchmarks) {
+    setBenchmarkResult('OT', benchmarkName, 'skipping')
+  } else {
+    ;(() => {
+      const doc = new OTDoc()
+      benchmarkTime('OT', `${benchmarkName} (time)`, () => {
+        for (let iterations = 0; iterations < multiplicator; iterations++) {
+          if (iterations > 0 && iterations % 5 === 0) {
+            console.log(`Finished ${iterations}%`)
+          }
+          for (let i = 0; i < edits.length; i++) {
+            const edit = edits[i]
+            if (edit[1] > 0) {
+              doc.delete(edit[0], edit[1])
+            }
+            if (edit[2]) {
+              doc.insert(edit[0], edit[2])
+            }
+          }
+        }
+      })
+      /**
+       * @type {any}
+       */
+      benchmarkTime('OT', `${benchmarkName} (encodeTime)`, () => {
+        encodedState = JSON.stringify(insert(0, doc.docContent()))
+      })
+    })()
+
+    ;(() => {
+      const documentSize = encodedState.length
+      setBenchmarkResult('OT', `${benchmarkName} (docSize)`, `${documentSize} bytes`)
+      tryGc()
+    })()
+
+    ;(() => {
+      const startHeapUsed = getMemUsed()
+      // @ts-ignore we only store doc so it is not garbage collected
+      let doc = null // eslint-disable-line
+      benchmarkTime('OT', `${benchmarkName} (parseTime)`, () => {
+        doc = new OTDoc()
+        doc.applyOp(JSON.parse(encodedState))
+      })
+      logMemoryUsed('OT', benchmarkName, startHeapUsed)
+    })()
+  }
+}
