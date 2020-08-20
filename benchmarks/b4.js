@@ -5,90 +5,12 @@ import * as t from 'lib0/testing.js'
 // @ts-ignore
 import { edits, finalText } from './b4-editing-trace.js'
 import Automerge from 'automerge'
+import { insert } from 'ot-text-unicode'
+import { OTDoc } from './otHelpers.js'
 import DeltaCRDT from 'delta-crdts'
 import deltaCodec from 'delta-crdts-msgpack-codec'
-import OtText from 'ot-text-unicode'
-import Rope from 'jumprope'
-
-const { makeType, insert, remove } = OtText
 
 const DeltaRGA = DeltaCRDT('rga')
-
-const myRopeFns = {
-  create (str) { return new Rope(str) },
-  toString (rope) { return rope.toString() },
-  slice: (str, start, end) => str.slice(start, end),
-  builder (rope) {
-    // Used for applying operations
-    let pos = 0 // character position in unicode code points
-
-    return {
-      skip (n) { pos += n },
-
-      append (s) { // Insert s at the current position
-        rope.insert(pos, s)
-        pos += s.length // in ASCII, no need to find unicode position. TODO: where to get unicodeLength?
-      },
-
-      del (n) { // Delete n characters at the current position
-        rope.del(pos, n)
-      },
-
-      build () { // Finish!
-        return rope
-      }
-    }
-  }
-}
-
-const RopeType = makeType(myRopeFns)
-
-class OTDoc {
-  constructor (dir = 'left') {
-    this.type = RopeType.create()
-    this.dir = dir
-    /**
-     * applied operations to this document.
-     */
-    this.ops = []
-  }
-
-  insert (index, text) {
-    const op = insert(index, text)
-    RopeType.apply(this.type, op)
-    this.ops.push(op)
-  }
-
-  delete (index, length) {
-    const op = remove(index, length)
-    RopeType.apply(this.type, op)
-    this.ops.push(op)
-  }
-
-  transformOpsAndApply (ops) {
-    for (let i = 0; i < this.ops.length; i++) {
-      const myOp = this.ops[i]
-      for (let j = 0; j < ops.length; j++) {
-        const theirOp = ops[j]
-        RopeType.transform(theirOp, myOp, /** @type {any} */ (this.dir))
-        RopeType.apply(this.type, theirOp)
-      }
-    }
-    this.ops.push(...ops)
-  }
-
-  updatesLen () {
-    return JSON.stringify(this.ops).length
-  }
-
-  docSize () {
-    return JSON.stringify(insert(0, this.docContent())).length
-  }
-
-  docContent () {
-    return this.type.toString()
-  }
-}
 
 const benchmarkYjs = (id, inputData, changeFunction, check) => {
   if (disableYjsBenchmarks) {
@@ -154,7 +76,7 @@ const benchmarkOT = (id, inputData, changeFunction, check) => {
      * @type {any}
      */
     benchmarkTime('OT', `${id} (encodeTime)`, () => {
-      encodedState = insert(0, doc1.docContent())
+      encodedState = JSON.stringify(insert(0, doc1.docContent()))
     })
     const documentSize = doc1.docSize()
     setBenchmarkResult('OT', `${id} (docSize)`, `${documentSize} bytes`)
@@ -166,7 +88,7 @@ const benchmarkOT = (id, inputData, changeFunction, check) => {
     let doc = null // eslint-disable-line
     benchmarkTime('OT', `${id} (parseTime)`, () => {
       doc = new OTDoc()
-      doc.transformOpsAndApply([encodedState])
+      doc.transformOpsAndApply([JSON.parse(encodedState)])
       logMemoryUsed('OT', id, startHeapUsed)
     })
   })()

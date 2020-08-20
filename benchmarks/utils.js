@@ -6,7 +6,7 @@ import * as math from 'lib0/math.js'
 export const N = 6000
 export const disableAutomergeBenchmarks = true
 export const disablePeersCrdtsBenchmarks = true
-export const disableYjsBenchmarks = true
+export const disableYjsBenchmarks = false
 export const disableOTBenchmarks = false
 
 export const benchmarkResults = {}
