@@ -60,6 +60,20 @@ export default [{
     terserPlugin
   ]
 }, {
+  input: './benchmarks/bundleOT.js',
+  output: {
+    file: './dist/bundleOT.js',
+    format: 'es',
+    sourcemap: true
+  },
+  plugins: [
+    nodeResolve({
+      mainFields: ['module', 'main']
+    }),
+    commonjs(),
+    terserPlugin
+  ]
+}, {
   input: './benchmarks/bundleDeltaCrdts.js',
   output: {
     file: './dist/bundleDeltaCrdts.js',
