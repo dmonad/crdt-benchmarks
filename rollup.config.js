@@ -20,6 +20,27 @@ const terserPlugin = terser({
 })
 
 export default [{
+  input: './crdt-benchmarks/yjs/yjs.js',
+  output: {
+    file: './dist/benchmark-node.js',
+    format: 'es',
+    sourcemap: true
+  }
+}, {
+  input: './crdt-benchmarks/yjs/yjs.js',
+  output: {
+    file: './dist/benchmark-browser.js',
+    format: 'iife',
+    sourcemap: true
+  },
+  plugins: [
+    nodeResolve({
+      mainFields: ['module', 'browser', 'main']
+    }),
+    commonjs()
+  ]
+},
+{
   input: './benchmarks/run.js',
   output: {
     file: './dist/benchmark.cjs',
