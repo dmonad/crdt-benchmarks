@@ -2,7 +2,6 @@ import * as prng from 'lib0/prng.js'
 import * as metric from 'lib0/metric.js'
 import * as math from 'lib0/math.js'
 import * as error from 'lib0/error.js'
-import * as promise from 'lib0/promise'
 // @ts-ignore
 import { performance as perf } from 'isomorphic.js'
 
@@ -20,7 +19,7 @@ export const setBenchmarkResult = (libname, benchmarkid, result) => {
   libResults[libname] = result
 }
 
-export const writeBenchmarkResultsToFile = async path => {
+export const writeBenchmarkResultsToFile = async (path, filter) => {
   if (typeof process !== 'undefined') {
     const fs = await import('fs')
 
@@ -32,7 +31,9 @@ export const writeBenchmarkResultsToFile = async path => {
       json[N] = {}
     }
     for (const key in benchmarkResults) {
-      json[N][key] = benchmarkResults[key]
+      if (!filter(key)) {
+        json[N][key] = benchmarkResults[key]
+      }
     }
     fs.writeFileSync(path, JSON.stringify(json, null, 2))
   }
@@ -48,14 +49,13 @@ export const benchmarkTime = (libname, id, f) => {
 /**
  * @param {string} name
  * @param {function(string):boolean} filter
- * @param {function(string):void} f
+ * @param {function(string):(void|Promise<void>)} f
  */
 export const runBenchmark = async (name, filter, f) => {
-  if (filter(name)) {
+  if (!filter(name)) {
     return
   }
-  await promise.wait(10)
-  f(name)
+  await f(name)
 }
 
 /**

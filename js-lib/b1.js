@@ -32,13 +32,13 @@ export const runBenchmarksB1 = async (crdtFactory, filter) => {
         doc2.applyUpdate(update)
       })
       check(doc1, doc2)
-      const updateSize = doc1.updates.reduce((a, b) => a + b.byteLength, 0)
+      const updateSize = doc1.updates.reduce((a, b) => a + b.length, 0)
       setBenchmarkResult(crdtFactory.getName(), `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()
       })
       // @ts-ignore
-      const documentSize = encodedState.byteLength
+      const documentSize = encodedState.length
       setBenchmarkResult(crdtFactory.getName(), `${id} (docSize)`, `${documentSize} bytes`)
     }
     benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {

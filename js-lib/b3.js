@@ -45,12 +45,12 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
         })
       })
       check(docs.slice(0, 2))
-      setBenchmarkResult(crdtFactory.getName(), `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.byteLength, 0)} bytes`)
+      setBenchmarkResult(crdtFactory.getName(), `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.length, 0)} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = docs[0].getEncodedState()
       })
       // @ts-ignore
-      const documentSize = encodedState.byteLength
+      const documentSize = encodedState.length
       setBenchmarkResult(crdtFactory.getName(), `${id} (docSize)`, `${documentSize} bytes`)
     }
     benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {

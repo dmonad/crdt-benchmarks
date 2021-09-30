@@ -1,5 +1,5 @@
 
-import { AbstractCrdt, CrdtFactory } from '../../js-lib/index.js'
+import { AbstractCrdt, CrdtFactory } from '../../js-lib/index.js' // eslint-disable-line
 import * as Y from 'yjs'
 
 export const name = 'yjs'
@@ -75,7 +75,6 @@ export class YjsCRDT {
   getArray () {
     return this.yarray.toArray()
   }
-
 
   /**
    * Insert text into the internal shared text implementation.

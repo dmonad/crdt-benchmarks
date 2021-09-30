@@ -18,9 +18,6 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
    * @param {function(AbstractCrdt):void} check
    */
   const benchmarkTemplate = (id, inputData, changeFunction, check) => {
-    if (filter(id)) {
-      return
-    }
     let encodedState = /** @type {any} */ (null)
     ;(() => {
       // We scope the creation of doc1 so we can gc it before we parse it again.
@@ -31,18 +28,14 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
         }
       })
       check(doc1)
-      const updateSize = doc1.updates.reduce((a, b) => a + b.byteLength, 0)
+      const updateSize = doc1.updates.reduce((a, b) => a + b.length, 0)
       setBenchmarkResult(crdtFactory.getName(), `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
-      /**
-       * @type {any}
-       */
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()
       })
     })()
     const documentSize = encodedState.byteLength
     setBenchmarkResult(crdtFactory.getName(), `${id} (docSize)`, `${documentSize} bytes`)
-    tryGc()
     ;(() => {
       const startHeapUsed = getMemUsed()
       // @ts-ignore we only store doc so it is not garbage collected
@@ -50,13 +43,13 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
         doc = crdtFactory.create()
         doc.applyUpdate(encodedState)
-        logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
       })
+      logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })()
   }
 
-  await runBenchmark('[B4] Apply real-world editing dataset', filter, benchmarkName => {
-    benchmarkTemplate(
+  await runBenchmark('[B4] Apply real-world editing dataset', filter, async benchmarkName => {
+    await benchmarkTemplate(
       benchmarkName,
       edits,
       (doc, edit) => {

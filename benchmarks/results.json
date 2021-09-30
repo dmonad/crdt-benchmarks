@@ -4,19 +4,19 @@
       "yjs": "13.5.12"
     },
     "Bundle size": {
-      "yjs": "89353 bytes"
+      "yjs": "80447 bytes"
     },
     "Bundle size (gzipped)": {
-      "yjs": "26375 bytes"
+      "yjs": "23582 bytes"
     },
     "[B1.1] Append N characters (time)": {
-      "yjs": "308 ms"
+      "yjs": "243 ms"
     },
     "[B1.1] Append N characters (avgUpdateSize)": {
       "yjs": "27 bytes"
     },
     "[B1.1] Append N characters (encodeTime)": {
-      "yjs": "2 ms"
+      "yjs": "1 ms"
     },
     "[B1.1] Append N characters (docSize)": {
       "yjs": "6031 bytes"
@@ -25,16 +25,16 @@
       "yjs": "0 B"
     },
     "[B1.1] Append N characters (parseTime)": {
-      "yjs": "104 ms"
+      "yjs": "2 ms"
     },
     "[B1.2] Insert string of length N (time)": {
-      "yjs": "2 ms"
+      "yjs": "1 ms"
     },
     "[B1.2] Insert string of length N (avgUpdateSize)": {
       "yjs": "6031 bytes"
     },
     "[B1.2] Insert string of length N (encodeTime)": {
-      "yjs": "1 ms"
+      "yjs": "0 ms"
     },
     "[B1.2] Insert string of length N (docSize)": {
       "yjs": "6031 bytes"
@@ -43,52 +43,52 @@
       "yjs": "0 B"
     },
     "[B1.2] Insert string of length N (parseTime)": {
-      "yjs": "93 ms"
+      "yjs": "1 ms"
     },
     "[B1.3] Prepend N characters (time)": {
-      "yjs": "254 ms"
+      "yjs": "184 ms"
     },
     "[B1.3] Prepend N characters (avgUpdateSize)": {
       "yjs": "27 bytes"
     },
     "[B1.3] Prepend N characters (encodeTime)": {
-      "yjs": "11 ms"
+      "yjs": "4 ms"
     },
     "[B1.3] Prepend N characters (docSize)": {
       "yjs": "6041 bytes"
     },
     "[B1.3] Prepend N characters (memUsed)": {
-      "yjs": "1 MB"
+      "yjs": "898.8 kB"
     },
     "[B1.3] Prepend N characters (parseTime)": {
-      "yjs": "141 ms"
+      "yjs": "14 ms"
     },
     "[B1.4] Insert N characters at random positions (time)": {
-      "yjs": "303 ms"
+      "yjs": "159 ms"
     },
     "[B1.4] Insert N characters at random positions (avgUpdateSize)": {
       "yjs": "29 bytes"
     },
     "[B1.4] Insert N characters at random positions (encodeTime)": {
-      "yjs": "8 ms"
+      "yjs": "5 ms"
     },
     "[B1.4] Insert N characters at random positions (docSize)": {
       "yjs": "29554 bytes"
     },
     "[B1.4] Insert N characters at random positions (memUsed)": {
-      "yjs": "460.3 kB"
+      "yjs": "648.7 kB"
     },
     "[B1.4] Insert N characters at random positions (parseTime)": {
-      "yjs": "154 ms"
+      "yjs": "4 ms"
     },
     "[B1.5] Insert N words at random positions (time)": {
-      "yjs": "291 ms"
+      "yjs": "157 ms"
     },
     "[B1.5] Insert N words at random positions (avgUpdateSize)": {
       "yjs": "36 bytes"
     },
     "[B1.5] Insert N words at random positions (encodeTime)": {
-      "yjs": "13 ms"
+      "yjs": "3 ms"
     },
     "[B1.5] Insert N words at random positions (docSize)": {
       "yjs": "87924 bytes"
@@ -97,52 +97,52 @@
       "yjs": "1.9 MB"
     },
     "[B1.5] Insert N words at random positions (parseTime)": {
-      "yjs": "196 ms"
-    },
-    "[B1.6] Insert string, then delete it (time)": {
       "yjs": "9 ms"
     },
+    "[B1.6] Insert string, then delete it (time)": {
+      "yjs": "1 ms"
+    },
     "[B1.6] Insert string, then delete it (avgUpdateSize)": {
-      "yjs": "6053 bytes"
+      "yjs": "6051 bytes"
     },
     "[B1.6] Insert string, then delete it (encodeTime)": {
       "yjs": "0 ms"
     },
     "[B1.6] Insert string, then delete it (docSize)": {
-      "yjs": "38 bytes"
+      "yjs": "36 bytes"
     },
     "[B1.6] Insert string, then delete it (memUsed)": {
       "yjs": "0 B"
     },
     "[B1.6] Insert string, then delete it (parseTime)": {
-      "yjs": "96 ms"
+      "yjs": "1 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (time)": {
-      "yjs": "346 ms"
+      "yjs": "268 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (avgUpdateSize)": {
       "yjs": "31 bytes"
     },
     "[B1.7] Insert/Delete strings at random positions (encodeTime)": {
-      "yjs": "27 ms"
+      "yjs": "10 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (docSize)": {
       "yjs": "28377 bytes"
     },
     "[B1.7] Insert/Delete strings at random positions (memUsed)": {
-      "yjs": "634.9 kB"
+      "yjs": "871.8 kB"
     },
     "[B1.7] Insert/Delete strings at random positions (parseTime)": {
-      "yjs": "168 ms"
+      "yjs": "19 ms"
     },
     "[B1.8] Append N numbers (time)": {
-      "yjs": "311 ms"
+      "yjs": "217 ms"
     },
     "[B1.8] Append N numbers (avgUpdateSize)": {
       "yjs": "32 bytes"
     },
     "[B1.8] Append N numbers (encodeTime)": {
-      "yjs": "1 ms"
+      "yjs": "0 ms"
     },
     "[B1.8] Append N numbers (docSize)": {
       "yjs": "35634 bytes"
@@ -151,70 +151,70 @@
       "yjs": "0 B"
     },
     "[B1.8] Append N numbers (parseTime)": {
-      "yjs": "113 ms"
+      "yjs": "1 ms"
     },
     "[B1.9] Insert Array of N numbers (time)": {
-      "yjs": "8 ms"
+      "yjs": "2 ms"
     },
     "[B1.9] Insert Array of N numbers (avgUpdateSize)": {
       "yjs": "35657 bytes"
     },
     "[B1.9] Insert Array of N numbers (encodeTime)": {
-      "yjs": "2 ms"
+      "yjs": "0 ms"
     },
     "[B1.9] Insert Array of N numbers (docSize)": {
       "yjs": "35657 bytes"
     },
     "[B1.9] Insert Array of N numbers (memUsed)": {
-      "yjs": "0 B"
+      "yjs": "50.7 kB"
     },
     "[B1.9] Insert Array of N numbers (parseTime)": {
-      "yjs": "102 ms"
+      "yjs": "1 ms"
     },
     "[B1.10] Prepend N numbers (time)": {
-      "yjs": "248 ms"
+      "yjs": "128 ms"
     },
     "[B1.10] Prepend N numbers (avgUpdateSize)": {
       "yjs": "32 bytes"
     },
     "[B1.10] Prepend N numbers (encodeTime)": {
-      "yjs": "6 ms"
+      "yjs": "1 ms"
     },
     "[B1.10] Prepend N numbers (docSize)": {
       "yjs": "35665 bytes"
     },
     "[B1.10] Prepend N numbers (memUsed)": {
-      "yjs": "1.6 MB"
+      "yjs": "1.7 MB"
     },
     "[B1.10] Prepend N numbers (parseTime)": {
-      "yjs": "124 ms"
+      "yjs": "3 ms"
     },
     "[B1.11] Insert N numbers at random positions (time)": {
-      "yjs": "259 ms"
+      "yjs": "137 ms"
     },
     "[B1.11] Insert N numbers at random positions (avgUpdateSize)": {
       "yjs": "34 bytes"
     },
     "[B1.11] Insert N numbers at random positions (encodeTime)": {
-      "yjs": "6 ms"
+      "yjs": "2 ms"
     },
     "[B1.11] Insert N numbers at random positions (docSize)": {
       "yjs": "59137 bytes"
     },
     "[B1.11] Insert N numbers at random positions (memUsed)": {
-      "yjs": "2 MB"
+      "yjs": "1.9 MB"
     },
     "[B1.11] Insert N numbers at random positions (parseTime)": {
-      "yjs": "174 ms"
+      "yjs": "5 ms"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (time)": {
-      "yjs": "10 ms"
+      "yjs": "1 ms"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (updateSize)": {
       "yjs": "6094 bytes"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (encodeTime)": {
-      "yjs": "1 ms"
+      "yjs": "0 ms"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (docSize)": {
       "yjs": "12149 bytes"
@@ -223,151 +223,151 @@
       "yjs": "0 B"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (parseTime)": {
-      "yjs": "94 ms"
+      "yjs": "1 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (time)": {
-      "yjs": "245 ms"
+      "yjs": "80 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (updateSize)": {
       "yjs": "33190 bytes"
     },
     "[B2.2] Concurrently insert N characters at random positions (encodeTime)": {
-      "yjs": "3 ms"
+      "yjs": "2 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (docSize)": {
       "yjs": "66351 bytes"
     },
     "[B2.2] Concurrently insert N characters at random positions (memUsed)": {
-      "yjs": "2.3 MB"
+      "yjs": "2.4 MB"
     },
     "[B2.2] Concurrently insert N characters at random positions (parseTime)": {
-      "yjs": "240 ms"
+      "yjs": "27 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (time)": {
-      "yjs": "261 ms"
+      "yjs": "97 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (updateSize)": {
-      "yjs": "88878 bytes"
+      "yjs": "88759 bytes"
     },
     "[B2.3] Concurrently insert N words at random positions (encodeTime)": {
-      "yjs": "10 ms"
+      "yjs": "8 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (docSize)": {
-      "yjs": "177775 bytes"
+      "yjs": "177530 bytes"
     },
     "[B2.3] Concurrently insert N words at random positions (memUsed)": {
-      "yjs": "5.2 MB"
+      "yjs": "5.3 MB"
     },
     "[B2.3] Concurrently insert N words at random positions (parseTime)": {
-      "yjs": "282 ms"
+      "yjs": "27 ms"
     },
     "[B2.4] Concurrently insert & delete (time)": {
-      "yjs": "708 ms"
+      "yjs": "186 ms"
     },
     "[B2.4] Concurrently insert & delete (updateSize)": {
       "yjs": "139355 bytes"
     },
     "[B2.4] Concurrently insert & delete (encodeTime)": {
-      "yjs": "55 ms"
+      "yjs": "12 ms"
     },
     "[B2.4] Concurrently insert & delete (docSize)": {
-      "yjs": "278720 bytes"
+      "yjs": "278719 bytes"
     },
     "[B2.4] Concurrently insert & delete (memUsed)": {
-      "yjs": "9.5 MB"
+      "yjs": "8.9 MB"
     },
     "[B2.4] Concurrently insert & delete (parseTime)": {
-      "yjs": "500 ms"
+      "yjs": "74 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (time)": {
-      "yjs": "132 ms"
+      "yjs": "102 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (updateSize)": {
-      "yjs": "49183 bytes"
+      "yjs": "49176 bytes"
     },
     "[B3.1] 20√N clients concurrently set number in Map (encodeTime)": {
-      "yjs": "18 ms"
+      "yjs": "3 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (docSize)": {
-      "yjs": "32235 bytes"
+      "yjs": "32232 bytes"
     },
     "[B3.1] 20√N clients concurrently set number in Map (memUsed)": {
-      "yjs": "392 kB"
+      "yjs": "495.8 kB"
     },
     "[B3.1] 20√N clients concurrently set number in Map (parseTime)": {
-      "yjs": "166 ms"
+      "yjs": "21 ms"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (time)": {
-      "yjs": "120 ms"
+      "yjs": "94 ms"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (updateSize)": {
-      "yjs": "85076 bytes"
+      "yjs": "85081 bytes"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (encodeTime)": {
-      "yjs": "4 ms"
+      "yjs": "3 ms"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (docSize)": {
-      "yjs": "32226 bytes"
+      "yjs": "32238 bytes"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (memUsed)": {
       "yjs": "0 B"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (parseTime)": {
-      "yjs": "165 ms"
+      "yjs": "17 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (time)": {
-      "yjs": "258 ms"
+      "yjs": "206 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (updateSize)": {
-      "yjs": "7826241 bytes"
+      "yjs": "7826229 bytes"
     },
     "[B3.3] 20√N clients concurrently set String in Map (encodeTime)": {
-      "yjs": "4 ms"
+      "yjs": "2 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (docSize)": {
-      "yjs": "38388 bytes"
+      "yjs": "36821 bytes"
     },
     "[B3.3] 20√N clients concurrently set String in Map (memUsed)": {
-      "yjs": "451.8 kB"
+      "yjs": "279.9 kB"
     },
     "[B3.3] 20√N clients concurrently set String in Map (parseTime)": {
-      "yjs": "158 ms"
+      "yjs": "16 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (time)": {
-      "yjs": "103 ms"
+      "yjs": "80 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (updateSize)": {
-      "yjs": "52738 bytes"
+      "yjs": "52746 bytes"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (encodeTime)": {
-      "yjs": "4 ms"
+      "yjs": "2 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (docSize)": {
-      "yjs": "26583 bytes"
+      "yjs": "26591 bytes"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (memUsed)": {
-      "yjs": "860.3 kB"
+      "yjs": "623.4 kB"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (parseTime)": {
-      "yjs": "145 ms"
+      "yjs": "3 ms"
     },
     "[B4] Apply real-world editing dataset (time)": {
-      "yjs": "8676 ms"
+      "yjs": "5806 ms"
     },
     "[B4] Apply real-world editing dataset (avgUpdateSize)": {
       "yjs": "29 bytes"
     },
     "[B4] Apply real-world editing dataset (encodeTime)": {
-      "yjs": "53 ms"
+      "yjs": "9 ms"
     },
     "[B4] Apply real-world editing dataset (docSize)": {
       "yjs": "159929 bytes"
     },
     "[B4] Apply real-world editing dataset (memUsed)": {
-      "yjs": "2.6 MB"
+      "yjs": "2.8 MB"
     },
     "[B4] Apply real-world editing dataset (parseTime)": {
-      "yjs": "177 ms"
+      "yjs": "20 ms"
     }
   }
 }

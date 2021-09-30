@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js && node --expose-gc run.js && npm run table",
+    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js && node run.js && node --expose-gc run.js mem-only && npm run table",
     "table": "echo 'Yjs results: \n\n' && node ../../bin/render-table.js ../results.json 6000 yjs",
     "dist": "npm run clean && rollup -c && gzip --keep dist/*"
   },

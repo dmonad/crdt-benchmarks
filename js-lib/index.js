@@ -13,12 +13,11 @@ export * from './utils.js'
 
 /**
  * @param {CrdtFactory} crdtFactory
- * @param {function(string):boolean} filter
+ * @param {function(string):boolean} testFilter
  */
-export const runBenchmarks = async (crdtFactory, filter) => {
-  await runBenchmarksB1(crdtFactory, filter)
-  await runBenchmarkB2(crdtFactory, filter)
-  await runBenchmarkB3(crdtFactory, filter)
-  await runBenchmarkB4(crdtFactory, filter)
-  writeBenchmarkResultsToFile('../results.json')
+export const runBenchmarks = async (crdtFactory, testFilter) => {
+  await runBenchmarksB1(crdtFactory, testFilter)
+  await runBenchmarkB2(crdtFactory, testFilter)
+  await runBenchmarkB3(crdtFactory, testFilter)
+  await runBenchmarkB4(crdtFactory, testFilter)
 }

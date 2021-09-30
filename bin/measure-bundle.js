@@ -15,4 +15,4 @@ const version = pkgLock.dependencies[name].version
 setBenchmarkResult(name, 'Version', version)
 setBenchmarkResult(name, 'Bundle size', `${bundleSize} bytes`)
 setBenchmarkResult(name, 'Bundle size (gzipped)', `${gzBundleSize} bytes`)
-writeBenchmarkResultsToFile('../results.json')
+writeBenchmarkResultsToFile('../results.json', () => false)

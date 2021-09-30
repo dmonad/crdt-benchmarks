@@ -1,6 +1,9 @@
 import { YjsFactory } from './factory.js'
 import { runBenchmarks, writeBenchmarkResultsToFile } from '../../js-lib/index.js'
 
-runBenchmarks(new YjsFactory(), testName => testName.startsWith('[B4x100'))
+const logMemOnly = process.argv[2] === 'mem-only'
 
-writeBenchmarkResultsToFile('../results.json')
+;(async () => {
+  await runBenchmarks(new YjsFactory(), testName => !testName.startsWith('[B4x100'))
+  writeBenchmarkResultsToFile('../results.json', testId => logMemOnly && testId.search('(memUsed)') < 0)
+})()
