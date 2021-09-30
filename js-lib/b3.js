@@ -1,6 +1,6 @@
 import { setBenchmarkResult, benchmarkTime, N, logMemoryUsed, getMemUsed, runBenchmark } from './utils.js'
-import * as t from 'lib0/testing.js'
-import * as math from 'lib0/math.js'
+import * as t from 'lib0/testing'
+import * as math from 'lib0/math'
 import { CrdtFactory, AbstractCrdt } from './index.js' // eslint-disable-line
 
 const sqrtN = math.floor(math.sqrt(N)) * 20

@@ -1,7 +1,7 @@
 import { setBenchmarkResult, gen, N, benchmarkTime, runBenchmark, logMemoryUsed, getMemUsed } from './utils.js'
-import * as prng from 'lib0/prng.js'
-import * as math from 'lib0/math.js'
-import * as t from 'lib0/testing.js'
+import * as prng from 'lib0/prng'
+import * as math from 'lib0/math'
+import * as t from 'lib0/testing'
 import { CrdtFactory, AbstractCrdt } from './index.js' // eslint-disable-line
 
 const initText = prng.word(gen, 100, 100)
