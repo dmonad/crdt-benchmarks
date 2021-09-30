@@ -2,7 +2,7 @@ import { runBenchmarksB1 } from '../js-lib/b1.js'
 import { runBenchmarkB2 } from '../js-lib/b2.js'
 import { runBenchmarkB3 } from '../js-lib/b3.js'
 import { runBenchmarkB4 } from '../js-lib/b4.js'
-import { CrdtFactory, writeBenchmarkResultsToFile } from './utils.js' // eslint-disable-line
+import { CrdtFactory } from './utils.js' // eslint-disable-line
 
 export * from './b1.js'
 export * from './b2.js'

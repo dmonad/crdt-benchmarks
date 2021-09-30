@@ -8,8 +8,11 @@ export const name = 'yjs'
  * @implements {CrdtFactory}
  */
 export class YjsFactory {
-  create () {
-    return new YjsCRDT()
+  /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   */
+  create (updateHandler) {
+    return new YjsCRDT(updateHandler)
   }
 
   getName () {
@@ -21,15 +24,16 @@ export class YjsFactory {
  * @implements {AbstractCrdt}
  */
 export class YjsCRDT {
-  constructor () {
-    /**
-     * @type {Array<Uint8Array | string>}
-     */
-    this.updates = []
+  /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   */
+  constructor (updateHandler) {
     this.ydoc = new Y.Doc()
-    this.ydoc.on('updateV2', update => {
-      this.updates.push(update)
-    })
+    if (updateHandler) {
+      this.ydoc.on('updateV2', update => {
+        updateHandler(update)
+      })
+    }
     this.yarray = this.ydoc.getArray('array')
     this.ymap = this.ydoc.getMap('map')
     this.ytext = this.ydoc.getText('text')

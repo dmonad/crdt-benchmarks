@@ -25,11 +25,10 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         for (let i = 0; i < inputData.length; i++) {
           changeFunction(doc1, inputData[i], i)
+          // we forcefully overwrite updates because we want to reduce potentially significant memory overhead
         }
       })
       check(doc1)
-      const updateSize = doc1.updates.reduce((a, b) => a + b.length, 0)
-      setBenchmarkResult(crdtFactory.getName(), `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()
       })
@@ -70,6 +69,7 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
 
     ;(() => {
       const doc = crdtFactory.create()
+
       benchmarkTime(crdtFactory.getName(), `${benchmarkName} (time)`, () => {
         for (let iterations = 0; iterations < multiplicator; iterations++) {
           if (iterations > 0 && iterations % 5 === 0) {

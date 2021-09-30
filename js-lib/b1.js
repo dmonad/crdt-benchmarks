@@ -21,18 +21,19 @@ export const runBenchmarksB1 = async (crdtFactory, filter) => {
   const benchmarkTemplate = (id, inputData, changeFunction, check) => {
     let encodedState = null
     {
-      const doc1 = crdtFactory.create()
+      const doc1Updates = []
+      const doc1 = crdtFactory.create(update => { doc1Updates.push(update) })
       const doc2 = crdtFactory.create()
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         for (let i = 0; i < inputData.length; i++) {
           changeFunction(doc1, inputData[i], i)
         }
       })
-      doc1.updates.forEach(update => {
+      doc1Updates.forEach(update => {
         doc2.applyUpdate(update)
       })
       check(doc1, doc2)
-      const updateSize = doc1.updates.reduce((a, b) => a + b.length, 0)
+      const updateSize = doc1Updates.reduce((a, b) => a + b.length, 0)
       setBenchmarkResult(crdtFactory.getName(), `${id} (avgUpdateSize)`, `${math.round(updateSize / inputData.length)} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()

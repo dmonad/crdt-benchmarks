@@ -1,6 +1,7 @@
 import { setBenchmarkResult, gen, N, benchmarkTime, runBenchmark, logMemoryUsed, getMemUsed } from './utils.js'
 import * as prng from 'lib0/prng'
 import * as math from 'lib0/math'
+import { createMutex } from 'lib0/mutex'
 import * as t from 'lib0/testing'
 import { CrdtFactory, AbstractCrdt } from './index.js' // eslint-disable-line
 
@@ -20,10 +21,11 @@ export const runBenchmarkB2 = async (crdtFactory, filter) => {
   const benchmarkTemplate = (id, changeDoc1, changeDoc2, check) => {
     let encodedState = null
     {
-      const doc1 = crdtFactory.create()
-      const doc2 = crdtFactory.create()
+      let updatesSize = 0
+      const mux = createMutex()
+      const doc1 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc2.applyUpdate(update) }))
+      const doc2 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc1.applyUpdate(update) }))
       doc1.insertText(0, initText)
-      doc2.applyUpdate(doc1.updates[0]) // apply the initial text to the second doc
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         doc1.transact(() => {
           changeDoc1(doc1)
@@ -31,16 +33,9 @@ export const runBenchmarkB2 = async (crdtFactory, filter) => {
         doc2.transact(() => {
           changeDoc2(doc2)
         })
-        // apply all changes, but the first, to the other document.
-        doc1.updates.slice(1).forEach(update => {
-          doc2.applyUpdate(update)
-        })
-        doc2.updates.slice(1).forEach(update => {
-          doc1.applyUpdate(update)
-        })
       })
       check(doc1, doc2)
-      const avgUpdateSize = math.round(doc1.updates.reduce((a, b) => a + b.length, 0) / 2)
+      const avgUpdateSize = math.round(updatesSize / 2)
       setBenchmarkResult(crdtFactory.getName(), `${id} (updateSize)`, `${avgUpdateSize} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()

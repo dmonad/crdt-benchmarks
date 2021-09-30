@@ -1,6 +1,7 @@
 import { setBenchmarkResult, benchmarkTime, N, logMemoryUsed, getMemUsed, runBenchmark } from './utils.js'
 import * as t from 'lib0/testing'
 import * as math from 'lib0/math'
+import { createMutex } from 'lib0/mutex'
 import { CrdtFactory, AbstractCrdt } from './index.js' // eslint-disable-line
 
 const sqrtN = math.floor(math.sqrt(N)) * 20
@@ -21,27 +22,30 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
     {
       const docs = []
       const updates = []
+      const mux = createMutex()
       for (let i = 0; i < sqrtN; i++) {
-        docs.push(crdtFactory.create())
+        // push all created updates to the updates array
+        docs.push(crdtFactory.create(update => mux(() => updates.push(update))))
       }
       for (let i = 0; i < docs.length; i++) {
-        const prevUpdatesLen = docs[i].updates.length
         changeDoc(docs[i], i)
-        // push all created updates to the updates array
-        updates.push(...docs[i].updates.slice(prevUpdatesLen))
       }
       t.assert(updates.length >= sqrtN)
       // sync client 0 for reference
-      docs[0].transact(() => {
-        for (let i = 0; i < updates.length; i++) {
-          docs[0].applyUpdate(updates[i])
-        }
+      mux(() => {
+        docs[0].transact(() => {
+          for (let i = 0; i < updates.length; i++) {
+            docs[0].applyUpdate(updates[i])
+          }
+        })
       })
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
-        docs[1].transact(() => {
-          for (let i = 0; i < updates.length; i++) {
-            docs[1].applyUpdate(updates[i])
-          }
+        mux(() => {
+          docs[1].transact(() => {
+            for (let i = 0; i < updates.length; i++) {
+              docs[1].applyUpdate(updates[i])
+            }
+          })
         })
       })
       check(docs.slice(0, 2))

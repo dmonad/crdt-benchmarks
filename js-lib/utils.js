@@ -52,7 +52,7 @@ export const benchmarkTime = (libname, id, f) => {
  * @param {function(string):(void|Promise<void>)} f
  */
 export const runBenchmark = async (name, filter, f) => {
-  if (!filter(name)) {
+  if (filter(name)) {
     return
   }
   await f(name)
@@ -126,9 +126,10 @@ export const deltaDeleteHelper = (doc, index, length) => {
 
 export class CrdtFactory {
   /**
+   * @param {function(Uint8Array|string):void} [updateHandler]
    * @return {AbstractCrdt}
    */
-  create () {
+  create (updateHandler) {
     error.methodUnimplemented()
   }
 
@@ -152,11 +153,10 @@ export class CrdtFactory {
  * add an update message immediately to the updates array
  */
 export class AbstractCrdt {
-  constructor () {
-    /**
-     * @type {Array<Uint8Array | string>}
-     */
-    this.updates = []
+  /**
+   * @param {function(Uint8Array|string):void} [updateHandler]
+   */
+  constructor (updateHandler) {
   }
 
   /**

@@ -7,7 +7,7 @@
       "yjs": "80447 bytes"
     },
     "Bundle size (gzipped)": {
-      "yjs": "23582 bytes"
+      "yjs": "23581 bytes"
     },
     "[B1.1] Append N characters (time)": {
       "yjs": "243 ms"
@@ -352,22 +352,37 @@
       "yjs": "3 ms"
     },
     "[B4] Apply real-world editing dataset (time)": {
-      "yjs": "5806 ms"
+      "yjs": "1595 ms"
     },
     "[B4] Apply real-world editing dataset (avgUpdateSize)": {
       "yjs": "29 bytes"
     },
     "[B4] Apply real-world editing dataset (encodeTime)": {
-      "yjs": "9 ms"
+      "yjs": "28 ms"
     },
     "[B4] Apply real-world editing dataset (docSize)": {
       "yjs": "159929 bytes"
     },
     "[B4] Apply real-world editing dataset (memUsed)": {
-      "yjs": "2.8 MB"
+      "yjs": "4.4 MB"
     },
     "[B4] Apply real-world editing dataset (parseTime)": {
-      "yjs": "20 ms"
+      "yjs": "81 ms"
+    },
+    "[B4x100] Apply real-world editing dataset 100 times (time)": {
+      "yjs": "175898 ms"
+    },
+    "[B4x100] Apply real-world editing dataset 100 times (encodeTime)": {
+      "yjs": "1373 ms"
+    },
+    "[B4x100] Apply real-world editing dataset 100 times (docSize)": {
+      "yjs": "15989245 bytes"
+    },
+    "[B4x100] Apply real-world editing dataset 100 times (parseTime)": {
+      "yjs": "2911 ms"
+    },
+    "[B4x100] Apply real-world editing dataset 100 times (memUsed)": {
+      "yjs": "655.2 MB"
     }
   }
 }
