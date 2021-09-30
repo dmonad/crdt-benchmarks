@@ -13,7 +13,8 @@
     "start:yjs": "cd benchmarks/yjs && npm start",
     "start": "npm run start:yjs",
     "table": "node bin/render-table.js benchmarks/results.json 6000 yjs automerge delta-crdt",
-    "lint": "standard && tsc"
+    "lint": "standard && tsc",
+    "install": "cd benchmarks/yjs && npm i"
   },
   "standard": {
     "ignore": [
@@ -35,16 +36,16 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "dependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
     "automerge": "^0.14.1",
     "delta-crdts": "^0.10.3",
     "delta-crdts-msgpack-codec": "^0.2.0",
     "jumprope": "^1.2.1",
     "lib0": "^0.2.42",
     "ot-text-unicode": "^4.0.0",
-    "rollup": "^1.32.1",
-    "rollup-plugin-commonjs": "^8.3.4",
-    "rollup-plugin-node-resolve": "^4.2.4",
-    "rollup-plugin-terser": "^5.3.0",
+    "rollup": "^2.57.0",
+    "rollup-plugin-terser": "^7.0.2",
     "standard": "^16.0.3"
   },
   "devDependencies": {

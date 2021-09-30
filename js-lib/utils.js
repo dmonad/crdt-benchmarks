@@ -3,6 +3,7 @@ import * as metric from 'lib0/metric.js'
 import * as math from 'lib0/math.js'
 import * as error from 'lib0/error.js'
 import * as promise from 'lib0/promise'
+// @ts-ignore
 import { performance as perf } from 'isomorphic.js'
 
 export const N = 6000

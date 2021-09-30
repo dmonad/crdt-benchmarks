@@ -1,5 +1,5 @@
-import nodeResolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import { terser } from 'rollup-plugin-terser'
@@ -32,6 +32,20 @@ export default [{
     }),
     commonjs()
   ]
+}, {
+  input: './run.js',
+  output: {
+    file: './dist/benchmark-node.js',
+    format: 'es',
+    sourcemap: true
+  },
+  plugins: [
+    nodeResolve({
+      mainFields: ['module', 'main']
+    }),
+    commonjs()
+  ],
+  external: ['isomorphic.js']
 },
 {
   input: './bundle.js',
