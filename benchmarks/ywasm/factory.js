@@ -30,7 +30,7 @@ export class YwasmCRDT {
   constructor (updateHandler) {
     this.ydoc = new Y.YDoc()
     if (updateHandler) {
-      this.ydoc.onUpdate(update => {
+      this.ydoc.onUpdateV2(update => {
         updateHandler(update)
       })
     }
