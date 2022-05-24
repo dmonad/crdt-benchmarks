@@ -61,7 +61,7 @@ export class YwasmCRDT {
    * @param {Array<any>} elems
    */
   insertArray (index, elems) {
-    this.yarray.insert(this.txn, index, elems)
+    this.transact(() => this.yarray.insert(this.txn, index, elems))
   }
 
   /**
@@ -71,7 +71,7 @@ export class YwasmCRDT {
    * @param {number} len
    */
   deleteArray (index, len) {
-    this.yarray.delete(this.txn, index, len)
+    this.transact(() => this.yarray.delete(this.txn, index, len))
   }
 
   /**
@@ -88,7 +88,7 @@ export class YwasmCRDT {
    * @param {string} text
    */
   insertText (index, text) {
-    this.ytext.insert(this.txn, index, text, null)
+    this.transact(() => this.ytext.insert(this.txn, index, text, null))
   }
 
   /**
@@ -98,7 +98,7 @@ export class YwasmCRDT {
    * @param {number} len
    */
   deleteText (index, len) {
-    this.ytext.delete(this.txn, index, len)
+    this.transact(() => this.ytext.delete(this.txn, index, len))
   }
 
   /**
@@ -126,7 +126,7 @@ export class YwasmCRDT {
    * @param {any} val
    */
   setMap (key, val) {
-    this.ymap.set(this.txn, key, val)
+    this.transact(() => this.ymap.set(this.txn, key, val))
   }
 
   /**
