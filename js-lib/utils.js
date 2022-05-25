@@ -1,7 +1,7 @@
-import * as prng from 'lib0/prng.js'
-import * as metric from 'lib0/metric.js'
-import * as math from 'lib0/math.js'
-import * as error from 'lib0/error.js'
+import * as prng from 'lib0/prng'
+import * as metric from 'lib0/metric'
+import * as math from 'lib0/math'
+import * as error from 'lib0/error'
 // @ts-ignore
 import { performance as perf } from 'isomorphic.js'
 

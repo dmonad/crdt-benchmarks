@@ -2,7 +2,7 @@
   "name": "benchmark-automerge-wasm",
   "type": "module",
   "scripts": {
-    "start": "node run.js && node --expose-gc run.js mem-only && npm run table",
+    "start": "node --experimental-specifier-resolution=node run.js && node --expose-gc --experimental-specifier-resolution=node run.js mem-only && npm run table",
     "table": "echo 'Automerge results: \n\n' && node ../../bin/render-table.js ../results.json 6000 automerge-wasm"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import { setBenchmarkResult, benchmarkTime, logMemoryUsed, getMemUsed, tryGc, runBenchmark } from './utils.js'
-import * as math from 'lib0/math.js'
-import * as t from 'lib0/testing.js'
+import * as math from 'lib0/math'
+import * as t from 'lib0/testing'
 import { CrdtFactory, AbstractCrdt } from './index.js' // eslint-disable-line
 // @ts-ignore
 import { edits, finalText } from './b4-editing-trace.js'
