@@ -1,13 +1,13 @@
 {
   "6000": {
     "Version": {
-      "yjs": "13.5.12"
+      "ywasm": "0.9.1"
     },
     "Bundle size": {
-      "yjs": "80447 bytes"
+      "ywasm": "35406 bytes"
     },
     "Bundle size (gzipped)": {
-      "yjs": "23581 bytes"
+      "ywasm": "8748 bytes"
     },
     "[B1.1] Append N characters (time)": {
       "yjs": "243 ms"
