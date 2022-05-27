@@ -116,8 +116,10 @@ export class YwasmCRDT {
     try {
       f(this)
     } finally {
-      this.txn.free()
-      this.txn = null
+      if (this.txn) {
+        this.txn.free()
+        this.txn = null
+      }
     }
   }
 
