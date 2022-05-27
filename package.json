@@ -11,6 +11,7 @@
   "scripts": {
     "clean": "rm -rf benchmarks/yjs/dist",
     "start:yjs": "cd benchmarks/yjs && npm start",
+    "start:automerge": "cd benchmarks/automerge-wasm && npm start",
     "start": "npm run start:yjs",
     "table": "node bin/render-table.js benchmarks/results.json 6000 yjs automerge delta-crdt",
     "lint": "standard && tsc",
