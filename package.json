@@ -40,19 +40,14 @@
     "node": "^18.0.0"
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^20.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.5",
-    "automerge": "^0.14.1",
-    "delta-crdts": "^0.10.3",
-    "delta-crdts-msgpack-codec": "^0.2.0",
-    "jumprope": "^1.2.1",
-    "lib0": "^0.2.42",
-    "ot-text-unicode": "^4.0.0",
-    "rollup": "^2.77.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "standard": "^16.0.3"
+    "lib0": "^0.2.42"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "rollup": "^2.77.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "standard": "^16.0.3",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "typescript": "^3.9.6"
