@@ -9,11 +9,11 @@
     "url": "https://github.com/sponsors/dmonad"
   },
   "scripts": {
-    "clean": "rm -rf benchmarks/yjs/dist",
     "start:yjs": "cd benchmarks/yjs && npm start",
+    "start:ywasm": "cd benchmarks/ywasm && npm start",
     "start:automerge": "cd benchmarks/automerge-wasm && npm start",
-    "start": "npm run start:yjs",
-    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs automerge delta-crdt",
+    "start": "rm benchmarks/results.json && npm run start:yjs && npm run start:automerge && npm run start:ywasm",
+    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge-wasm",
     "lint": "standard && tsc",
     "install": "cd benchmarks/yjs && npm i"
   },
@@ -36,6 +36,9 @@
     "url": "https://github.com/dmonad/crdt-benchmarks/issues"
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
+  "engines": {
+    "node": "^18.0.0"
+  },
   "dependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
@@ -45,7 +48,7 @@
     "jumprope": "^1.2.1",
     "lib0": "^0.2.42",
     "ot-text-unicode": "^4.0.0",
-    "rollup": "^2.57.0",
+    "rollup": "^2.77.0",
     "rollup-plugin-terser": "^7.0.2",
     "standard": "^16.0.3"
   },

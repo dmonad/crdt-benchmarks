@@ -19,34 +19,7 @@ const terserPlugin = terser({
   }
 })
 
-export default [{
-  input: './run.js',
-  output: {
-    file: './dist/benchmark-browser.js',
-    format: 'es',
-    sourcemap: true
-  },
-  plugins: [
-    nodeResolve({
-      mainFields: ['module', 'browser', 'main']
-    }),
-    commonjs()
-  ]
-}, {
-  input: './run.js',
-  output: {
-    file: './dist/benchmark-node.js',
-    format: 'es',
-    sourcemap: true
-  },
-  plugins: [
-    nodeResolve({
-      mainFields: ['module', 'main']
-    }),
-    commonjs()
-  ],
-  external: ['isomorphic.js']
-},
+export default [
 {
   input: './bundle.js',
   output: {
@@ -55,7 +28,7 @@ export default [{
   },
   plugins: [
     nodeResolve({
-      mainFields: ['main', 'module', 'main'],
+      mainFields: ['main', 'module'],
       preferBuiltins: false
     }),
     commonjs(),

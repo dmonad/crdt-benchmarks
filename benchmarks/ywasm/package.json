@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js && node run.js && node --expose-gc run.js mem-only && npm run table",
+    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js node_modules/ywasm/ywasm_bg.wasm && node --expose-gc run.js && npm run table",
     "table": "echo 'Ywasm results: \n\n' && node ../../bin/render-table.js ../results.json 6000 ywasm",
     "dist": "npm run clean && rollup -c && gzip --keep dist/*"
   },

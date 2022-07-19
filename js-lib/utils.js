@@ -30,9 +30,10 @@ export const writeBenchmarkResultsToFile = async (path, filter) => {
     if (json[N] == null) {
       json[N] = {}
     }
+    // write results
     for (const key in benchmarkResults) {
-      if (!filter(key)) {
-        json[N][key] = benchmarkResults[key]
+      if (filter(key)) {
+        json[N][key] = Object.assign(json[N][key] || {}, benchmarkResults[key])
       }
     }
     fs.writeFileSync(path, JSON.stringify(json, null, 2))
@@ -52,7 +53,7 @@ export const benchmarkTime = (libname, id, f) => {
  * @param {function(string):(void|Promise<void>)} f
  */
 export const runBenchmark = async (name, filter, f) => {
-  if (filter(name)) {
+  if (!filter(name)) {
     return
   }
   await f(name)
