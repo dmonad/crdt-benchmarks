@@ -63,6 +63,7 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 * The benchmarks were performed on a desktop computer "Intel® Core™ i5-8400 CPU @ 2.80GHz × 6" / Ubuntu 20.04 and Node 12.18.1
 * There is a more exchaustive benchmark at the bottom that only runs benchmarks on Yjs.
 * `memUsed` only approximates the amount of memory used. We run the JavaScript garbage collector and use the heap-size difference before and after the benchmark is performed. If the heap is highly fragmented, the heap size might be larger than the actual amount of data stored in the heap. In some cases this even leads to a `memUsed` of less than zero.
+* `memUsed` does not measure the memory usage of the wasm runtime.
 * Preliminary benchmark results for native implementation of the [Ron/Chronofold CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
 | N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [automerge-wasm](https://github.com/automerge/automerge-rs/tree/main/automerge-wasm) |
