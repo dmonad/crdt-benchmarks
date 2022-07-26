@@ -8,14 +8,15 @@
     "type": "GitHub Sponsors ❤",
     "url": "https://github.com/sponsors/dmonad"
   },
+  "workspaces": [
+    "benchmarks/yjs",
+    "benchmarks/ywasm",
+    "benchmarks/automerge-wasm"
+  ],
   "scripts": {
-    "start:yjs": "cd benchmarks/yjs && npm start",
-    "start:ywasm": "cd benchmarks/ywasm && npm start",
-    "start:automerge": "cd benchmarks/automerge-wasm && npm start",
-    "start": "rm benchmarks/results.json && npm run start:yjs && npm run start:automerge && npm run start:ywasm",
+    "start": "npm run start -ws",
     "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge-wasm",
-    "lint": "standard && tsc",
-    "install": "cd benchmarks/yjs && npm i"
+    "lint": "standard && tsc"
   },
   "standard": {
     "ignore": [
