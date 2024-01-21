@@ -3,5 +3,5 @@ import { runBenchmarks, writeBenchmarkResultsToFile } from '../../js-lib/index.j
 
 ;(async () => {
   await runBenchmarks(new AutomergeFactory(), testName => !testName.startsWith('[B4x100'))
-  writeBenchmarkResultsToFile('../results.json', testName => true)
+  writeBenchmarkResultsToFile('../results.json', /** @param {string} _testName */ _testName => true)
 })()

@@ -1,1 +1,1 @@
-export * from 'automerge-wasm'
+export * from '@automerge/automerge-wasm'
