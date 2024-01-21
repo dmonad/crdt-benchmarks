@@ -8,14 +8,14 @@ import * as math from 'lib0/math'
 const filesToAdd = process.argv.slice(2)
 
 const currDir = process.cwd()
-const pkgLock = JSON.parse(fs.readFileSync(currDir + '/package-lock.json', 'utf8'))
-const name = pkgLock.name
+const pkg = JSON.parse(fs.readFileSync(currDir + '/package.json', 'utf8'))
+const name = pkg.name
 
 const addedFileSizes = filesToAdd.map(file => fs.statSync(join(currDir, file)).size).reduce(math.add, 0)
 const gzAddedFileSizes = filesToAdd.map(file => {
   execSync(`gzip -c ${file} > dist/tmp.gz`)
   const gz = fs.statSync(join(currDir, '/dist/tmp.gz')).size
-  execSync(`rm dist/tmp.gz`)
+  execSync('rm dist/tmp.gz')
   return gz
 }).reduce(math.add, 0)
 
@@ -24,10 +24,11 @@ console.log({ addedFileSizes, gzAddedFileSizes })
 const bundleSize = fs.statSync(join(currDir, '/dist/bundle.js')).size + addedFileSizes
 const gzBundleSize = fs.statSync(join(currDir, '/dist/bundle.js.gz')).size + gzAddedFileSizes
 
-console.log(pkgLock.dependencies, name)
-const version = pkgLock.dependencies[name].version
+console.log(pkg.dependencies, name)
+const version = pkg.dependencies[name].version
+const mainDep = JSON.parse(fs.readFileSync(currDir + `/../../node_modules/${name}/package.json`, 'utf8'))
 
-setBenchmarkResult(name, 'Version', version)
+setBenchmarkResult(name, 'Version', mainDep.version)
 setBenchmarkResult(name, 'Bundle size', `${bundleSize} bytes`)
 setBenchmarkResult(name, 'Bundle size (gzipped)', `${gzBundleSize} bytes`)
 writeBenchmarkResultsToFile('../results.json', () => true)

@@ -11,11 +11,12 @@
   "workspaces": [
     "benchmarks/yjs",
     "benchmarks/ywasm",
+    "benchmarks/automerge",
     "benchmarks/automerge-wasm"
   ],
   "scripts": {
     "start": "npm run start -ws",
-    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge-wasm",
+    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge automerge-wasm",
     "lint": "standard && tsc"
   },
   "standard": {
@@ -38,7 +39,7 @@
   },
   "homepage": "https://github.com/dmonad/crdt-benchmarks#readme",
   "engines": {
-    "node": "^18.0.0"
+    "node": "^20.0.0"
   },
   "dependencies": {
     "lib0": "^0.2.42"
