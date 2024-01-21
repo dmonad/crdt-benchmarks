@@ -68,9 +68,9 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 
 |N = 6000 | yjs | ywasm | automerge|
 | :- |  -: | -: | -:  |
-|Version                                                                   |           1.0.0 |           1.0.0 |         skipped |
-|Bundle size                                                               |     80413 bytes |    799327 bytes |         skipped |
-|Bundle size (gzipped)                                                     |     23571 bytes |    232727 bytes |         skipped |
+|Version                                                                   |         13.6.11 |           0.9.3 |          2.1.10 |
+|Bundle size                                                               |     80413 bytes |    799327 bytes |   1737571 bytes |
+|Bundle size (gzipped)                                                     |     23571 bytes |    232727 bytes |    604118 bytes |
 |[B1.1] Append N characters (time)                                         |          164 ms |          135 ms |          499 ms |
 |[B1.1] Append N characters (avgUpdateSize)                                |        27 bytes |        27 bytes |       121 bytes |
 |[B1.1] Append N characters (encodeTime)                                   |            1 ms |            1 ms |           13 ms |

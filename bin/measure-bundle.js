@@ -25,8 +25,8 @@ const bundleSize = fs.statSync(join(currDir, '/dist/bundle.js')).size + addedFil
 const gzBundleSize = fs.statSync(join(currDir, '/dist/bundle.js.gz')).size + gzAddedFileSizes
 
 console.log(pkg.dependencies, name)
-const version = pkg.dependencies[name].version
-const mainDep = JSON.parse(fs.readFileSync(currDir + `/../../node_modules/${name}/package.json`, 'utf8'))
+const mainDepName = Object.keys(pkg.dependencies)[0]
+const mainDep = JSON.parse(fs.readFileSync(currDir + `/node_modules/${mainDepName}/package.json`, 'utf8'))
 
 setBenchmarkResult(name, 'Version', mainDep.version)
 setBenchmarkResult(name, 'Bundle size', `${bundleSize} bytes`)

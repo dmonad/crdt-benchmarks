@@ -1,5 +1,5 @@
 {
-  "name": "@automerge/automerge-wasm",
+  "name": "automerge-wasm",
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",

@@ -1,5 +1,5 @@
 {
-  "name": "@automerge/automerge",
+  "name": "automerge",
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",

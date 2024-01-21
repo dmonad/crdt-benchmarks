@@ -1,23 +1,22 @@
 {
   "6000": {
     "Version": {
-      "yjs": "1.0.0",
-      "ywasm": "1.0.0",
-      "automerge-wasm": "0.1.3"
+      "yjs": "13.6.11",
+      "ywasm": "0.9.3",
+      "automerge-wasm": "0.9.0",
+      "automerge": "2.1.10"
     },
     "Bundle size": {
       "yjs": "80413 bytes",
       "ywasm": "799327 bytes",
-      "automerge-wasm": "1695301 bytes",
-      "@automerge/automerge": "1737571 bytes",
-      "@automerge/automerge-wasm": "1695062 bytes"
+      "automerge-wasm": "1695062 bytes",
+      "automerge": "1737571 bytes"
     },
     "Bundle size (gzipped)": {
       "yjs": "23571 bytes",
       "ywasm": "232727 bytes",
-      "automerge-wasm": "592235 bytes",
-      "@automerge/automerge": "604118 bytes",
-      "@automerge/automerge-wasm": "592220 bytes"
+      "automerge-wasm": "592220 bytes",
+      "automerge": "604118 bytes"
     },
     "[B1.1] Append N characters (time)": {
       "yjs": "164 ms",
