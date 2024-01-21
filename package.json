@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "start": "npm run start -ws",
-    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge automerge-wasm",
+    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge",
     "lint": "standard && tsc"
   },
   "standard": {
