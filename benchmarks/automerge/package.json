@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ../../node_modules/@automerge/automerge-wasm/bundler/automerge_wasm_bg.wasm && node --expose-gc --experimental-specifier-resolution=node run.js && npm run table",
+    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ./node_modules/@automerge/automerge-wasm/bundler/automerge_wasm_bg.wasm && node --expose-gc --experimental-specifier-resolution=node run.js && npm run table",
     "table": "echo 'Automerge results: \n\n' && node ../../bin/render-table.js ../results.json 6000 automerge-wasm",
     "dist": "npm run clean && rollup -c && gzip --keep dist/*"
   },
