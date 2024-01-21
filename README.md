@@ -66,7 +66,7 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 * `memUsed` does not measure the memory usage of the wasm runtime.
 * Preliminary benchmark results for native implementation of the [Ron/Chronofold CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
-|N = 6000 | yjs | ywasm | automerge|
+|N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [automerge](https://github.com/automerge/automerge/) |
 | :- |  -: | -: | -:  |
 |Version                                                                   |         13.6.11 |           0.9.3 |          2.1.10 |
 |Bundle size                                                               |     80413 bytes |    799327 bytes |   1737571 bytes |
