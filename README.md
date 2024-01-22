@@ -66,8 +66,8 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 changes are applied within a single `change` transaction. However, our
 benchmarks test individual edits that generate individual update events as this
 more closely simulates actual user behavior. See #21
-* Note that `parseTime` is significantly longer (5x longer) with `automerge`
-when the initial document is not empty (e.g. when syncing content from a remote server).
+* Note that `parseTime` is significantly longer with `automerge` when the
+initial document is not empty (e.g. when syncing content from a remote server).
 * Preliminary benchmark results for native implementation of the [Ron/Chronofold CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
 |N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [automerge](https://github.com/automerge/automerge/) |
