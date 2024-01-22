@@ -17,8 +17,18 @@ const benchmarkResults = JSON.parse(fs.readFileSync(path, 'utf8'))[N]
 let mdTable = `N = ${N} | ${benchmarkNames.join(' | ')}|\n`
 // table-widths
 mdTable += `| :- | ${benchmarkNames.map(() => ' -: ').join('|')} |\n`
+// Number formatting
+const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+const formattableNumber = /^\d+(\.\d+)? [a-zA-Z]+$/
+const prettyFormatNumberWithUnits = (numberSpaceUnits) => {
+  if (!numberSpaceUnits) return 'skipped'
+  if (!formattableNumber.test(numberSpaceUnits)) return numberSpaceUnits
+  const [number, units] = numberSpaceUnits.split(' ')
+  const parsedNumber = parseFloat(number)
+  return `${numberFormat.format(parsedNumber)} ${units}`
+}
 
 for (const id in benchmarkResults) {
-  mdTable += `|${id.padEnd(73, ' ')} | ${benchmarkNames.map(name => (benchmarkResults[id][name] || 'skipped').padStart(15, ' ')).join(' | ')} |\n`
+  mdTable += `|${id.padEnd(73, ' ')} | ${benchmarkNames.map(name => (prettyFormatNumberWithUnits(benchmarkResults[id][name])).padStart(16, ' ')).join(' | ')} |\n`
 }
 console.log(mdTable)
