@@ -15,6 +15,17 @@ export class YwasmFactory {
     return new YwasmCRDT(updateHandler)
   }
 
+  /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {Uint8Array} bin
+   * @return {AbstractCrdt}
+   */
+  load (updateHandler, bin) {
+    const crdt = new YwasmCRDT(updateHandler)
+    crdt.applyUpdate(bin)
+    return crdt
+  }
+
   getName () {
     return name
   }

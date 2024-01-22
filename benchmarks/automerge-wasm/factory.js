@@ -20,6 +20,15 @@ export class AutomergeFactory {
     return new AutomergeCRDT(updateHandler)
   }
 
+  /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {Uint8Array} bin
+   * @return {AbstractCrdt}
+   */
+  load (updateHandler, bin) {
+    return new AutomergeCRDT(updateHandler, bin)
+  }
+
   getName () {
     return name
   }
@@ -31,10 +40,11 @@ export class AutomergeFactory {
 export class AutomergeCRDT {
   /**
    * @param {function(Uint8Array):void} [updateHandler]
+   * @param {Uint8Array} bin
    */
-  constructor (updateHandler) {
+  constructor (updateHandler, bin = INITIAL_DOC_BINARY) {
     this.updateHandler = updateHandler
-    this.doc = Automerge.load(INITIAL_DOC_BINARY)
+    this.doc = Automerge.load(bin)
   }
 
   update () {

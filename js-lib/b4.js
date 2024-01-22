@@ -40,8 +40,8 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       // @ts-ignore we only store doc so it is not garbage collected
       let doc = null // eslint-disable-line
       benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
-        doc = crdtFactory.create()
-        doc.applyUpdate(encodedState)
+        // eslint-disable-next-line
+        doc = crdtFactory.load(() => {}, encodedState)
       })
       logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })()
@@ -107,8 +107,8 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       // @ts-ignore we only store doc so it is not garbage collected
       let doc = null // eslint-disable-line
       benchmarkTime(crdtFactory.getName(), `${benchmarkName} (parseTime)`, () => {
-        doc = crdtFactory.create()
-        doc.applyUpdate(encodedState)
+        // eslint-disable-next-line
+        doc = crdtFactory.load(() => {}, encodedState)
       })
       logMemoryUsed(crdtFactory.getName(), benchmarkName, startHeapUsed)
     })()

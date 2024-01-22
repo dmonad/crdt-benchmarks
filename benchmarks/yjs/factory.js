@@ -15,6 +15,17 @@ export class YjsFactory {
     return new YjsCRDT(updateHandler)
   }
 
+  /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {Uint8Array} bin
+   * @return {AbstractCrdt}
+   */
+  load (updateHandler, bin) {
+    const crdt = new YjsCRDT(updateHandler)
+    crdt.applyUpdate(bin)
+    return crdt
+  }
+
   getName () {
     return name
   }

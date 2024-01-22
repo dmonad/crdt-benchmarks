@@ -135,6 +135,15 @@ export class CrdtFactory {
   }
 
   /**
+   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {Uint8Array} bin
+   * @return {AbstractCrdt}
+   */
+  load (updateHandler, bin) {
+    error.methodUnimplemented()
+  }
+
+  /**
    * @return {string}
    */
   getName () {
@@ -156,8 +165,9 @@ export class CrdtFactory {
 export class AbstractCrdt {
   /**
    * @param {function(Uint8Array|string):void} [updateHandler]
+   * @param {Uint8Array} [init]
    */
-  constructor (updateHandler) {
+  constructor (updateHandler, init) {
   }
 
   /**

@@ -59,8 +59,8 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
     }
     benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
       const startHeapUsed = getMemUsed()
-      const doc = crdtFactory.create()
-      doc.applyUpdate(encodedState)
+      // eslint-disable-next-line
+      const _doc = crdtFactory.load(() => {}, encodedState)
       logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })
   }
