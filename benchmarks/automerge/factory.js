@@ -4,7 +4,7 @@ import { next as automerge } from '@automerge/automerge'
 const initialDoc = automerge.from({
   array: /** @type {Array<any>} */ ([]),
   map: {},
-  text: "",
+  text: ''
 })
 
 const initialDocBinary = automerge.save(initialDoc)
@@ -40,6 +40,10 @@ export class AutomergeCRDT {
      * @type {typeof initialDoc}
      */
     this.doc = automerge.load(initialDocBinary)
+    /**
+     * @type {null | typeof initialDoc}
+     */
+    this._tr = null // current automerge transaction
   }
 
   update () {
@@ -67,10 +71,9 @@ export class AutomergeCRDT {
    * @param {Array<any>} elems
    */
   insertArray (index, elems) {
-    this.doc = automerge.change(this.doc, d => {
+    this.transact((_doc, d) => {
       d.array.splice(index, 0, ...elems)
     })
-    this.update()
   }
 
   /**
@@ -80,10 +83,9 @@ export class AutomergeCRDT {
    * @param {number} len
    */
   deleteArray (index, len) {
-    this.doc = automerge.change(this.doc, d => {
+    this.transact((_doc, d) => {
       d.array.splice(index, len)
     })
-    this.update()
   }
 
   /**
@@ -100,10 +102,9 @@ export class AutomergeCRDT {
    * @param {string} text
    */
   insertText (index, text) {
-    this.doc = automerge.change(this.doc, d => {
-      automerge.splice(d, ["text"], index, 0, text)
+    this.transact((_doc, d) => {
+      automerge.splice(d, ['text'], index, 0, text)
     })
-    this.update()
   }
 
   /**
@@ -113,10 +114,9 @@ export class AutomergeCRDT {
    * @param {number} len
    */
   deleteText (index, len) {
-    this.doc = automerge.change(this.doc, d => {
-      automerge.splice(d, ["text"], index, len, "")
+    this.transact((_doc, d) => {
+      automerge.splice(d, ['text'], index, len, '')
     })
-    this.update()
   }
 
   /**
@@ -127,10 +127,23 @@ export class AutomergeCRDT {
   }
 
   /**
-   * @param {function (AbstractCrdt): void} f
+   * @param {function (AbstractCrdt, typeof initialDoc): void} f
+   * @param {boolean} isUpdate
    */
-  transact (f) {
-    f(this)
+  transact (f, isUpdate = false) {
+    if (isUpdate) {
+      // automerge doesn't handle update changes in a "change" transaction
+      f(this, this.doc)
+    } else if (this._tr == null) {
+      this.doc = automerge.change(this.doc, d => {
+        this._tr = d
+        f(this, d)
+        this._tr = null
+      })
+      this.update()
+    } else {
+      f(this, this._tr)
+    }
   }
 
   /**
@@ -138,7 +151,7 @@ export class AutomergeCRDT {
    * @param {any} val
    */
   setMap (key, val) {
-    this.doc = automerge.change(this.doc, d => {
+    this.transact((_doc, d) => {
       // the b3.3 benchmark creates 30,000 javascript strings and adds them to
       // a map. `string` in automerge is represented as a sequence CRDT. This
       // many instances of the CRDT currently uses a large amount of memory, to
@@ -153,7 +166,6 @@ export class AutomergeCRDT {
         d.map[key] = val
       }
     })
-    this.update()
   }
 
   /**

@@ -230,8 +230,9 @@ export class AbstractCrdt {
 
   /**
    * @param {function (AbstractCrdt): void} f
+   * @param {boolean} [isUpdate]
    */
-  transact (f) {
+  transact (f, isUpdate) {
     error.methodUnimplemented()
   }
 

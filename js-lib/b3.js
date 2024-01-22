@@ -37,7 +37,7 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
           for (let i = 0; i < updates.length; i++) {
             docs[0].applyUpdate(updates[i])
           }
-        })
+        }, true)
       })
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         mux(() => {
@@ -45,7 +45,7 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
             for (let i = 0; i < updates.length; i++) {
               docs[1].applyUpdate(updates[i])
             }
-          })
+          }, true)
         })
       })
       check(docs.slice(0, 2))
