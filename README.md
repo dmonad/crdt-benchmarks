@@ -8,8 +8,6 @@
 npm i && npm start
 ```
 
-You can find the benchmark results of Automerge's current [`performance`](https://github.com/automerge/automerge/pull/253) branch [here](https://github.com/dmonad/crdt-benchmarks/pull/4).
-
 ## Benchmarks
 
 #### B1: No conflicts
@@ -60,7 +58,7 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 ### Results
 
 **Notes**
-* The benchmarks were performed on a desktop computer "Intel® Core™ i5-8400 CPU @ 2.80GHz × 6" / Ubuntu 20.04 and Node 12.18.1
+* The benchmarks were performed on a desktop computer "Intel® Core™ i5-8400 CPU @ 2.80GHz × 6" and Node 20.5.0.
 * There is a more exchaustive benchmark at the bottom that only runs benchmarks on Yjs.
 * `memUsed` only approximates the amount of memory used. We run the JavaScript garbage collector and use the heap-size difference before and after the benchmark is performed. If the heap is highly fragmented, the heap size might be larger than the actual amount of data stored in the heap. In some cases this even leads to a `memUsed` of less than zero.
 * `memUsed` does not measure the memory usage of the wasm runtime.

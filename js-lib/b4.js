@@ -47,12 +47,14 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
     })()
   }
 
-  await runBenchmark('[B4] Apply real-world editing dataset', filter, async benchmarkName => {
-    await benchmarkTemplate(
+  await runBenchmark('[B4] Apply real-world editing dataset', filter, benchmarkName =>
+    benchmarkTemplate(
       benchmarkName,
       edits,
       (doc, edit) => {
-        doc.deleteText(edit[0], edit[1])
+        if (edit[1] > 0) {
+          doc.deleteText(edit[0], edit[1])
+        }
         if (edit[2]) {
           doc.insertText(edit[0], edit[2])
         }
@@ -61,7 +63,7 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
         t.compareStrings(doc1.getText(), finalText)
       }
     )
-  })
+  )
 
   await runBenchmark('[B4x100] Apply real-world editing dataset 100 times', filter, benchmarkName => {
     const multiplicator = 100
