@@ -62,6 +62,10 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 * There is a more exchaustive benchmark at the bottom that only runs benchmarks on Yjs.
 * `memUsed` only approximates the amount of memory used. We run the JavaScript garbage collector and use the heap-size difference before and after the benchmark is performed. If the heap is highly fragmented, the heap size might be larger than the actual amount of data stored in the heap. In some cases this even leads to a `memUsed` of less than zero.
 * `memUsed` does not measure the memory usage of the wasm runtime.
+* Automerge can perform the `B4` benchmark in about 1 second (see `time`) if all
+changes are applied within a single `change` transaction. However, our
+benchmarks test individual edits that generate individual update events as this
+more closely simulates actual user behavior. See #21
 * Preliminary benchmark results for native implementation of the [Ron/Chronofold CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
 |N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [automerge](https://github.com/automerge/automerge/) |
