@@ -3,7 +3,7 @@ import * as metric from 'lib0/metric'
 import * as math from 'lib0/math'
 import * as error from 'lib0/error'
 // @ts-ignore
-import { performance as perf } from 'isomorphic.js'
+import * as perf from 'lib0/performance'
 
 export const N = 6000
 export const disableAutomergeBenchmarks = true

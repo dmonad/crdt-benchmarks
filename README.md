@@ -5,7 +5,17 @@
 
 ```sh
 # Install Node.js https://nodejs.org
-npm i && npm start
+npm i
+# Run all benchmarks (takes quite a long time)
+npm start
+# Run all benchmarks using bun
+npm start:bun
+# Run a specific benchmark (e.g. yjs)
+cd benchmarks/yjs && npm start
+# Run a specific benchmark in the browser
+cd benchmarks/yjs && npm start:browser
+# print collected results
+npm run table
 ```
 
 ## Benchmarks
@@ -451,13 +461,6 @@ initial document is not empty (e.g. when syncing content from a remote server).
 ## Development
 
 Modify the `N` variable in `benchmarks/utils.js` to increase the difficulty.
-
-```sh
-npm run watch
-node dist/benchmark.js
-```
-
-Now you can also open `benchmark.html` to run the benchmarks in the browser.
 
 ## License
 

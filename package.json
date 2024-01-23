@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "start": "npm run start -ws",
+    "start:bun": "npm run start:bun -ws",
     "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm automerge",
     "lint": "standard && tsc"
   },
@@ -47,11 +48,12 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-wasm": "^6.2.2",
     "rollup": "^2.77.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "standard": "^16.0.3",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "standard": "^16.0.3",
     "typescript": "^3.9.6"
   }
 }

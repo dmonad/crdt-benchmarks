@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js && node --expose-gc run.js && npm run table",
+    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js",
+    "start": "npm run measure-bundle && node --expose-gc run.js && npm run table",
+    "start:bun": "npm run measure-bundle && bun run run.js && npm run table",
+    "start:browser": "rollup -c && 0serve -o benchmark.html",
     "table": "echo 'Yjs results: \n\n' && node ../../bin/render-table.js ../results.json 6000 yjs",
     "dist": "npm run clean && rollup -c && gzip --keep dist/*"
   },

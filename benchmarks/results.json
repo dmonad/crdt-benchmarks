@@ -8,14 +8,14 @@
     },
     "Bundle size": {
       "yjs": "80413 bytes",
-      "ywasm": "799327 bytes",
-      "automerge-wasm": "1695062 bytes",
+      "ywasm": "677652 bytes",
+      "automerge-wasm": "1695301 bytes",
       "automerge": "1737571 bytes"
     },
     "Bundle size (gzipped)": {
       "yjs": "23571 bytes",
-      "ywasm": "232727 bytes",
-      "automerge-wasm": "592220 bytes",
+      "ywasm": "213832 bytes",
+      "automerge-wasm": "592235 bytes",
       "automerge": "604118 bytes"
     },
     "[B1.1] Append N characters (time)": {
