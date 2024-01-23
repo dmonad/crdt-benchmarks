@@ -68,17 +68,34 @@ Replay the [B4] dataset one hundred times. The final document has a size of over
 ### Results
 
 **Notes**
-* The benchmarks were performed on a desktop computer "Intel® Core™ i5-8400 CPU @ 2.80GHz × 6" and Node 20.5.0.
-* There is a more exchaustive benchmark at the bottom that only runs benchmarks on Yjs.
-* `memUsed` only approximates the amount of memory used. We run the JavaScript garbage collector and use the heap-size difference before and after the benchmark is performed. If the heap is highly fragmented, the heap size might be larger than the actual amount of data stored in the heap. In some cases this even leads to a `memUsed` of less than zero.
+* The benchmarks were performed on a desktop computer "Intel® Core™ i5-8400 CPU
+@ 2.80GHz × 6" and Node 20.5.0.
+* There is a more exchaustive benchmark at the bottom that only runs benchmarks
+on Yjs.
+* `memUsed` only approximates the amount of memory used. We run the JavaScript
+garbage collector and use the heap-size difference before and after the
+benchmark is performed. If the heap is highly fragmented, the heap size might be
+larger than the actual amount of data stored in the heap. In some cases this
+even leads to a `memUsed` of less than zero.
 * `memUsed` does not measure the memory usage of the wasm runtime.
 * Automerge can perform the `B4` benchmark in about 1 second (see `time`) if all
 changes are applied within a single `change` transaction. However, our
 benchmarks test individual edits that generate individual update events as this
 more closely simulates actual user behavior. See #21
-* Note that `parseTime` is significantly longer with `automerge` when the
-initial document is not empty (e.g. when syncing content from a remote server).
-* Preliminary benchmark results for native implementation of the [Ron/Chronofold CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
+* Note that `parseTime` is significantly higher with `automerge` and `loro` when
+the initial document is not empty (e.g. when syncing content from a remote
+server). 
+* Loro has a concept named `snapshot`, which can significantly reduce
+loading time as it contains the operations **and** the in-memory
+representation of the document. Note that this feature is only useful in
+local-first applications that store the document in regular intervals locally
+(which has it's own set of drawbacks, as encoding will block the ui).
+Hence, I opted to disable this feature, which might seem unfair. You can
+re-enable this feature by uncommenting  You can re-enable this feature in
+`./benchmarks/loro/factory.js`.
+* Preliminary benchmark results for native implementation of the [Ron/Chronofold
+CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this
+thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
 |N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [automerge](https://github.com/automerge/automerge/) |
 | :- |  -: | -: | -:  |
@@ -455,8 +472,6 @@ initial document is not empty (e.g. when syncing content from a remote server).
 |[B4 x 100] Apply real-world editing dataset 100 times (docSize)           |  15989245 bytes |                 |
 |[B4 x 100] Apply real-world editing dataset 100 times (parseTime)         |         2127 ms |                 |
 |[B4 x 100] Apply real-world editing dataset 100 times (memUsed)           |        165.5 MB |                 |
-
-
 
 ## Development
 
