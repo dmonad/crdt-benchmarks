@@ -1,9 +1,9 @@
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import builtins from 'rollup-plugin-node-builtins'
-import globals from 'rollup-plugin-node-globals'
+// import builtins from 'rollup-plugin-node-builtins'
+// import globals from 'rollup-plugin-node-globals'
 import { terser } from 'rollup-plugin-terser'
-import { wasm } from '@rollup/plugin-wasm';
+import { wasm } from '@rollup/plugin-wasm'
 
 const terserPlugin = terser({
   module: true,
@@ -21,6 +21,20 @@ const terserPlugin = terser({
 })
 
 export default [{
+  input: './bundle.js',
+  output: {
+    dir: './dist',
+    format: 'iife'
+  },
+  plugins: [
+    nodeResolve({
+      mainFields: ['module', 'browser', 'main']
+    }),
+    commonjs(),
+    wasm(),
+    terserPlugin
+  ]
+}, {
   input: './run.js',
   output: {
     file: './dist/benchmark-browser.js',
@@ -33,43 +47,11 @@ export default [{
     }
   },
   plugins: [
-    wasm(),
     nodeResolve({
       mainFields: ['module', 'browser', 'main']
     }),
-    commonjs()
+    commonjs(),
+    wasm()
   ],
   external: ['fs', 'util', 'path']
-}, {
-  input: './run.js',
-  output: {
-    file: './dist/benchmark-node.js',
-    format: 'es',
-    sourcemap: true
-  },
-  plugins: [
-    nodeResolve({
-      mainFields: ['module', 'main']
-    }),
-    commonjs()
-  ],
-  external: ['isomorphic.js']
-},
-{
-  input: './bundle.js',
-  output: {
-    dir: './dist',
-    format: 'iife'
-  },
-  plugins: [
-    wasm(),
-    nodeResolve({
-      mainFields: ['main', 'module', 'main'],
-      preferBuiltins: false
-    }),
-    commonjs(),
-    builtins(),
-    globals(),
-    terserPlugin
-  ]
 }]
