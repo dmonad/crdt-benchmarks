@@ -1,6 +1,7 @@
 
+
 import { AbstractCrdt, CrdtFactory } from '../../js-lib/index.js' // eslint-disable-line
-import * as loro from 'loro-crdt'
+import { Loro } from 'loro-crdt'
 
 export const name = 'loro'
 
@@ -11,22 +12,22 @@ export class LoroFactory {
   /**
    * @param {function(Uint8Array):void} [updateHandler]
    */
-  create (updateHandler) {
-    return new LoroCRDT(updateHandler)
+  create(updateHandler) {
+    return new LoroWasm(updateHandler)
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
-   * @param {Uint8Array} bin
-   * @return {AbstractCrdt}
-   */
-  load (updateHandler, bin) {
-    const crdt = new LoroCRDT(updateHandler)
-    crdt.applyUpdate(bin)
-    return crdt
+ * @param {function(Uint8Array):void} [updateHandler]
+ * @param {Uint8Array} [bin]
+ * @return {AbstractCrdt}
+ */
+  load(updateHandler, bin) {
+    const doc = new LoroWasm(updateHandler);
+    bin && doc.doc.import(bin);
+    return doc
   }
 
-  getName () {
+  getName() {
     return name
   }
 }
@@ -34,41 +35,45 @@ export class LoroFactory {
 /**
  * @implements {AbstractCrdt}
  */
-export class LoroCRDT {
+export class LoroWasm {
   /**
    * @param {function(Uint8Array):void} [updateHandler]
    */
-  constructor (updateHandler) {
-    this.doc = new loro.Loro()
-    this.updateHandler = updateHandler
-    this.array = this.doc.getList('list')
+  constructor(updateHandler) {
+    this.doc = new Loro();
+    this.version = undefined;
+    this.updateHandler = updateHandler;
+    this.list = this.doc.getList('list')
     this.map = this.doc.getMap('map')
     this.text = this.doc.getText('text')
-    this._tr = false
+    this.cachedUpdates = [];
+  }
+
+  update() {
+    if (this.updateHandler) {
+      this.updateHandler(this.doc.exportFrom(this.version));
+      this.version = this.doc.version();
+    }
   }
 
   /**
    * @return {Uint8Array|string}
    */
-  getEncodedState () {
-    /**
-     * Snapshots store the operation log AND the in-memory representation of the
-     * document.
-     *
-     * Normal updates only store the operation log.
-     *
-     * We use the update format since this is what would be used in practice. I will update this
-     * once it can be shown that there is a loro network backend that uses this feature.
-     */
-    // return this.doc.exportSnapshot() // use snapshots instead
-    return this.doc.exportFrom()
+  getEncodedState() {
+    const ans = this.doc.exportSnapshot()
+    // this.doc.diagnoseOplogSize();
+    return ans;
   }
 
   /**
    * @param {Uint8Array} update
    */
-  applyUpdate (update) {
-    this.doc.import(update)
+  applyUpdate(update) {
+    if (this.inTransact) {
+      this.cachedUpdates.push(update);
+    } else {
+      this.doc.import(update)
+    }
   }
 
   /**
@@ -77,12 +82,11 @@ export class LoroCRDT {
    * @param {number} index
    * @param {Array<any>} elems
    */
-  insertArray (index, elems) {
-    this.transact(() => {
-      elems.forEach((e, i) => {
-        this.array.insert(index + i, e)
-      })
-    })
+  insertArray(index, elems) {
+    for (let i = 0; i < elems.length; i++) {
+      this.list.insert(index + i, elems[i])
+    }
+    this.update()
   }
 
   /**
@@ -91,17 +95,16 @@ export class LoroCRDT {
    * @param {number} index
    * @param {number} len
    */
-  deleteArray (index, len) {
-    this.transact(() => {
-      this.array.delete(index, len)
-    })
+  deleteArray(index, len) {
+    this.list.delete(index, len);
+    this.update()
   }
 
   /**
    * @return {Array<any>}
    */
-  getArray () {
-    return this.array.toArray()
+  getArray() {
+    return this.list.toArray()
   }
 
   /**
@@ -110,10 +113,9 @@ export class LoroCRDT {
    * @param {number} index
    * @param {string} text
    */
-  insertText (index, text) {
-    this.transact(() => {
-      this.text.insert(index, text)
-    })
+  insertText(index, text) {
+    this.text.insert(index, text);
+    this.update()
   }
 
   /**
@@ -122,50 +124,48 @@ export class LoroCRDT {
    * @param {number} index
    * @param {number} len
    */
-  deleteText (index, len) {
-    this.transact(() => {
-      this.text.delete(index, len)
-    })
+  deleteText(index, len) {
+    this.text.delete(index, len);
+    this.update()
   }
 
   /**
    * @return {string}
    */
-  getText () {
+  getText() {
     return this.text.toString()
   }
 
   /**
-   * @param {function (AbstractCrdt, loro.Loro): void} f
+   * @param {function (AbstractCrdt): void} f
    */
-  transact (f) {
-    if (this._tr) {
-      f(this, this.doc)
-      return
+  transact(f) {
+    this.cachedUpdates.length = 0;
+    this.inTransact = true;
+    try {
+      f(this)
+    } finally {
+      this.inTransact = false;
+      if (this.cachedUpdates) {
+        this.doc.importUpdateBatch(this.cachedUpdates);
+        this.cachedUpdates = [];
+      }
     }
-    this._tr = true
-    // potentially we could cache version here?
-    const version = this.doc.version()
-    f(this, this.doc)
-    this.doc.commit()
-    this._tr = false
-    if (this.updateHandler) this.updateHandler(this.doc.exportFrom(version))
   }
 
   /**
    * @param {string} key
    * @param {any} val
    */
-  setMap (key, val) {
-    this.transact(() => {
-      this.map.set(key, val)
-    })
+  setMap(key, val) {
+    this.map.set(key, val);
+    this.update();
   }
 
   /**
    * @return {Map<string,any> | Object<string, any>}
    */
-  getMap () {
+  getMap() {
     return this.map.toJson()
   }
 }

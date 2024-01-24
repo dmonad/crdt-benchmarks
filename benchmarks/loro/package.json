@@ -16,6 +16,7 @@
   "author": "Kevin Jahns",
   "license": "MIT",
   "dependencies": {
-    "loro-crdt": "^0.10.0"
+    "loro-crdt": "^0.10.1",
+    "loro-wasm": "^0.10.1"
   }
 }
