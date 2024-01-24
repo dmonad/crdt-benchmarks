@@ -16,6 +16,6 @@
   "author": "Kevin Jahns",
   "license": "MIT",
   "dependencies": {
-    "ywasm": "^0.9.3"
+    "ywasm": "^0.17.4"
   }
 }
