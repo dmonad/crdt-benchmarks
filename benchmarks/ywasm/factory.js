@@ -39,13 +39,16 @@ export class YwasmCRDT {
    * @param {function(Uint8Array):void} updateHandler
    */
   constructor (updateHandler) {
-    this.ydoc = new Y.YDoc()
+    this.ydoc = new Y.YDoc({})
     this.ydoc.onUpdateV2(/** @param {Uint8Array} update */ update => {
       updateHandler(update)
     })
     this.yarray = this.ydoc.getArray('array')
     this.ymap = this.ydoc.getMap('map')
     this.ytext = this.ydoc.getText('text')
+    /**
+     * @type {Y.YTransaction | null}
+     */
     this.txn = null
   }
 
@@ -60,7 +63,8 @@ export class YwasmCRDT {
    * @param {Uint8Array} update
    */
   applyUpdate (update) {
-    Y.applyUpdateV2(this.ydoc, update)
+    console.log('applyUpdate args', this.ydoc, update)
+    Y.applyUpdateV2(this.ydoc, update, 'remote')
   }
 
   /**
@@ -70,7 +74,7 @@ export class YwasmCRDT {
    * @param {Array<any>} elems
    */
   insertArray (index, elems) {
-    this.transact(() => this.yarray.insert(this.txn, index, elems))
+    this.transact(() => this.yarray.insert(index, elems, this.txn))
   }
 
   /**
@@ -80,7 +84,7 @@ export class YwasmCRDT {
    * @param {number} len
    */
   deleteArray (index, len) {
-    this.transact(() => this.yarray.delete(this.txn, index, len))
+    this.transact(() => this.yarray.delete(index, len, this.txn))
   }
 
   /**
@@ -97,7 +101,7 @@ export class YwasmCRDT {
    * @param {string} text
    */
   insertText (index, text) {
-    this.transact(() => this.ytext.insert(this.txn, index, text, null))
+    this.transact(() => this.ytext.insert(index, text, null, this.txn))
   }
 
   /**
@@ -107,7 +111,7 @@ export class YwasmCRDT {
    * @param {number} len
    */
   deleteText (index, len) {
-    this.transact(() => this.ytext.delete(this.txn, index, len))
+    this.transact(() => this.ytext.delete(index, len, this.txn))
   }
 
   /**
@@ -121,7 +125,7 @@ export class YwasmCRDT {
    * @param {function (AbstractCrdt): void} f
    */
   transact (f) {
-    this.txn = this.txn || this.ydoc.beginTransaction()
+    this.txn = this.txn || this.ydoc.writeTransaction(null)
     try {
       f(this)
     } finally {
@@ -137,7 +141,7 @@ export class YwasmCRDT {
    * @param {any} val
    */
   setMap (key, val) {
-    this.transact(() => this.ymap.set(this.txn, key, val))
+    this.transact(() => this.ymap.set(key, val, this.txn))
   }
 
   /**

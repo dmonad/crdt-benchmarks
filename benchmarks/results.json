@@ -2,21 +2,21 @@
   "6000": {
     "Version": {
       "yjs": "13.6.11",
-      "ywasm": "0.9.3",
+      "ywasm": "0.17.4",
       "automerge-wasm": "0.9.0",
       "automerge": "2.1.10",
       "loro": "0.10.1"
     },
     "Bundle size": {
       "yjs": "69124 bytes",
-      "ywasm": "677667 bytes",
+      "ywasm": "954634 bytes",
       "automerge-wasm": "1695062 bytes",
       "automerge": "1737571 bytes",
       "loro": "1052250 bytes"
     },
     "Bundle size (gzipped)": {
       "yjs": "20100 bytes",
-      "ywasm": "213833 bytes",
+      "ywasm": "286710 bytes",
       "automerge-wasm": "592220 bytes",
       "automerge": "604118 bytes",
       "loro": "399276 bytes"
