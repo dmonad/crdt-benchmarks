@@ -96,8 +96,8 @@ this feature by default. You can disable/enable this feature in
 |N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [loro](https://github.com/loro-dev/loro) | [automerge](https://github.com/automerge/automerge/) |
 | :- |  -: | -: | -: | -:  |
 |Version                                                                   |          13.6.11 |            0.9.3 |           0.10.1 |           2.1.10 |
-|Bundle size                                                               |     53,755 bytes |    677,667 bytes |  1,052,250 bytes |  1,737,571 bytes |
-|Bundle size (gzipped)                                                     |     38,816 bytes |    213,833 bytes |    399,276 bytes |    604,118 bytes |
+|Bundle size                                                               |     69,124 bytes |    677,667 bytes |  1,052,250 bytes |  1,737,571 bytes |
+|Bundle size (gzipped)                                                     |     20,100 bytes |    213,833 bytes |    399,276 bytes |    604,118 bytes |
 |[B1.1] Append N characters (time)                                         |           188 ms |           154 ms |           120 ms |           365 ms |
 |[B1.1] Append N characters (avgUpdateSize)                                |         27 bytes |         27 bytes |        109 bytes |        121 bytes |
 |[B1.1] Append N characters (encodeTime)                                   |             1 ms |             1 ms |             1 ms |             7 ms |
