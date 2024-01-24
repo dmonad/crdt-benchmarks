@@ -24,7 +24,7 @@ export default [{
   input: './bundle.js',
   output: {
     dir: './dist',
-    format: 'iife'
+    format: 'esm'
   },
   plugins: [
     nodeResolve({

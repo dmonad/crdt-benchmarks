@@ -11,6 +11,7 @@
   "workspaces": [
     "benchmarks/yjs",
     "benchmarks/ywasm",
+    "benchmarks/loro",
     "benchmarks/automerge",
     "benchmarks/automerge-wasm"
   ],

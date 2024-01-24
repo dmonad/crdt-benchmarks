@@ -1,1 +1,1 @@
-export * from 'loro-crdt'
+export { Loro } from 'loro-crdt'

@@ -1,1 +1,1 @@
-export * from '@automerge/automerge'
+export { next } from '@automerge/automerge'
