@@ -8,25 +8,25 @@
       "loro": "0.10.1"
     },
     "Bundle size": {
-      "yjs": "80413 bytes",
+      "yjs": "128226 bytes",
       "ywasm": "677652 bytes",
       "automerge-wasm": "1695301 bytes",
       "automerge": "1737571 bytes",
       "loro": "1052250 bytes"
     },
     "Bundle size (gzipped)": {
-      "yjs": "23571 bytes",
+      "yjs": "38816 bytes",
       "ywasm": "213832 bytes",
       "automerge-wasm": "592235 bytes",
       "automerge": "604118 bytes",
-      "loro": "399686 bytes"
+      "loro": "399276 bytes"
     },
     "[B1.1] Append N characters (time)": {
       "yjs": "164 ms",
       "ywasm": "135 ms",
       "automerge-wasm": "117 ms",
       "automerge": "364 ms",
-      "loro": "218 ms"
+      "loro": "119 ms"
     },
     "[B1.1] Append N characters (avgUpdateSize)": {
       "yjs": "27 bytes",
@@ -40,7 +40,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "7 ms",
       "automerge": "7 ms",
-      "loro": "0 ms"
+      "loro": "1 ms"
     },
     "[B1.1] Append N characters (docSize)": {
       "yjs": "6031 bytes",
@@ -54,14 +54,14 @@
       "ywasm": "0 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "353.1 kB"
+      "loro": "0 B"
     },
     "[B1.1] Append N characters (parseTime)": {
       "yjs": "46 ms",
       "ywasm": "43 ms",
       "automerge-wasm": "91 ms",
       "automerge": "95 ms",
-      "loro": "45 ms"
+      "loro": "39 ms"
     },
     "[B1.2] Insert string of length N (time)": {
       "yjs": "1 ms",
@@ -96,21 +96,21 @@
       "ywasm": "424.3 kB",
       "automerge-wasm": "840 B",
       "automerge": "9.2 kB",
-      "loro": "0 B"
+      "loro": "13.2 kB"
     },
     "[B1.2] Insert string of length N (parseTime)": {
       "yjs": "56 ms",
       "ywasm": "44 ms",
       "automerge-wasm": "53 ms",
       "automerge": "43 ms",
-      "loro": "40 ms"
+      "loro": "42 ms"
     },
     "[B1.3] Prepend N characters (time)": {
       "yjs": "132 ms",
       "ywasm": "21 ms",
       "automerge-wasm": "86 ms",
       "automerge": "314 ms",
-      "loro": "49 ms"
+      "loro": "75 ms"
     },
     "[B1.3] Prepend N characters (avgUpdateSize)": {
       "yjs": "27 bytes",
@@ -124,7 +124,7 @@
       "ywasm": "0 ms",
       "automerge-wasm": "5 ms",
       "automerge": "5 ms",
-      "loro": "16 ms"
+      "loro": "10 ms"
     },
     "[B1.3] Prepend N characters (docSize)": {
       "yjs": "6041 bytes",
@@ -138,21 +138,21 @@
       "ywasm": "8.3 kB",
       "automerge-wasm": "7.9 kB",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "7.7 kB"
     },
     "[B1.3] Prepend N characters (parseTime)": {
       "yjs": "85 ms",
       "ywasm": "50 ms",
       "automerge-wasm": "90 ms",
       "automerge": "96 ms",
-      "loro": "54 ms"
+      "loro": "41 ms"
     },
     "[B1.4] Insert N characters at random positions (time)": {
       "yjs": "145 ms",
       "ywasm": "130 ms",
       "automerge-wasm": "105 ms",
       "automerge": "314 ms",
-      "loro": "39 ms"
+      "loro": "74 ms"
     },
     "[B1.4] Insert N characters at random positions (avgUpdateSize)": {
       "yjs": "29 bytes",
@@ -166,7 +166,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "8 ms",
       "automerge": "9 ms",
-      "loro": "23 ms"
+      "loro": "35 ms"
     },
     "[B1.4] Insert N characters at random positions (docSize)": {
       "yjs": "29554 bytes",
@@ -180,21 +180,21 @@
       "ywasm": "0 B",
       "automerge-wasm": "0 B",
       "automerge": "9.5 kB",
-      "loro": "0 B"
+      "loro": "7.9 kB"
     },
     "[B1.4] Insert N characters at random positions (parseTime)": {
       "yjs": "90 ms",
       "ywasm": "43 ms",
       "automerge-wasm": "105 ms",
       "automerge": "106 ms",
-      "loro": "33 ms"
+      "loro": "40 ms"
     },
     "[B1.5] Insert N words at random positions (time)": {
       "yjs": "166 ms",
       "ywasm": "438 ms",
       "automerge-wasm": "326 ms",
       "automerge": "515 ms",
-      "loro": "38 ms"
+      "loro": "76 ms"
     },
     "[B1.5] Insert N words at random positions (avgUpdateSize)": {
       "yjs": "36 bytes",
@@ -208,7 +208,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "21 ms",
       "automerge": "23 ms",
-      "loro": "46 ms"
+      "loro": "69 ms"
     },
     "[B1.5] Insert N words at random positions (docSize)": {
       "yjs": "87924 bytes",
@@ -222,14 +222,14 @@
       "ywasm": "720 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "2.4 kB"
     },
     "[B1.5] Insert N words at random positions (parseTime)": {
       "yjs": "74 ms",
       "ywasm": "48 ms",
       "automerge-wasm": "147 ms",
       "automerge": "171 ms",
-      "loro": "31 ms"
+      "loro": "45 ms"
     },
     "[B1.6] Insert string, then delete it (time)": {
       "yjs": "2 ms",
@@ -271,14 +271,14 @@
       "ywasm": "43 ms",
       "automerge-wasm": "54 ms",
       "automerge": "67 ms",
-      "loro": "29 ms"
+      "loro": "38 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (time)": {
       "yjs": "171 ms",
       "ywasm": "137 ms",
       "automerge-wasm": "247 ms",
       "automerge": "462 ms",
-      "loro": "46 ms"
+      "loro": "92 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (avgUpdateSize)": {
       "yjs": "31 bytes",
@@ -292,7 +292,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "20 ms",
       "automerge": "21 ms",
-      "loro": "11 ms"
+      "loro": "17 ms"
     },
     "[B1.7] Insert/Delete strings at random positions (docSize)": {
       "yjs": "28377 bytes",
@@ -306,21 +306,21 @@
       "ywasm": "480 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "1.8 kB"
     },
     "[B1.7] Insert/Delete strings at random positions (parseTime)": {
       "yjs": "93 ms",
       "ywasm": "46 ms",
       "automerge-wasm": "131 ms",
       "automerge": "136 ms",
-      "loro": "27 ms"
+      "loro": "40 ms"
     },
     "[B1.8] Append N numbers (time)": {
       "yjs": "160 ms",
       "ywasm": "26 ms",
       "automerge-wasm": "120 ms",
       "automerge": "455 ms",
-      "loro": "41 ms"
+      "loro": "76 ms"
     },
     "[B1.8] Append N numbers (avgUpdateSize)": {
       "yjs": "32 bytes",
@@ -355,14 +355,14 @@
       "ywasm": "43 ms",
       "automerge-wasm": "97 ms",
       "automerge": "101 ms",
-      "loro": "33 ms"
+      "loro": "37 ms"
     },
     "[B1.9] Insert Array of N numbers (time)": {
       "yjs": "5 ms",
       "ywasm": "3 ms",
       "automerge-wasm": "8 ms",
       "automerge": "40 ms",
-      "loro": "9 ms"
+      "loro": "8 ms"
     },
     "[B1.9] Insert Array of N numbers (avgUpdateSize)": {
       "yjs": "35657 bytes",
@@ -390,21 +390,21 @@
       "ywasm": "552 B",
       "automerge-wasm": "344 B",
       "automerge": "37.9 kB",
-      "loro": "0 B"
+      "loro": "2.6 kB"
     },
     "[B1.9] Insert Array of N numbers (parseTime)": {
       "yjs": "58 ms",
       "ywasm": "42 ms",
       "automerge-wasm": "57 ms",
       "automerge": "68 ms",
-      "loro": "28 ms"
+      "loro": "38 ms"
     },
     "[B1.10] Prepend N numbers (time)": {
       "yjs": "129 ms",
       "ywasm": "27 ms",
       "automerge-wasm": "214 ms",
       "automerge": "530 ms",
-      "loro": "40 ms"
+      "loro": "78 ms"
     },
     "[B1.10] Prepend N numbers (avgUpdateSize)": {
       "yjs": "32 bytes",
@@ -418,7 +418,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "9 ms",
       "automerge": "8 ms",
-      "loro": "6 ms"
+      "loro": "9 ms"
     },
     "[B1.10] Prepend N numbers (docSize)": {
       "yjs": "35665 bytes",
@@ -432,21 +432,21 @@
       "ywasm": "0 B",
       "automerge-wasm": "0 B",
       "automerge": "65.7 kB",
-      "loro": "0 B"
+      "loro": "249.3 kB"
     },
     "[B1.10] Prepend N numbers (parseTime)": {
       "yjs": "73 ms",
       "ywasm": "45 ms",
       "automerge-wasm": "98 ms",
       "automerge": "106 ms",
-      "loro": "28 ms"
+      "loro": "40 ms"
     },
     "[B1.11] Insert N numbers at random positions (time)": {
       "yjs": "144 ms",
       "ywasm": "149 ms",
       "automerge-wasm": "130 ms",
       "automerge": "470 ms",
-      "loro": "39 ms"
+      "loro": "78 ms"
     },
     "[B1.11] Insert N numbers at random positions (avgUpdateSize)": {
       "yjs": "34 bytes",
@@ -460,7 +460,7 @@
       "ywasm": "1 ms",
       "automerge-wasm": "9 ms",
       "automerge": "11 ms",
-      "loro": "24 ms"
+      "loro": "36 ms"
     },
     "[B1.11] Insert N numbers at random positions (docSize)": {
       "yjs": "59137 bytes",
@@ -474,14 +474,14 @@
       "ywasm": "0 B",
       "automerge-wasm": "0 B",
       "automerge": "60.1 kB",
-      "loro": "0 B"
+      "loro": "2.3 kB"
     },
     "[B1.11] Insert N numbers at random positions (parseTime)": {
       "yjs": "93 ms",
       "ywasm": "51 ms",
       "automerge-wasm": "127 ms",
       "automerge": "104 ms",
-      "loro": "28 ms"
+      "loro": "44 ms"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (time)": {
       "yjs": "3 ms",
@@ -516,35 +516,35 @@
       "ywasm": "304 B",
       "automerge-wasm": "864 B",
       "automerge": "14.5 kB",
-      "loro": "1.9 kB"
+      "loro": "2 kB"
     },
     "[B2.1] Concurrently insert string of length N at index 0 (parseTime)": {
       "yjs": "62 ms",
       "ywasm": "41 ms",
       "automerge-wasm": "55 ms",
       "automerge": "64 ms",
-      "loro": "28 ms"
+      "loro": "40 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (time)": {
       "yjs": "72 ms",
       "ywasm": "405 ms",
       "automerge-wasm": "677 ms",
       "automerge": "311 ms",
-      "loro": "204 ms"
+      "loro": "82 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (updateSize)": {
       "yjs": "33444 bytes",
       "ywasm": "177007 bytes",
       "automerge-wasm": "1093293 bytes",
       "automerge": "27476 bytes",
-      "loro": "665563 bytes"
+      "loro": "35554 bytes"
     },
     "[B2.2] Concurrently insert N characters at random positions (encodeTime)": {
       "yjs": "2 ms",
       "ywasm": "1 ms",
       "automerge-wasm": "17 ms",
       "automerge": "10 ms",
-      "loro": "57 ms"
+      "loro": "83 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (docSize)": {
       "yjs": "66860 bytes",
@@ -565,98 +565,98 @@
       "ywasm": "52 ms",
       "automerge-wasm": "151 ms",
       "automerge": "67 ms",
-      "loro": "53 ms"
+      "loro": "43 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (time)": {
       "yjs": "86 ms",
       "ywasm": "1046 ms",
       "automerge-wasm": "1050 ms",
       "automerge": "701 ms",
-      "loro": "213 ms"
+      "loro": "111 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (updateSize)": {
       "yjs": "88994 bytes",
       "ywasm": "215213 bytes",
       "automerge-wasm": "1185202 bytes",
       "automerge": "122485 bytes",
-      "loro": "731420 bytes"
+      "loro": "93132 bytes"
     },
     "[B2.3] Concurrently insert N words at random positions (encodeTime)": {
       "yjs": "4 ms",
       "ywasm": "4 ms",
       "automerge-wasm": "59 ms",
       "automerge": "37 ms",
-      "loro": "98 ms"
+      "loro": "145 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (docSize)": {
       "yjs": "178137 bytes",
       "ywasm": "178137 bytes",
       "automerge-wasm": "191497 bytes",
       "automerge": "185019 bytes",
-      "loro": "188458 bytes"
+      "loro": "188456 bytes"
     },
     "[B2.3] Concurrently insert N words at random positions (memUsed)": {
       "yjs": "5.6 MB",
       "ywasm": "432 B",
       "automerge-wasm": "18.4 kB",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "1.5 kB"
     },
     "[B2.3] Concurrently insert N words at random positions (parseTime)": {
       "yjs": "76 ms",
       "ywasm": "73 ms",
       "automerge-wasm": "317 ms",
       "automerge": "190 ms",
-      "loro": "49 ms"
+      "loro": "66 ms"
     },
     "[B2.4] Concurrently insert & delete (time)": {
       "yjs": "232 ms",
       "ywasm": "2740 ms",
       "automerge-wasm": "2564 ms",
       "automerge": "1113 ms",
-      "loro": "427 ms"
+      "loro": "204 ms"
     },
     "[B2.4] Concurrently insert & delete (updateSize)": {
       "yjs": "139517 bytes",
       "ywasm": "398881 bytes",
       "automerge-wasm": "2395876 bytes",
       "automerge": "298810 bytes",
-      "loro": "1441427 bytes"
+      "loro": "163564 bytes"
     },
     "[B2.4] Concurrently insert & delete (encodeTime)": {
       "yjs": "21 ms",
       "ywasm": "7 ms",
       "automerge-wasm": "76 ms",
       "automerge": "62 ms",
-      "loro": "155 ms"
+      "loro": "245 ms"
     },
     "[B2.4] Concurrently insert & delete (docSize)": {
       "yjs": "279172 bytes",
       "ywasm": "279172 bytes",
       "automerge-wasm": "307291 bytes",
       "automerge": "293829 bytes",
-      "loro": "289590 bytes"
+      "loro": "289595 bytes"
     },
     "[B2.4] Concurrently insert & delete (memUsed)": {
       "yjs": "9.4 MB",
       "ywasm": "432 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "1.7 kB"
     },
     "[B2.4] Concurrently insert & delete (parseTime)": {
       "yjs": "142 ms",
       "ywasm": "84 ms",
       "automerge-wasm": "434 ms",
       "automerge": "278 ms",
-      "loro": "53 ms"
+      "loro": "70 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (time)": {
       "yjs": "91 ms",
       "ywasm": "276 ms",
       "automerge-wasm": "34 ms",
       "automerge": "1616 ms",
-      "loro": "43 ms"
+      "loro": "58 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (updateSize)": {
       "yjs": "49181 bytes",
@@ -670,7 +670,7 @@
       "ywasm": "2 ms",
       "automerge-wasm": "20 ms",
       "automerge": "12 ms",
-      "loro": "3 ms"
+      "loro": "2 ms"
     },
     "[B3.1] 20√N clients concurrently set number in Map (docSize)": {
       "yjs": "32246 bytes",
@@ -684,21 +684,21 @@
       "ywasm": "272 B",
       "automerge-wasm": "480 B",
       "automerge": "0 B",
-      "loro": "0 B"
+      "loro": "608 B"
     },
     "[B3.1] 20√N clients concurrently set number in Map (parseTime)": {
       "yjs": "100 ms",
       "ywasm": "77 ms",
       "automerge-wasm": "77 ms",
       "automerge": "48 ms",
-      "loro": "46 ms"
+      "loro": "71 ms"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (time)": {
       "yjs": "84 ms",
       "ywasm": "284 ms",
       "automerge-wasm": "45 ms",
       "automerge": "1727 ms",
-      "loro": "50 ms"
+      "loro": "72 ms"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (updateSize)": {
       "yjs": "85082 bytes",
@@ -719,28 +719,28 @@
       "ywasm": "32218 bytes",
       "automerge-wasm": "93420 bytes",
       "automerge": "112588 bytes",
-      "loro": "40494 bytes"
+      "loro": "41858 bytes"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (memUsed)": {
       "yjs": "232.4 kB",
       "ywasm": "0 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "584 B"
+      "loro": "0 B"
     },
     "[B3.2] 20√N clients concurrently set Object in Map (parseTime)": {
       "yjs": "93 ms",
       "ywasm": "75 ms",
       "automerge-wasm": "100 ms",
       "automerge": "93 ms",
-      "loro": "75 ms"
+      "loro": "84 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (time)": {
       "yjs": "88 ms",
       "ywasm": "299 ms",
       "automerge-wasm": "232 ms",
       "automerge": "2644 ms",
-      "loro": "115 ms"
+      "loro": "116 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (updateSize)": {
       "yjs": "7826225 bytes",
@@ -754,35 +754,35 @@
       "ywasm": "1 ms",
       "automerge-wasm": "96 ms",
       "automerge": "105 ms",
-      "loro": "46 ms"
+      "loro": "51 ms"
     },
     "[B3.3] 20√N clients concurrently set String in Map (docSize)": {
       "yjs": "38370 bytes",
       "ywasm": "35296 bytes",
       "automerge-wasm": "97995 bytes",
       "automerge": "98003 bytes",
-      "loro": "7798572 bytes"
+      "loro": "7799994 bytes"
     },
     "[B3.3] 20√N clients concurrently set String in Map (memUsed)": {
       "yjs": "179.2 kB",
       "ywasm": "200 B",
       "automerge-wasm": "0 B",
       "automerge": "0 B",
-      "loro": "488 B"
+      "loro": "704 B"
     },
     "[B3.3] 20√N clients concurrently set String in Map (parseTime)": {
       "yjs": "104 ms",
       "ywasm": "86 ms",
       "automerge-wasm": "123 ms",
       "automerge": "130 ms",
-      "loro": "51 ms"
+      "loro": "70 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (time)": {
       "yjs": "75 ms",
       "ywasm": "283 ms",
       "automerge-wasm": "30 ms",
       "automerge": "2726 ms",
-      "loro": "154 ms"
+      "loro": "233 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (updateSize)": {
       "yjs": "52743 bytes",
@@ -796,42 +796,42 @@
       "ywasm": "1 ms",
       "automerge-wasm": "11 ms",
       "automerge": "18 ms",
-      "loro": "9 ms"
+      "loro": "8 ms"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (docSize)": {
       "yjs": "26588 bytes",
       "ywasm": "26585 bytes",
       "automerge-wasm": "86507 bytes",
       "automerge": "96446 bytes",
-      "loro": "31098 bytes"
+      "loro": "31093 bytes"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (memUsed)": {
       "yjs": "720.9 kB",
       "ywasm": "5.5 kB",
       "automerge-wasm": "248 B",
       "automerge": "38.2 kB",
-      "loro": "0 B"
+      "loro": "472 B"
     },
     "[B3.4] 20√N clients concurrently insert text in Array (parseTime)": {
       "yjs": "76 ms",
       "ywasm": "76 ms",
       "automerge-wasm": "57 ms",
       "automerge": "59 ms",
-      "loro": "52 ms"
+      "loro": "38 ms"
     },
     "[B4] Apply real-world editing dataset (time)": {
       "yjs": "1803 ms",
       "ywasm": "43943 ms",
       "automerge-wasm": "725 ms",
       "automerge": "12746 ms",
-      "loro": "191 ms"
+      "loro": "2960 ms"
     },
     "[B4] Apply real-world editing dataset (encodeTime)": {
       "yjs": "12 ms",
       "ywasm": "4 ms",
       "automerge-wasm": "110 ms",
       "automerge": "219 ms",
-      "loro": "49 ms"
+      "loro": "75 ms"
     },
     "[B4] Apply real-world editing dataset (docSize)": {
       "yjs": "159929 bytes",
@@ -845,7 +845,7 @@
       "ywasm": "17 ms",
       "automerge-wasm": "403 ms",
       "automerge": "2115 ms",
-      "loro": "8 ms"
+      "loro": "13 ms"
     },
     "[B4] Apply real-world editing dataset (memUsed)": {
       "yjs": "3.5 MB",
@@ -857,12 +857,12 @@
     "[B4x100] Apply real-world editing dataset 100 times (time)": {
       "yjs": "199319 ms",
       "ywasm": "2732719 ms",
-      "loro": "20540 ms"
+      "loro": "300508 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (encodeTime)": {
       "yjs": "388 ms",
       "ywasm": "209 ms",
-      "loro": "9445 ms"
+      "loro": "14360 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (docSize)": {
       "yjs": "15989245 bytes",
@@ -872,12 +872,12 @@
     "[B4x100] Apply real-world editing dataset 100 times (parseTime)": {
       "yjs": "2183 ms",
       "ywasm": "1564 ms",
-      "loro": "852 ms"
+      "loro": "1317 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (memUsed)": {
       "yjs": "352.9 MB",
       "ywasm": "0 B",
-      "loro": "2.8 kB"
+      "loro": "2.1 kB"
     }
   }
 }

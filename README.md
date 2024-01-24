@@ -88,14 +88,10 @@ server).
 * Loro has a concept named `snapshot`, which can significantly reduce
 loading time as it contains the operations **and** the in-memory
 representation of the document. Note that this feature is only useful in
-local-first applications that store the document in regular intervals locally
-(which has it's own set of drawbacks, as encoding will block the ui).
-Hence, I opted to disable this feature, which might seem unfair. You can
-re-enable this feature by uncommenting  You can re-enable this feature in
+applications that persist the document in regular intervals
+(which has it's own set of drawbacks, as encoding will block the ui). We enabled
+this feature by default. You can disable/enable this feature in
 `./benchmarks/loro/factory.js`.
-* Preliminary benchmark results for native implementation of the [Ron/Chronofold
-CRDT](https://github.com/gritzko/ron) (written in C++) are posted [in this
-thread](https://github.com/dmonad/crdt-benchmarks/issues/3).
 
 |N = 6000 | [yjs](https://github.com/yjs/yjs) | [ywasm](https://github.com/y-crdt/y-crdt/tree/main/ywasm) | [loro](https://github.com/loro-dev/loro) | [automerge](https://github.com/automerge/automerge/) |
 | :- |  -: | -: | -: | -:  |
