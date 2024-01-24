@@ -60,5 +60,5 @@
     // "types": ["./src/utils/typedefs.js"]
   },
   "include": ["./benchmarks/*/*.js", "./js-lib/*.js", "bin/render-table.js", "bin/measure-bundle.js", "bin/b4-benford-law.js"],
-  "exclude": ["../lib0/**/*", "node_modules/**/*", "**/dist"]
+  "exclude": ["../lib0/**/*", "node_modules/**/*", "**/dist", "benchmarks/loro/node_modules/**/*", "benchmarks/loro/node_modules/**/*"]
 }

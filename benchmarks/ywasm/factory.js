@@ -9,14 +9,14 @@ export const name = 'ywasm'
  */
 export class YwasmFactory {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   create (updateHandler) {
     return new YwasmCRDT(updateHandler)
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    * @param {Uint8Array} bin
    * @return {AbstractCrdt}
    */
@@ -36,15 +36,13 @@ export class YwasmFactory {
  */
 export class YwasmCRDT {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   constructor (updateHandler) {
     this.ydoc = new Y.YDoc()
-    if (updateHandler) {
-      this.ydoc.onUpdateV2(update => {
-        updateHandler(update)
-      })
-    }
+    this.ydoc.onUpdateV2(/** @param {Uint8Array} update */ update => {
+      updateHandler(update)
+    })
     this.yarray = this.ydoc.getArray('array')
     this.ymap = this.ydoc.getMap('map')
     this.ytext = this.ydoc.getText('text')

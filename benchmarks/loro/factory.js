@@ -1,6 +1,6 @@
 
 import { AbstractCrdt, CrdtFactory } from '../../js-lib/index.js' // eslint-disable-line
-import * as loro from 'loro-crdt'
+import { Loro } from 'loro-crdt'
 
 export const name = 'loro'
 
@@ -9,21 +9,21 @@ export const name = 'loro'
  */
 export class LoroFactory {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   create (updateHandler) {
-    return new LoroCRDT(updateHandler)
+    return new LoroWasm(updateHandler)
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
-   * @param {Uint8Array} bin
-   * @return {AbstractCrdt}
-   */
+ * @param {function(Uint8Array):void} updateHandler
+ * @param {Uint8Array} [bin]
+ * @return {AbstractCrdt}
+ */
   load (updateHandler, bin) {
-    const crdt = new LoroCRDT(updateHandler)
-    crdt.applyUpdate(bin)
-    return crdt
+    const doc = new LoroWasm(updateHandler)
+    bin && doc.doc.import(bin)
+    return doc
   }
 
   getName () {
@@ -34,17 +34,23 @@ export class LoroFactory {
 /**
  * @implements {AbstractCrdt}
  */
-export class LoroCRDT {
+export class LoroWasm {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   constructor (updateHandler) {
-    this.doc = new loro.Loro()
+    this.doc = new Loro()
+    this.version = undefined
     this.updateHandler = updateHandler
-    this.array = this.doc.getList('list')
+    this.list = this.doc.getList('list')
     this.map = this.doc.getMap('map')
     this.text = this.doc.getText('text')
-    this._tr = false
+    /**
+     * Cached updates will be applied at the end of the transaction.
+     *
+     * @type {Array<Uint8Array>}
+     */
+    this.cachedUpdates = []
   }
 
   /**
@@ -52,23 +58,27 @@ export class LoroCRDT {
    */
   getEncodedState () {
     /**
-     * Snapshots store the operation log AND the in-memory representation of the
-     * document.
+     * Snapshots store the operation log AND the encoded in-memory state of the document. It has
+     * faster loading time,  but the encoded document is larger and it takes longer
+     * to encode.
      *
-     * Normal updates only store the operation log.
+     * Normal updates only store the operation log. They take longer to decode.
      *
-     * We use the update format since this is what would be used in practice. I will update this
-     * once it can be shown that there is a loro network backend that uses this feature.
+     * We use the snapshot feature by default, as this is what the Loro team recommends.
      */
-    // return this.doc.exportSnapshot() // use snapshots instead
-    return this.doc.exportFrom()
+    return this.doc.exportSnapshot() // use the snapshot format
+    // return this.doc.exportFrom() // use the update format
   }
 
   /**
    * @param {Uint8Array} update
    */
   applyUpdate (update) {
-    this.doc.import(update)
+    if (this.inTransact) {
+      this.cachedUpdates.push(update)
+    } else {
+      this.doc.import(update)
+    }
   }
 
   /**
@@ -79,9 +89,9 @@ export class LoroCRDT {
    */
   insertArray (index, elems) {
     this.transact(() => {
-      elems.forEach((e, i) => {
-        this.array.insert(index + i, e)
-      })
+      for (let i = 0; i < elems.length; i++) {
+        this.list.insert(index + i, elems[i])
+      }
     })
   }
 
@@ -93,7 +103,7 @@ export class LoroCRDT {
    */
   deleteArray (index, len) {
     this.transact(() => {
-      this.array.delete(index, len)
+      this.list.delete(index, len)
     })
   }
 
@@ -101,7 +111,7 @@ export class LoroCRDT {
    * @return {Array<any>}
    */
   getArray () {
-    return this.array.toArray()
+    return this.list.toArray()
   }
 
   /**
@@ -136,20 +146,22 @@ export class LoroCRDT {
   }
 
   /**
-   * @param {function (AbstractCrdt, loro.Loro): void} f
+   * @param {function (AbstractCrdt): void} f
    */
   transact (f) {
-    if (this._tr) {
-      f(this, this.doc)
+    if (this.inTransact) {
+      f(this)
       return
     }
-    this._tr = true
-    // potentially we could cache version here?
-    const version = this.doc.version()
-    f(this, this.doc)
-    this.doc.commit()
-    this._tr = false
-    if (this.updateHandler) this.updateHandler(this.doc.exportFrom(version))
+    this.inTransact = true
+    f(this)
+    if (this.cachedUpdates.length > 0) {
+      this.doc.importUpdateBatch(this.cachedUpdates)
+      this.cachedUpdates = []
+    }
+    this.updateHandler(this.doc.exportFrom(this.version))
+    this.version = this.doc.version()
+    this.inTransact = false
   }
 
   /**

@@ -23,7 +23,7 @@ export const runBenchmarksB1 = async (crdtFactory, filter) => {
     {
       const doc1Updates = []
       const doc1 = crdtFactory.create(update => { doc1Updates.push(update) })
-      const doc2 = crdtFactory.create()
+      const doc2 = crdtFactory.create(() => {})
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         for (let i = 0; i < inputData.length; i++) {
           changeFunction(doc1, inputData[i], i)

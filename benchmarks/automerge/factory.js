@@ -16,14 +16,14 @@ export const name = 'automerge'
  */
 export class AutomergeFactory {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   create (updateHandler) {
     return new AutomergeCRDT(updateHandler)
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    * @param {Uint8Array} bin
    */
   load (updateHandler, bin) {
@@ -40,7 +40,7 @@ export class AutomergeFactory {
  */
 export class AutomergeCRDT {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    * @param {Uint8Array} init
    */
   constructor (updateHandler, init = initialDocBinary) {
@@ -56,7 +56,7 @@ export class AutomergeCRDT {
   }
 
   update () {
-    if (this.updateHandler) this.updateHandler(automerge.saveIncremental(this.doc))
+    this.updateHandler(automerge.saveIncremental(this.doc))
   }
 
   /**

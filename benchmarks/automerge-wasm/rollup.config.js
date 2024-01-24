@@ -20,20 +20,20 @@ const terserPlugin = terser({
 })
 
 export default [
-{
-  input: './bundle.js',
-  output: {
-    dir: './dist',
-    format: 'es'
-  },
-  plugins: [
-    nodeResolve({
-      mainFields: ['main', 'module'],
-      preferBuiltins: false
-    }),
-    commonjs(),
-    builtins(),
-    globals(),
-    terserPlugin
-  ]
-}]
+  {
+    input: './bundle.js',
+    output: {
+      dir: './dist',
+      format: 'es'
+    },
+    plugins: [
+      nodeResolve({
+        mainFields: ['main', 'module'],
+        preferBuiltins: false
+      }),
+      commonjs(),
+      builtins(),
+      globals(),
+      terserPlugin
+    ]
+  }]

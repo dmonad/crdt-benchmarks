@@ -127,7 +127,7 @@ export const deltaDeleteHelper = (doc, index, length) => {
 
 export class CrdtFactory {
   /**
-   * @param {function(Uint8Array|string):void} [updateHandler]
+   * @param {function(Uint8Array|string):void} updateHandler
    * @return {AbstractCrdt}
    */
   create (updateHandler) {
@@ -135,7 +135,7 @@ export class CrdtFactory {
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    * @param {Uint8Array} bin
    * @return {AbstractCrdt}
    */
@@ -164,10 +164,10 @@ export class CrdtFactory {
  */
 export class AbstractCrdt {
   /**
-   * @param {function(Uint8Array|string):void} [updateHandler]
+   * @param {function(Uint8Array|string):void} updateHandler
    * @param {Uint8Array} [init]
    */
-  constructor (updateHandler, init) {
+  constructor (updateHandler, init) { // eslint-disable-line
   }
 
   /**

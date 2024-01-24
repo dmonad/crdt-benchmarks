@@ -9,14 +9,14 @@ export const name = 'yjs'
  */
 export class YjsFactory {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   create (updateHandler) {
     return new YjsCRDT(updateHandler)
   }
 
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    * @param {Uint8Array} bin
    * @return {AbstractCrdt}
    */
@@ -36,15 +36,13 @@ export class YjsFactory {
  */
 export class YjsCRDT {
   /**
-   * @param {function(Uint8Array):void} [updateHandler]
+   * @param {function(Uint8Array):void} updateHandler
    */
   constructor (updateHandler) {
     this.ydoc = new Y.Doc()
-    if (updateHandler) {
-      this.ydoc.on('updateV2', update => {
-        updateHandler(update)
-      })
-    }
+    this.ydoc.on('updateV2', update => {
+      updateHandler(update)
+    })
     this.yarray = this.ydoc.getArray('array')
     this.ymap = this.ydoc.getMap('map')
     this.ytext = this.ydoc.getText('text')
