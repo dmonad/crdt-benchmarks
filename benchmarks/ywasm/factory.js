@@ -63,7 +63,6 @@ export class YwasmCRDT {
    * @param {Uint8Array} update
    */
   applyUpdate (update) {
-    console.log('applyUpdate args', this.ydoc, update)
     Y.applyUpdateV2(this.ydoc, update, 'remote')
   }
 
