@@ -1,9 +1,9 @@
 {
-  "name": "automerge-wasm",
+  "name": "automerge-wasm-benchmarks",
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ./node_modules/@automerge/automerge-wasm/bundler/automerge_wasm_bg.wasm",
+    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ../../node_modules/@automerge/automerge-wasm/bundler/automerge_wasm_bg.wasm",
     "start": "npm run measure-bundle && node --expose-gc --experimental-specifier-resolution=node run.js && npm run table",
     "start:bun": "npm run measure-bundle && bun run run.js && npm run table",
     "table": "echo 'Automerge results: \n\n' && node ../../bin/render-table.js ../results.json 6000 automerge-wasm",

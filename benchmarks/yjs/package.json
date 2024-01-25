@@ -1,5 +1,5 @@
 {
-  "name": "yjs",
+  "name": "yjs-benchmarks",
   "version": "1.0.0",
   "description": "Yjs benchmarks",
   "main": "./run.js",

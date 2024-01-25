@@ -1,21 +1,21 @@
 {
-  "name": "ywasm-benchmarks",
+  "name": "diamond-types-benchmarks",
   "version": "1.0.0",
-  "description": "Ywasm benchmarks",
+  "description": "Diamond types benchmarks",
   "main": "./run.js",
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ../../node_modules/ywasm/ywasm_bg.wasm",
+    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js ../../node_modules/diamond-types-node/dt_bg.wasm",
     "start": "npm run measure-bundle && node --expose-gc run.js && npm run table",
     "start:bun": "npm run measure-bundle && bun run run.js && npm run table",
     "start:browser": "rollup -c && 0serve -o benchmark.html",
-    "table": "echo 'Ywasm results: \n\n' && node ../../bin/render-table.js ../results.json 6000 ywasm",
+    "table": "echo 'Diamond Types results: \n\n' && node ../../bin/render-table.js ../results.json 6000 diamond-types",
     "dist": "npm run clean && rollup -c && gzip --keep dist/*"
   },
   "author": "Kevin Jahns",
   "license": "MIT",
   "dependencies": {
-    "ywasm": "^0.9.3"
+    "diamond-types-node": "^1.0.2"
   }
 }

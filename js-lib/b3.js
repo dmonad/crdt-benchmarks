@@ -126,4 +126,19 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
       }
     )
   })
+
+  await runBenchmark('[B3.5] 20√N clients concurrently insert text', filter, benchmarkName => {
+    benchmarkTemplate(
+      benchmarkName,
+      (doc, i) => {
+        doc.insertText(0, i.toString())
+      },
+      docs => {
+        const str = docs[0].toString()
+        docs.forEach(doc => {
+          t.compareStrings(str, doc.toString())
+        })
+      }
+    )
+  })
 }
