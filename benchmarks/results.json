@@ -9,14 +9,14 @@
     },
     "Bundle size": {
       "yjs": "69124 bytes",
-      "ywasm": "954634 bytes",
+      "ywasm": "971788 bytes",
       "automerge-wasm": "1695062 bytes",
       "automerge": "1737571 bytes",
       "loro": "1052250 bytes"
     },
     "Bundle size (gzipped)": {
       "yjs": "20100 bytes",
-      "ywasm": "286710 bytes",
+      "ywasm": "295507 bytes",
       "automerge-wasm": "592220 bytes",
       "automerge": "604118 bytes",
       "loro": "399276 bytes"
