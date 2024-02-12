@@ -20,11 +20,11 @@ export const runBenchmarkB2 = async (crdtFactory, filter) => {
    */
   const benchmarkTemplate = (id, changeDoc1, changeDoc2, check) => {
     let encodedState = null
+    let updatesSize = 0
+    const mux = createMutex()
+    const doc1 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc2.applyUpdate(update) }))
+    const doc2 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc1.applyUpdate(update) }))
     {
-      let updatesSize = 0
-      const mux = createMutex()
-      const doc1 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc2.applyUpdate(update) }))
-      const doc2 = crdtFactory.create(update => mux(() => { updatesSize += update.length; doc1.applyUpdate(update) }))
       doc1.insertText(0, initText)
       benchmarkTime(crdtFactory.getName(), `${id} (time)`, () => {
         doc1.transact(() => {
@@ -33,8 +33,8 @@ export const runBenchmarkB2 = async (crdtFactory, filter) => {
         doc2.transact(() => {
           changeDoc2(doc2)
         })
+        check(doc1, doc2)
       })
-      check(doc1, doc2)
       const avgUpdateSize = math.round(updatesSize / 2)
       setBenchmarkResult(crdtFactory.getName(), `${id} (updateSize)`, `${avgUpdateSize} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
@@ -47,7 +47,8 @@ export const runBenchmarkB2 = async (crdtFactory, filter) => {
     benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
       const startHeapUsed = getMemUsed()
       // eslint-disable-next-line
-      const _doc = crdtFactory.load(() => {}, encodedState)
+      const doc = crdtFactory.load(() => {}, encodedState)
+      check(doc, doc2)
       logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })
   }

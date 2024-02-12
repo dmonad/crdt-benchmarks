@@ -19,8 +19,8 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
    */
   const benchmarkTemplate = (id, changeDoc, check) => {
     let encodedState = null
+    const docs = []
     {
-      const docs = []
       const updates = []
       const mux = createMutex()
       for (let i = 0; i < sqrtN; i++) {
@@ -47,8 +47,8 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
             }
           }, true)
         })
+        check(docs.slice(0, 2))
       })
-      check(docs.slice(0, 2))
       setBenchmarkResult(crdtFactory.getName(), `${id} (updateSize)`, `${updates.reduce((len, update) => len + update.length, 0)} bytes`)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = docs[0].getEncodedState()
@@ -60,7 +60,8 @@ export const runBenchmarkB3 = async (crdtFactory, filter) => {
     benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
       const startHeapUsed = getMemUsed()
       // eslint-disable-next-line
-      const _doc = crdtFactory.load(() => {}, encodedState)
+      const doc = crdtFactory.load(() => {}, encodedState)
+      check([doc, docs[0]])
       logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })
   }

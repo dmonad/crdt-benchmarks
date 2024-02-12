@@ -30,7 +30,7 @@
       "automerge-wasm": "119 ms",
       "automerge": "365 ms",
       "loro": "120 ms",
-      "diamond-types": "61 ms"
+      "diamond-types": "71 ms"
     },
     "[B1.1] Append N characters (avgUpdateSize)": {
       "yjs": "27 bytes",
@@ -70,7 +70,7 @@
       "automerge-wasm": "79 ms",
       "automerge": "80 ms",
       "loro": "26 ms",
-      "diamond-types": "28 ms"
+      "diamond-types": "25 ms"
     },
     "[B1.2] Insert string of length N (time)": {
       "yjs": "0 ms",
@@ -120,7 +120,7 @@
       "automerge-wasm": "87 ms",
       "automerge": "307 ms",
       "loro": "81 ms",
-      "diamond-types": "42 ms"
+      "diamond-types": "40 ms"
     },
     "[B1.3] Prepend N characters (avgUpdateSize)": {
       "yjs": "27 bytes",
@@ -160,7 +160,7 @@
       "automerge-wasm": "60 ms",
       "automerge": "63 ms",
       "loro": "26 ms",
-      "diamond-types": "33 ms"
+      "diamond-types": "32 ms"
     },
     "[B1.4] Insert N characters at random positions (time)": {
       "yjs": "131 ms",
@@ -168,7 +168,7 @@
       "automerge-wasm": "100 ms",
       "automerge": "310 ms",
       "loro": "79 ms",
-      "diamond-types": "40 ms"
+      "diamond-types": "41 ms"
     },
     "[B1.4] Insert N characters at random positions (avgUpdateSize)": {
       "yjs": "29 bytes",
@@ -208,7 +208,7 @@
       "automerge-wasm": "79 ms",
       "automerge": "79 ms",
       "loro": "31 ms",
-      "diamond-types": "31 ms"
+      "diamond-types": "29 ms"
     },
     "[B1.5] Insert N words at random positions (time)": {
       "yjs": "154 ms",
@@ -552,7 +552,7 @@
       "automerge-wasm": "458 ms",
       "automerge": "287 ms",
       "loro": "83 ms",
-      "diamond-types": "26 ms"
+      "diamond-types": "27 ms"
     },
     "[B2.2] Concurrently insert N characters at random positions (updateSize)": {
       "yjs": "33444 bytes",
@@ -576,7 +576,7 @@
       "automerge-wasm": "50702 bytes",
       "automerge": "50683 bytes",
       "loro": "71858 bytes",
-      "diamond-types": "40564 bytes"
+      "diamond-types": "40565 bytes"
     },
     "[B2.2] Concurrently insert N characters at random positions (memUsed)": {
       "yjs": "2.4 MB",
@@ -592,7 +592,7 @@
       "automerge-wasm": "122 ms",
       "automerge": "53 ms",
       "loro": "30 ms",
-      "diamond-types": "31 ms"
+      "diamond-types": "32 ms"
     },
     "[B2.3] Concurrently insert N words at random positions (time)": {
       "yjs": "85 ms",
@@ -850,19 +850,19 @@
       "diamond-types": "31 ms"
     },
     "[B3.5] 20√N clients concurrently insert text (updateSize)": {
-      "diamond-types": "93988 bytes"
+      "diamond-types": "93984 bytes"
     },
     "[B3.5] 20√N clients concurrently insert text (encodeTime)": {
       "diamond-types": "1 ms"
     },
     "[B3.5] 20√N clients concurrently insert text (docSize)": {
-      "diamond-types": "37982 bytes"
+      "diamond-types": "37978 bytes"
     },
     "[B3.5] 20√N clients concurrently insert text (memUsed)": {
       "diamond-types": "0 B"
     },
     "[B3.5] 20√N clients concurrently insert text (parseTime)": {
-      "diamond-types": "54 ms"
+      "diamond-types": "53 ms"
     },
     "[B4] Apply real-world editing dataset (time)": {
       "yjs": "5714 ms",
@@ -870,7 +870,7 @@
       "automerge-wasm": "3859 ms",
       "automerge": "14326 ms",
       "loro": "3089 ms",
-      "diamond-types": "1523 ms"
+      "diamond-types": "1513 ms"
     },
     "[B4] Apply real-world editing dataset (encodeTime)": {
       "yjs": "11 ms",
@@ -908,13 +908,13 @@
       "yjs": "608908 ms",
       "ywasm": "2829633 ms",
       "loro": "309689 ms",
-      "diamond-types": "161231 ms"
+      "diamond-types": "160316 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (encodeTime)": {
       "yjs": "365 ms",
       "ywasm": "186 ms",
       "loro": "14429 ms",
-      "diamond-types": "193 ms"
+      "diamond-types": "191 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (docSize)": {
       "yjs": "15989244 bytes",
@@ -926,7 +926,7 @@
       "yjs": "2622 ms",
       "ywasm": "1328 ms",
       "loro": "1304 ms",
-      "diamond-types": "1399 ms"
+      "diamond-types": "1374 ms"
     },
     "[B4x100] Apply real-world editing dataset 100 times (memUsed)": {
       "yjs": "327.1 MB",

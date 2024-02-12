@@ -26,8 +26,8 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
           changeFunction(doc1, inputData[i], i)
           // we forcefully overwrite updates because we want to reduce potentially significant memory overhead
         }
+        check(doc1)
       })
-      check(doc1)
       benchmarkTime(crdtFactory.getName(), `${id} (encodeTime)`, () => {
         encodedState = doc1.getEncodedState()
       })
@@ -41,6 +41,7 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
         // eslint-disable-next-line
         doc = crdtFactory.load(() => {}, encodedState)
+        check(doc)
       })
       logMemoryUsed(crdtFactory.getName(), id, startHeapUsed)
     })()
