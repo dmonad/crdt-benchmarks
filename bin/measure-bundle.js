@@ -26,7 +26,12 @@ const gzBundleSize = fs.statSync(join(currDir, '/dist/bundle.js.gz')).size + gzA
 
 console.log(pkg.dependencies, name)
 const mainDepName = Object.keys(pkg.dependencies)[0]
-const mainDep = JSON.parse(fs.readFileSync(currDir + `/../../node_modules/${mainDepName}/package.json`, 'utf8'))
+let mainDep
+try {
+  mainDep = JSON.parse(fs.readFileSync(currDir + `/../../node_modules/${mainDepName}/package.json`, 'utf8'))
+} catch (e) {
+  mainDep = JSON.parse(fs.readFileSync(currDir + `/node_modules/${mainDepName}/package.json`, 'utf8'))
+}
 
 setBenchmarkResult(name, 'Version', mainDep.version)
 setBenchmarkResult(name, 'Bundle size', `${bundleSize} bytes`)

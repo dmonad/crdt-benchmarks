@@ -39,7 +39,6 @@ export const runBenchmarkB4 = async (crdtFactory, filter) => {
       // @ts-ignore we only store doc so it is not garbage collected
       let doc = null // eslint-disable-line
       benchmarkTime(crdtFactory.getName(), `${id} (parseTime)`, () => {
-        // eslint-disable-next-line
         doc = crdtFactory.load(() => {}, encodedState)
         check(doc)
       })
