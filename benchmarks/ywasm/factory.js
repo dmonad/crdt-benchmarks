@@ -63,7 +63,10 @@ export class YwasmCRDT {
    * @param {Uint8Array} update
    */
   applyUpdate (update) {
-    Y.applyUpdateV2(this.ydoc, update, 'remote')
+    this.transact(() => {
+      const txn = /** @type {Y.YTransaction} */ (this.txn)
+      txn.applyV2(update)
+    })
   }
 
   /**
@@ -124,11 +127,14 @@ export class YwasmCRDT {
    * @param {function (AbstractCrdt): void} f
    */
   transact (f) {
-    this.txn = this.txn || this.ydoc.writeTransaction(null)
-    try {
+    if (this.txn != null) {
+      // use current transaction
       f(this)
-    } finally {
-      if (this.txn) {
+    } else {
+      this.txn = this.ydoc.writeTransaction(null)
+      try {
+        f(this)
+      } finally {
         this.txn.free()
         this.txn = null
       }
