@@ -1,0 +1,25 @@
+{
+  "name": "list-positions-benchmarks",
+  "version": "1.0.0",
+  "description": "List-positions benchmarks",
+  "main": "./run.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "measure-bundle": "([ -f \"./dist/bundle.js\" ] || npm run dist) && node ../../bin/measure-bundle.js",
+    "start": "npm run measure-bundle && node --expose-gc run.js && npm run table",
+    "start:bun": "npm run measure-bundle && bun run run.js && npm run table",
+    "start:browser": "rollup -c && 0serve -o benchmark.html",
+    "table": "echo 'List-positions results: \n\n' && node ../../bin/render-table.js ../results.json 6000 list-positions",
+    "dist": "npm run clean && rollup -c && gzip --keep dist/*"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "list-positions": "^2.0.0",
+    "@list-positions/crdts": "^0.3.0",
+    "fflate": "^0.8.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

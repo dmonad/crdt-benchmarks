@@ -14,13 +14,14 @@
     "benchmarks/loro",
     "benchmarks/automerge",
     "benchmarks/automerge-wasm",
-    "benchmarks/diamond-types"
+    "benchmarks/diamond-types",
+    "benchmarks/list-positions"
   ],
   "scripts": {
     "clean": "rm -rf node_modules ./benchmarks/*/node_modules ./benchmarks/*/dist",
     "start": "npm run start -ws",
     "start:bun": "npm run start:bun -ws",
-    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm loro automerge diamond-types",
+    "table": "node bin/render-table.js benchmarks/results.json 6000 yjs ywasm loro automerge diamond-types list-positions",
     "lint": "standard && tsc"
   },
   "standard": {
